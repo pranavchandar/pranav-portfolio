@@ -1,0 +1,11 @@
+<div class="container" [ngClass]="{ 'fade-in': showImage }">
+  <img src="assets/images/intro-placeholder.jpg" class="background" *ngIf="showImage" />
+  
+  <div class="text-overlay">
+    <p class="typewriter">{{ displayText }}<span *ngIf="showCursor" class="cursor">|</span></p>
+  </div>
+</div>
+
+<video #introVideo class="hidden-video" *ngIf="videoStarted" autoplay muted preload="auto">
+  <source src="assets/videos/intro.mp4" type="video/mp4" />
+</video>

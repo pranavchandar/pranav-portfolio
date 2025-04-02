@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.background,
+.hidden-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.text-overlay {
+  position: absolute;
+  color:rgb(255 255 187);
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgb(255, 88, 233);
+  white-space: pre-wrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  background: rgb(255, 88, 233);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.hidden-video {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
