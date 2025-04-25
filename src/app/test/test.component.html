@@ -1,0 +1,20 @@
+<div class="road-container">
+    <div class="controls">
+      <input type="text" [(ngModel)]="functionInput" placeholder="Enter function (e.g., 20 * Math.sin(x / 50))" />
+      <button (click)="updatePath()">Update Road</button>
+    </div>
+    <div class="container" #roadContainer>
+      <svg #roadSvg width="100%" height="100%">
+        <path class="road-path" #roadPath />
+        <path class="lane-separator" #roadLane />
+      </svg>
+      <svg class="car" width="60" height="30" style="width: 60px !important; height: 30px !important;" viewBox="0 0 60 30">
+        <!-- Internal elements scaled up by 3x from 50% of original -->
+        <rect x="7.5" y="7.5" width="45" height="22.5" rx="3" fill="#1E90FF" />
+        <circle cx="15" cy="27" r="4.5" fill="black" />
+        <circle cx="45" cy="27" r="4.5" fill="black" />
+        <rect x="22.5" y="10.5" width="15" height="7.5" fill="#87CEEB" />
+        <rect x="30" y="10.5" width="7.5" height="7.5" fill="#87CEEB" />
+      </svg>
+    </div>
+  </div>

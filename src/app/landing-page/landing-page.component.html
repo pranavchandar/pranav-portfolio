@@ -1,11 +1,23 @@
-<div class="container" [ngClass]="{ 'fade-in': showImage }">
-  <img src="assets/images/intro-placeholder.jpg" class="background" *ngIf="showImage" />
-  
+<div class="container">
+  <img
+    src="assets/images/intro-placeholder2.png"
+    class="background"
+    *ngIf="true"
+  />
+  <!-- Always show the image initially if you want it as the video's first frame -->
   <div class="text-overlay">
-    <p class="typewriter">{{ displayText }}<span *ngIf="showCursor" class="cursor">|</span></p>
+    <p class="typewriter">
+      {{ displayText }}<span *ngIf="showCursor" class="cursor">|</span>
+    </p>
   </div>
 </div>
-
-<video #introVideo class="hidden-video" *ngIf="videoStarted" autoplay muted preload="auto">
-  <source src="assets/videos/intro.mp4" type="video/mp4" />
+<video
+  #introVideo
+  class="hidden-video"
+  *ngIf="videoStarted"
+  autoplay
+  muted
+  preload="auto"
+>
+  <source src="assets/videos/intro3.mp4" type="video/mp4" />
 </video>

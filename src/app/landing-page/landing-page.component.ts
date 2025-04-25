@@ -2,24 +2,24 @@ import { Component, ElementRef, OnInit, ViewChild, HostListener } from '@angular
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-landing-page',
-  imports: [CommonModule],
-  templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+selector: 'app-landing-page',
+imports: [CommonModule],
+templateUrl: './landing-page.component.html',
+styleUrls: ['./landing-page.component.scss']
 })
 export class LandingPageComponent implements OnInit {
-  displayText: string = '';
-  showCursor: boolean = true;
-  typingSpeed: number = 50; // Adjust speed of typing effect
-  messageIndex: number = 0;
-  messages: string[] = ["Welcome!", "Would you like to enter? (Y/N)"];
-  videoStarted: boolean = false;
-  showImage: boolean = true;
-  userInteractionCompleted: boolean = false;
+displayText: string = '';
+showCursor: boolean = true;
+typingSpeed: number = 50;
+messageIndex: number = 0;
+messages: string[] = ["Welcome!", "Would you like to enter? (Y/N)"];
+videoStarted: boolean = false;
+showImage: boolean = true; // Remove or set to false initially
+userInteractionCompleted: boolean = false;
 
-  ngOnInit() {
-    this.startTypingEffect();
-  }
+ngOnInit() {
+ this.startTypingEffect(); // Keep the typing effect if you want it
+}
 
   startTypingEffect() {
     let currentMessage = this.messages[this.messageIndex];
