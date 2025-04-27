@@ -1,0 +1,25 @@
+<header>
+  <div class="menu-icon" (click)="toggleMenu()">
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+  </div>
+  <nav [ngClass]="{'open': isMenuOpen}">
+  <ul>
+  <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">HOME</a></li>
+  <li><a routerLink="/about" routerLinkActive="active">ABOUT</a></li>
+  <li><a routerLink="/resume" routerLinkActive="active">RESUME</a></li>
+  <li class="portfolio-dropdown">
+  <a>PORTFOLIO <span class="dropdown-arrow"></span></a>
+  <ul class="dropdown-menu">
+  <li><a routerLink="/programming">PROGRAMMING</a></li>
+  <li><a routerLink="/digital-art">DIGITAL ART</a></li>
+  <li><a routerLink="/cgi">CGI</a></li>
+  </ul>
+  </li>
+  </ul>
+  </nav>
+  <div class="logo-container">
+  <img src="assets/images/logo.png" alt="Your Logo" class="logo" (click)="navigateToEasterEgg()">
+  </div>
+  </header>

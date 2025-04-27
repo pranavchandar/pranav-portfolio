@@ -5,187 +5,166 @@
   width: 100%;
   height: 100%;
   background-color: black;
-  opacity: 0.86; //* 86% opacity /
-    z-index: 1; // Place it above the background image /
-    transition: opacity 0.100s ease-in-out; // Add a transition for the fade effect */
-}
-
-.home-container.fade-out .black-overlay {
-  opacity: 0; //* Fade out to transparent */
-}
-
-.home-container {
+  opacity: 0.86;
+  z-index: 1; /* Black overlay above background (z-index: 0 by default if not set) */
+  transition: opacity 0.100s ease-in-out;
+  }
+  
+  .home-container.fade-out .black-overlay {
+  opacity: 0;
+  }
+  
+  .home-container {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; // To contain the background
-}
-
-.background-image {
+  overflow: hidden;
+  font-family: 'Koulen';
+  }
+  
+  .background-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/images/intro-placeholder2.png"); //* Adjust path if needed /
+  background-image: url("../../assets/images/intro-placeholder2.png");
   background-size: cover;
   background-position: center;
-  z-index: -2; // Place behind other content /
-  opacity: 1; // Initial opacity */
-}
-
-header {
-  padding: 20px 40px;
+  z-index: 0; /* Background image at the lowest level */
+  opacity: 1;
+  }
+  
+  nav,
+  .hero-content,
+  footer {
+  z-index: 3; /* Content elements above the image and overlay /
+  position: relative; / Ensure they stack correctly if needed */
+  }
+  
+  .hero {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 40px;
   color: white;
-  z-index: 2; //* Ensure navigation is above background */
-}
-
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-nav ul li {
-  margin-right: 20px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-
-nav ul li a.active {
-  //* Style for the active link /
-  color: red; // Example */
-}
-
-.portfolio-dropdown {
+  z-index: 3; /* Ensure hero content is above */
   position: relative;
-}
-
-.portfolio-dropdown .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8); //* Dark background for dropdown /
-  list-style: none;
-  padding: 10px 0;
-  margin: 0;
-  display: none; // Hidden by default */
-}
-
-.portfolio-dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.portfolio-dropdown .dropdown-menu li a {
-  padding: 8px 20px;
-  display: block;
-}
-
-.logo-container {
-  //* Style your logo container */
-}
-
-.logo {
-  width: 50px; //* Adjust size as needed */
-  height: auto;
-  cursor: pointer;
-}
-
-.hero {
+  }
+  
+  .hero .name {
+  margin-bottom: -6px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 80px 40px;
-  color: white;
-  z-index: 2;
-}
-
-.hero-content {
-  flex: 1;
-  max-width: 50%;
-}
-
-.hero .name {
-  font-size: 3em; //* Adjust size */
-  margin-bottom: 10px;
-}
-
-.hero .last-name {
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 16%;
+  position: relative; /* Positioning context for the vector /
+  z-index: 3; / Name above the image */
+  }
+  
+  .hero .name .first-name {
+  font-size: 96px;
+  line-height: 1;
+  }
+  
+  .hero .name .last-name {
+  font-size: 128px;
   color: red;
-}
-
-.hero .title {
-  font-size: 1.5em; //* Adjust size */
+  line-height: 1;
+  display: inline-block; /* Important for width calculation */
+  }
+  
+  .hero .title {
+  font-size: 28px;
+  margin-top: 0px;
   margin-bottom: 20px;
-}
-
-.hero .introduction {
+  padding-left: 16%;
+  z-index: 3; /* Title above the image */
+  }
+  
+  .hero .introduction {
   line-height: 1.6;
   margin-bottom: 30px;
-}
-
-.hero .call-to-actions button {
+  padding-left: 16%;
+  font-size: 16px;
+  max-width: 516px;
+  max-height: auto;
+  z-index: 3; /* Introduction above the image */
+  }
+  
+  .hero .call-to-actions {
+  z-index: 3; /* Buttons above the image */
+  }
+  
+  .hero .call-to-actions button {
   padding: 12px 25px;
   font-size: 1em;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   margin-right: 15px;
-}
-
-.hero .call-to-actions .resume-button {
+  }
+  
+  .hero .call-to-actions .resume-button {
   background-color: red;
   color: white;
-}
-
-.hero .call-to-actions .about-button {
+  }
+  
+  .hero .call-to-actions .about-button {
   background-color: transparent;
   color: red;
   border: 1px solid red;
-}
-
-.hero-image {
-  flex: 0 0 40%;
-  text-align: right;
-}
-
-.hero-image img {
-  max-width: 100%;
+  }
+  
+  .hero-image {
+  position: absolute;
+  top: 55%;
+  right: -50px;
+  transform: translateY(-50%);
+  z-index: 2; /* Image above the black overlay */
+  }
+  
+  .hero-image img {
+  width: 1041.78px;
+  height: 586px;
+  object-fit: contain;
+  opacity: 1; /* Default opacity /
+  transition: opacity 0.3s ease-in-out; / Smooth opacity transition */
+  }
+  
+  .vector-l-shape {
+  position: absolute;
+  margin-left: -35px;
+  top: 100%;
+  margin-top: -255px;
+  width: 300px;
   height: auto;
-  //width: 1041.7px;
-  //height: 586px;
-}
-
-footer {
-    padding: 20px 40px;
-    /* Replace background-color with the gradient */
-    background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-    color: white;
-    text-align: center;
-    z-index: 2;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 20vh;
-    box-sizing: border-box;
-    }
-
-.social-icons a {
+  z-index: 3; /* Vector also above the image */
+  transform: none;
+  }
+  
+  .social-icons a {
   display: inline-block;
   margin: 8vh 10px;
+  }
+  
+  .social-icons img {
+  width: 40px;
+  height: 40px;
+  }
+  
+//* Responsive Opacity for hero-image img /
+@media (min-width: 1221px) {
+.hero-image img {
+  opacity: 1;
+transition: opacity 0.3s ease-in-out;
+}
 }
 
-.social-icons img {
-  width: 30px; //* Adjust size */
-  height: 30px;
+@media (max-width: 1221px) {
+.hero-image img {
+opacity: 0;
+transition: opacity 0.5s ease-in-out;
+}
 }

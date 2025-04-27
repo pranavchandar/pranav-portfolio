@@ -1,0 +1,172 @@
+header {
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    z-index: 5;
+    }
+    
+    .menu-icon {
+    display: none; /* Hide by default on larger screens */
+    cursor: pointer;
+    padding: 10px;
+    }
+    
+    .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: 0.4s;
+    }
+    
+    nav {
+    z-index: 6;
+    }
+    
+    nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    position: relative;
+    z-index: 7;
+    }
+    
+    nav ul li {
+    margin-right: 40px;
+    }
+    
+    nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    position: relative;
+    z-index: 9;
+    }
+    
+    nav ul li a.active {
+    color: red;
+    }
+    
+    .portfolio-dropdown {
+    position: relative;
+    z-index: 10;
+    }
+    
+    .portfolio-dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: none;
+    z-index: 11;
+    }
+    
+    .portfolio-dropdown:hover .dropdown-menu {
+    display: block;
+    }
+    
+    .portfolio-dropdown .dropdown-menu li a {
+    padding: 8px 20px;
+    display: block;
+    position: relative;
+    z-index: 12;
+    }
+    
+    .logo-container {
+    z-index: 6;
+    }
+    
+    .logo {
+    width: 50px;
+    height: auto;
+    cursor: pointer;
+    position: relative;
+    z-index: 7;
+    }
+    
+    //* Responsive Styles /
+    @media (max-width: 558px) {
+    header {
+    position: fixed; // Ensure it stays at the top /
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    flex-direction: row-reverse; // Put logo on the right /
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8); // Add a background for better visibility */
+    }
+    
+    .menu-icon {
+    display: block; //* Show the hamburger menu /
+    z-index: 100; // Ensure it's on top */
+    }
+    
+    nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%); //* Hide off-screen initially */
+    transition: transform 0.5s ease-in-out;
+    z-index: 99;
+    }
+    
+    nav.open {
+    transform: translateX(0); /* Slide in when open */
+    }
+    
+    nav ul {
+    flex-direction: column;
+    align-items: center;
+    }
+    
+    nav ul li {
+    margin: 20px 0;
+    }
+    
+    nav ul li a {
+    font-size: 28px;
+    }
+    
+    .portfolio-dropdown {
+    position: static;
+    }
+    
+    .portfolio-dropdown a {
+    display: block;
+    padding-bottom: 10px;
+    border-bottom: 0px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .portfolio-dropdown .dropdown-menu {
+    position: static;
+    display: none !important; /* Initially hidden */
+    background-color: rgba(0, 0, 0, 0.9);
+    padding-left: 20px;
+    margin-top: 10px;
+    }
+    
+    .portfolio-dropdown:hover .dropdown-menu,
+    .portfolio-dropdown.open .dropdown-menu {
+    display: block !important;
+    }
+    
+    .logo-container {
+    margin-right: auto; //* Push to the left /
+    z-index: 100; // Ensure it's above the menu */
+    }
+    }

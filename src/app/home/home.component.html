@@ -1,70 +1,30 @@
 <div class="home-container" #homeContainer>
   <div class="background-image"></div>
   <div class="black-overlay"></div>
-  <header>
-    <nav>
-      <ul>
-        <li>
-          <a
-            routerLink="/"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >HOME</a>
-        </li>
-        <li><a routerLink="/about" routerLinkActive="active">ABOUT</a></li>
-        <li><a routerLink="/resume" routerLinkActive="active">RESUME</a></li>
-        <li class="portfolio-dropdown">
-          <a>PORTFOLIO <span class="dropdown-arrow"></span></a>
-          <ul class="dropdown-menu">
-            <li><a routerLink="/programming">PROGRAMMING</a></li>
-            <li><a routerLink="/digital-art">DIGITAL ART</a></li>
-            <li><a routerLink="/cgi">CGI</a></li>
-          </ul>
-        </li>
-      </ul>
-      <div class="logo-container">
-        <img
-          src="assets/images/your-logo.png"
-          alt="Your Logo"
-          class="logo"
-          (click)="navigateToEasterEgg()"
-        />
-      </div>
-    </nav>
-  </header>
+  <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
   <section class="hero">
     <div class="hero-content">
-      <h1 class="name">
-        <span>PRANAV</span>
-        <span class="last-name">CHANDAR</span>
-      </h1>
-      <p class="title">SOFTWARE ENGINEER</p>
-      <p class="introduction">
-        WELCOME TO MY WEBSITE. THE MORE YOU LOOK AROUND THE MORE YOU'LL LEARN
-        ABOUT ME AND MY SKILLS I'VE HONED THROUGH MY ADULT LIFE. ANOTHER PURPOSE
-        OF THIS WEBSITE IS FOR ME TO BE ABLE TO RELIABLY ARCHIVE MY WORK AND
-        PROJECTS ON A PLATFORM I HAVE COMPLETE AUTONOMY ON, LETS SEE HOW THINGS
-        FAIR...
-      </p>
-      <div class="call-to-actions">
-        <button class="resume-button" routerLink="/resume">RESUME</button>
-        <button class="about-button" routerLink="/about">ABOUT ME</button>
-      </div>
+    <h1 class="name">
+    <span class="first-name">PRANAV</span>
+    <span class="last-name">CHANDAR</span>
+    <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="vector-l-shape">
+    </h1>
+    <p class="title">SOFTWARE ENGINEER</p>
+    <p class="introduction">
+    WELCOME TO MY WEBSITE. THE MORE YOU LOOK AROUND THE MORE YOU'LL LEARN ABOUT ME AND MY
+    SKILLS I'VE HONED THROUGH MY ADULT LIFE. ANOTHER PURPOSE OF THIS WEBSITE IS FOR ME TO BE ABLE
+    TO RELIABLY ARCHIVE MY WORK AND PROJECTS ON A PLATFORM I HAVE COMPLETE AUTONOMY ON. I HOPE YOU ENJOY YOUR STAY AND FIND SOMETHING INTERESTING. IF YOU DO,
+    PLEASE FEEL FREE TO REACH OUT TO ME. I LOVE MEETING NEW PEOPLE AND HEARING ABOUT THEIR WORK.
+    </p>
+    <div class="call-to-actions">
+    <button class="resume-button" routerLink="/resume">RESUME</button>
+    <button class="about-button" routerLink="/about">ABOUT ME</button>
+    </div>
     </div>
     <div class="hero-image">
-      <img src="assets/images/3mid.png" alt="Retro Computer" />
+    <img src="assets/images/3mid.png" alt="Retro Computer">
     </div>
-  </section>
-  <footer>
-    <div class="social-icons">
-      <a href="#"><img src="assets/icons/Mail.svg" alt="Mail" /></a>
-      <a href="#"><img src="assets/icons/Phone.svg" alt="Phone" /></a>
-      <a href="#"><img src="assets/icons/Github.svg" alt="Github" /></a>
-      <a href="#"><img src="assets/icons/Instagram.svg" alt="Instagram" /></a>
-      <a href="#"><img src="assets/icons/Linkedin.svg" alt="LinkedIn" /></a>
-      <a href="#"><img src="assets/icons/Facebook.svg" alt="Facebook" /></a>
-      <a href="#"><img src="assets/icons/Globe.svg" alt="Globe" /></a>
-      <!-- Add other social media icons -->
-    </div>
-  </footer>
+    
+    </section>
+  <app-footer></app-footer>
 </div>
