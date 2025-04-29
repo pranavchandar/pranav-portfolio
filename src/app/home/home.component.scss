@@ -7,23 +7,23 @@
   background-color: black;
   opacity: 0.86;
   z-index: 1; /* Black overlay above background (z-index: 0 by default if not set) */
-  transition: opacity 0.100s ease-in-out;
-  }
-  
-  .home-container.fade-out .black-overlay {
+  transition: opacity 2s ease-in-out;
+}
+
+.home-container.fade-out .black-overlay {
   opacity: 0;
-  }
-  
-  .home-container {
+}
+
+.home-container {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-family: 'Koulen';
-  }
-  
-  .background-image {
+  font-family: 'Koulen', sans-serif; /* Apply Koulen to the container for inheritance */
+}
+
+.background-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -34,106 +34,133 @@
   background-position: center;
   z-index: 0; /* Background image at the lowest level */
   opacity: 1;
-  }
-  
-  nav,
-  .hero-content,
-  footer {
-  z-index: 3; /* Content elements above the image and overlay /
-  position: relative; / Ensure they stack correctly if needed */
-  }
-  
-  .hero {
+}
+
+nav,
+.hero-content,
+app-footer {
+  position: relative; // Ensure positioning context
+  z-index: 1100;      // Higher than .overlay (which is likely 1000)
+}
+
+.hero {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 40px;
   color: white;
-  z-index: 3; /* Ensure hero content is above */
+  z-index: 5;
   position: relative;
-  }
-  
-  .hero .name {
+}
+
+.hero .name {
   margin-bottom: -6px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding-left: 16%;
-  position: relative; /* Positioning context for the vector /
-  z-index: 3; / Name above the image */
-  }
-  
-  .hero .name .first-name {
+  position: relative; /* Positioning context for the vector */
+  z-index: 5;
+}
+
+.hero .name .first-name {
   font-size: 96px;
   line-height: 1;
-  }
-  
-  .hero .name .last-name {
+}
+
+.hero .name .last-name {
   font-size: 128px;
   color: red;
   line-height: 1;
   display: inline-block; /* Important for width calculation */
-  }
-  
-  .hero .title {
+}
+
+.hero .title {
   font-size: 28px;
   margin-top: 0px;
   margin-bottom: 20px;
   padding-left: 16%;
-  z-index: 3; /* Title above the image */
-  }
-  
-  .hero .introduction {
+  z-index: 5;
+}
+
+.hero .introduction {
   line-height: 1.6;
   margin-bottom: 30px;
   padding-left: 16%;
   font-size: 16px;
   max-width: 516px;
   max-height: auto;
-  z-index: 3; /* Introduction above the image */
-  }
-  
-  .hero .call-to-actions {
-  z-index: 3; /* Buttons above the image */
-  }
-  
-  .hero .call-to-actions button {
-  padding: 12px 25px;
-  font-size: 1em;
+  z-index: 5;
+}
+
+.hero .call-to-actions {
+  padding-left: 16%;
+  z-index: 5;
+  display: flex; /* Make the container a flex container */
+  justify-content: flex-start; /* Align items to the start (left) */
+  align-items: center; /* Vertically center the buttons */
+}
+
+.hero .call-to-actions button {
+  width: 131px; // Set the width
+  height: 40px; // Set the height
+  padding: 0; // Remove default padding to control dimensions precisely
+  font-size: 24px; // Set the text size
   cursor: pointer;
   border: none;
-  border-radius: 5px;
-  margin-right: 15px;
-  }
-  
-  .hero .call-to-actions .resume-button {
-  background-color: red;
-  color: white;
-  }
-  
-  .hero .call-to-actions .about-button {
-  background-color: transparent;
-  color: red;
-  border: 1px solid red;
-  }
-  
-  .hero-image {
+  border-radius: 999px; // Set a very large value for maximum rounding
+  margin-right: 15px; // Add spacing between the buttons
+  font-family: 'Koulen', sans-serif; // Apply the font
+  color: #920000; // Default red text color
+  background-color: transparent; // Default no fill
+  box-shadow: inset 0 0 0 4px #920000; // Default red stroke using inset box-shadow
+  transition: all 0.3s ease-in-out; // Smooth transitions for hover effects
+  display: flex; // Use flexbox to center text inside the button
+  justify-content: center; // Center text horizontally
+  align-items: center; // Center text vertically
+}
+
+.hero .call-to-actions .resume-button {
+  /* No additional styles needed here as the default button styles apply */
+}
+
+.hero .call-to-actions .about-button {
+  margin-left: auto; // Push the about button to the right
+}
+
+// Hover effects for all buttons
+.hero .call-to-actions button:hover {
+  color: #920000; // Red text on hover
+  background-color: #ffffff; // White fill on hover
+  box-shadow: inset 0 0 0 4px #ffffff; // White stroke on hover
+}
+
+// Active (clicked) state with red glow
+.hero .call-to-actions button:active {
+  box-shadow:
+    inset 0 0 0 4px #ffffff, /* White stroke */
+    0 0 10px 5px rgba(146, 0, 0, 0.7); /* Outer red glow */
+  outline: none; /* Remove default focus outline */
+}
+
+.hero-image {
   position: absolute;
   top: 55%;
   right: -50px;
   transform: translateY(-50%);
   z-index: 2; /* Image above the black overlay */
-  }
-  
-  .hero-image img {
+}
+
+.hero-image img {
   width: 1041.78px;
   height: 586px;
   object-fit: contain;
-  opacity: 1; /* Default opacity /
-  transition: opacity 0.3s ease-in-out; / Smooth opacity transition */
-  }
-  
-  .vector-l-shape {
+  margin-bottom: -20px;
+  opacity: 1; /* Default opacity */
+  transition: opacity 0.3s ease-in-out; /* Smooth opacity transition */
+}
+
+.vector-l-shape {
   position: absolute;
   margin-left: -35px;
   top: 100%;
@@ -142,29 +169,29 @@
   height: auto;
   z-index: 3; /* Vector also above the image */
   transform: none;
-  }
-  
-  .social-icons a {
+}
+
+.social-icons a {
   display: inline-block;
   margin: 8vh 10px;
-  }
-  
-  .social-icons img {
+}
+
+.social-icons img {
   width: 40px;
   height: 40px;
-  }
-  
-//* Responsive Opacity for hero-image img /
-@media (min-width: 1221px) {
-.hero-image img {
-  opacity: 1;
-transition: opacity 0.3s ease-in-out;
 }
+
+/* Responsive Opacity for hero-image img */
+@media (min-width: 1221px) {
+  .hero-image img {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
 }
 
 @media (max-width: 1221px) {
-.hero-image img {
-opacity: 0;
-transition: opacity 0.5s ease-in-out;
-}
+  .hero-image img {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
 }

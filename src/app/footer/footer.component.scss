@@ -1,28 +1,50 @@
 footer {
-    padding-top: 100px;
-    padding-bottom: 0;
-    margin: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-    color: white;
-    text-align: center;
-    z-index: 3;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 20vh;
+    margin: 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    }
-    
-    .social-icons a {
-    display: inline-block;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    background: transparent;
+    z-index: 2; // below hero/call-to-actions, but above home overlay
+    pointer-events: auto; // enable interaction
+  }
+  
+  // Gradient overlay (background layer)
+  .gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+  
+  
+  .social-icons {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    gap: 10px;
+  }
+  
+  
+  .social-icons a {
     margin: 0 10px;
-    }
-    
-    .social-icons img {
+    display: inline-block;
+  }
+  
+  .social-icons img {
     width: 30px;
     height: 30px;
-    }
+  }
+  
+  
