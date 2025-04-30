@@ -1,172 +1,491 @@
-header {
-    padding: 20px 6%;
+// --- Home Container and Background ---
+.black-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.86;
+    z-index: 1; /* Black overlay above background (z-index: 0 by default if not set) */
+    transition: opacity 2s ease-in-out;
+  }
+  
+  .home-container.fade-out .black-overlay {
+    opacity: 0;
+  }
+  
+  .home-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    // Font-family for Koulen is applied specifically to elements now
+  }
+  
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/intro-placeholder2.png");
+    background-size: cover;
+    background-position: center;
+    z-index: 0; /* Background image at the lowest level */
+    opacity: 1;
+  }
+  
+  // --- Header (Navigation and Logo) ---
+  header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-sizing: border-box; // Include padding in the width calculation
+  
+  
+      .logo-container {
+          padding-right: 100px; // Keep the original padding for larger screens
+          padding-top: 20px; // Keep the original padding for larger screens
+          z-index: 101;
+          flex-shrink: 0; // Prevent the logo container from shrinking
+  
+          .logo {
+            width: 50px;
+            height: auto;
+            cursor: pointer;
+            filter: drop-shadow(0 0 0px #00bfff) drop-shadow(0 0 6px #71dbff);
+            animation: glowPulse 1s infinite alternate ease-in-out;
+            transition: filter 0.3s ease;
+  
+            &:hover {
+              filter: drop-shadow(0 0 6px rgb(255, 120, 120)) drop-shadow(0 0 12px rgb(255, 0, 0));
+              animation: ease-in-out 1s ;
+            }
+          }
+        }
+  
+        @keyframes glowPulse {
+          from {
+            filter: drop-shadow(0 0 0px #00bfff) drop-shadow(0 0 0px #00bfff);
+          }
+          to {
+            filter: drop-shadow(0 0 6px #00bfff) drop-shadow(0 0 12px #00bfff);
+          }
+        }
+  
+  
+      nav {
+        ul {
+          list-style: none;
+          display: flex;
+          margin: 0;
+          padding: 0;
+  
+          li {
+            position: relative;
+  
+            a {
+              display: block;
+              padding: 10px 20px;
+              color: white;
+              text-decoration: none;
+              transition: color 0.3s ease;
+              font-family: 'Koulen', sans-serif; // Apply Koulen to nav links
+  
+              &.active {
+                color: red;
+              }
+  
+              &:hover {
+                color: red;
+              }
+            }
+          }
+  
+          .portfolio-dropdown {
+            cursor: pointer;
+            font-family: 'Koulen', sans-serif; // Apply Koulen to dropdown trigger
+  
+            .dropdown-arrow {
+              margin-left: 8px;
+              transition: transform 0.3s ease;
+              display: inline-block;
+  
+              &.open {
+                transform: rotate(180deg);
+              }
+            }
+  
+            .dropdown-menu {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              display: none;
+              background: rgba(0, 0, 0, 0.925);
+              padding: 10px 0;
+              border-bottom: 2px solid red;
+              transition: all 0.3s ease;
+  
+              li {
+                a {
+                  display: block;
+                  padding: 10px 20px;
+                  color: white;
+                  background: transparent;
+                  transition: background 0.3s ease, color 0.3s ease;
+                  font-family: 'Koulen', sans-serif; // Apply Koulen to dropdown items
+  
+                  &:hover {
+                    background: white;
+                    color: red;
+                  }
+  
+                  &.active {
+                    color: red;
+                  }
+  
+                  &:active {
+                    color: white;
+                  }
+                }
+              }
+            }
+  
+            &.open {
+              .dropdown-menu {
+                display: block;
+              }
+            }
+          }
+        }
+  
+        // Media query for smaller screens (< 558px)
+        @media (max-width: 558px) {
+          position: absolute; // Position the nav absolutely below the header
+          top: 60px; // Adjust based on header height
+          left: 0;
+          width: 100%;
+          background-color: #111;
+          flex-direction: column;
+          display: none; // Default state is hidden on small screens
+          z-index: 999; // Ensure the nav is above most content when open
+  
+          ul {
+            flex-direction: column;
+            align-items: flex-start;
+  
+            li {
+              width: 100%;
+  
+              a {
+                width: 100%;
+                padding: 10px 20px;
+              }
+            }
+  
+            .portfolio-dropdown {
+              width: 100%;
+  
+              .dropdown-menu {
+                position: static; // Dropdown menu is static within the absolute nav
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: block; // Always display the dropdown menu when the nav is open
+                padding-left: 20px;
+                border-bottom: 2px solid red;
+  
+                li a {
+                  padding: 10px 20px;
+                }
+              }
+  
+              .dropdown-arrow {
+                &.open {
+                  transform: rotate(180deg);
+                }
+              }
+            }
+          }
+  
+          // Rule to display the nav when the .open class is added by JS
+          &.open {
+            display: flex; // Override display: none; to show the nav as a flex column
+          }
+        }
+      }
+  
+      .menu-icon {
+        display: none; // Hidden by default on large screens
+        flex-direction: column;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 102; // Ensure the menu icon is above the logo if needed
+  
+        .bar {
+          height: 3px;
+          width: 25px;
+          background-color: white; // Default color is white
+          margin: 4px 0;
+          transition: all 0.3s ease;
+        }
+  
+        // Style for the bars when the menu-icon is open (clicked)
+        &.open {
+          .bar {
+            background-color: red; // Change the background color to red
+          }
+  
+          .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+          }
+  
+          .bar:nth-child(2) {
+            opacity: 0;
+          }
+  
+          .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-9px, -6px);
+          }
+        }
+  
+        // Media query to show the menu icon below 558px
+        @media (max-width: 558px) {
+          display: flex; // Show the menu icon below 558px
+        }
+      }
+  
+      // Media query for header layout below 558px
+      @media (max-width: 558px) {
+        flex-direction: row; // Keep header as flex-direction: row for smaller screens
+        align-items: center; // Keep items aligned in the center vertically
+        justify-content: space-between; // Distribute space between logo and menu icon
+        padding: 10px 20px; // Adjust padding for smaller screens
+  
+        .logo-container {
+          padding: 0; // Remove padding at smaller sizes for precise positioning
+          margin: 0; // Remove margin at smaller sizes
+          position: absolute; // Position the logo absolutely within the header
+          top: 50%; // Vertically center the logo container
+          right: 20px; // Position from the right (adjust based on desired spacing)
+          transform: translateY(-50%); // Fine-tune vertical centering
+        }
+  
+        // The display of the nav is handled in the nav's own media query now
+  
+      }
+  
+  }
+  
+  // --- Hero Section ---
+  nav, // Added nav here too as it's part of the top section
+  .hero-content,
+  app-footer {
+    position: relative; // Ensure positioning context
+    z-index: 1100;      // Higher than .overlay (which is likely 1000)
+  }
+  
+  .hero {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 40px;
     color: white;
     z-index: 5;
-    }
-    
-    .menu-icon {
-    display: none; /* Hide by default on larger screens */
-    cursor: pointer;
-    padding: 10px;
-    }
-    
-    .bar {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    margin: 5px 0;
-    transition: 0.4s;
-    }
-    
-    nav {
-    z-index: 6;
-    }
-    
-    nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
     position: relative;
-    z-index: 7;
-    }
-    
-    nav ul li {
-    margin-right: 40px;
-    }
-    
-    nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-    position: relative;
-    z-index: 9;
-    }
-    
-    nav ul li a.active {
-    color: red;
-    }
-    
-    .portfolio-dropdown {
-    position: relative;
-    z-index: 10;
-    }
-    
-    .portfolio-dropdown .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    list-style: none;
-    padding: 10px 0;
-    margin: 0;
-    display: none;
-    z-index: 11;
-    }
-    
-    .portfolio-dropdown:hover .dropdown-menu {
-    display: block;
-    }
-    
-    .portfolio-dropdown .dropdown-menu li a {
-    padding: 8px 20px;
-    display: block;
-    position: relative;
-    z-index: 12;
-    }
-    
-    .logo-container {
-    z-index: 6;
-    }
-    
-    .logo {
-    width: 50px;
-    height: auto;
-    cursor: pointer;
-    position: relative;
-    z-index: 7;
-    }
-    
-    //* Responsive Styles /
-    @media (max-width: 558px) {
-    header {
-    position: fixed; // Ensure it stays at the top /
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 15px 20px;
-    flex-direction: row-reverse; // Put logo on the right /
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.8); // Add a background for better visibility */
-    }
-    
-    .menu-icon {
-    display: block; //* Show the hamburger menu /
-    z-index: 100; // Ensure it's on top */
-    }
-    
-    nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.95);
+  }
+  
+  .hero .name {
+    margin-bottom: -6px;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding-left: 16%;
+    position: relative; /* Positioning context for the vector */
+    z-index: 5;
+    font-family: 'Koulen', sans-serif; // Apply Koulen specifically to the name
+  }
+  
+  .hero .name .first-name {
+    font-size: 96px;
+    line-height: 1;
+  }
+  
+  .hero .name .last-name {
+    font-size: 128px;
+    color: red;
+    line-height: 1;
+    display: inline-block; /* Important for width calculation */
+  }
+  
+  .hero .title {
+    font-size: 28px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    padding-left: 16%;
+    z-index: 5;
+    font-family: 'Koulen', sans-serif; // Apply Koulen specifically to the title
+  }
+  
+  .hero .introduction {
+    line-height: 1.6;
+    margin-bottom: 30px;
+    padding-left: 16%;
+    font-size: 16px;
+    max-width: 516px;
+    max-height: auto;
+    z-index: 5;
+    font-family: 'Arial', sans-serif; // Example: Choose a different font for body text
+    font-weight: normal; // Explicitly set normal weight if needed
+  }
+  
+  .hero .call-to-actions {
+    padding-left: 16%;
+    z-index: 5;
+    display: flex; /* Make the container a flex container */
+    justify-content: flex-start; /* Align items to the start (left) */
+    align-items: center; /* Vertically center the buttons */
+  }
+  
+  .hero .call-to-actions button {
+    width: 131px; // Set the width
+    height: 40px; // Set the height
+    padding: 0; // Remove default padding to control dimensions precisely
+    font-size: 24px; // Set the text size
+    cursor: pointer;
+    border: none;
+    border-radius: 999px; // Set a very large value for maximum rounding
+    margin-right: 15px; // Add spacing between the buttons
+    font-family: 'Koulen', sans-serif; // Apply Koulen to the buttons (if you want them bold)
+    color: #920000; // Default red text color
+    background-color: transparent; // Default no fill
+    box-shadow: inset 0 0 0 4px #920000; // Default red stroke using inset box-shadow
+    transition: all 0.3s ease-in-out; // Smooth transitions for hover effects
+    display: flex; // Use flexbox to center text inside the button
+    justify-content: center; // Center text horizontally
+    align-items: center; // Center text vertically
+  }
+  
+  .hero .call-to-actions .resume-button {
+    /* No additional styles needed here as the default button styles apply */
+  }
+  
+  .hero .call-to-actions .about-button {
+    margin-left: auto; // Push the about button to the right
+  }
+  
+  // Hover effects for all buttons
+  .hero .call-to-actions button:hover {
+    color: #920000; // Red text on hover
+    background-color: #ffffff; // White fill on hover
+    box-shadow: inset 0 0 0 4px #ffffff; // White stroke on hover
+  }
+  
+  // Active (clicked) state with red glow
+  .hero .call-to-actions button:active {
+    box-shadow:
+      inset 0 0 0 4px #ffffff, /* White stroke */
+      0 0 10px 5px rgba(146, 0, 0, 0.7); /* Outer red glow */
+    outline: none; /* Remove default focus outline */
+  }
+  
+  
+  .hero-image {
+    position: absolute;
+    top: 55%;
+    right: -50px;
+    transform: translateY(-50%);
+    z-index: 2; /* Image above the black overlay */
+  }
+  
+  .hero-image img {
+    width: 1041.78px;
+    height: 586px;
+    object-fit: contain;
+    margin-bottom: 100px;
+    opacity: 1; /* Default opacity */
+    transition: opacity 0.3s ease-in-out; /* Smooth opacity transition */
+  }
+  
+  .vector-l-shape {
+    position: absolute;
+    margin-left: -35px;
+    top: 100%;
+    margin-top: -255px;
+    width: 300px;
+    height: auto;
+    z-index: 3; /* Vector also above the image */
+    transform: none;
+  }
+  
+  /* Responsive Opacity for hero-image img */
+  @media (min-width: 1221px) {
+    .hero-image img {
+      opacity: 1;
+      transition: opacity 0.3s ease-in-out;
+    }
+  }
+  
+  @media (max-width: 1221px) {
+    .hero-image img {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+  
+  // --- Footer ---
+  app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateX(-100%); //* Hide off-screen initially */
-    transition: transform 0.5s ease-in-out;
-    z-index: 99;
-    }
-    
-    nav.open {
-    transform: translateX(0); /* Slide in when open */
-    }
-    
-    nav ul {
-    flex-direction: column;
-    align-items: center;
-    }
-    
-    nav ul li {
-    margin: 20px 0;
-    }
-    
-    nav ul li a {
-    font-size: 28px;
-    }
-    
-    .portfolio-dropdown {
-    position: static;
-    }
-    
-    .portfolio-dropdown a {
-    display: block;
-    padding-bottom: 10px;
-    border-bottom: 0px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .portfolio-dropdown .dropdown-menu {
-    position: static;
-    display: none !important; /* Initially hidden */
-    background-color: rgba(0, 0, 0, 0.9);
-    padding-left: 20px;
-    margin-top: 10px;
-    }
-    
-    .portfolio-dropdown:hover .dropdown-menu,
-    .portfolio-dropdown.open .dropdown-menu {
-    display: block !important;
-    }
-    
-    .logo-container {
-    margin-right: auto; //* Push to the left /
-    z-index: 100; // Ensure it's above the menu */
-    }
-    }
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    background: transparent;
+    z-index: 2; // below hero/call-to-actions, but above home overlay
+    pointer-events: auto; // enable interaction
+  }
+  
+  // Gradient overlay (background layer for footer)
+  .gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    z-index: 2; // Ensure the gradient is below social icons
+    pointer-events: none;
+  }
+  
+  
+  .social-icons {
+    position: relative; // Needed for z-index to work
+    z-index: 4; // Above the gradient overlay
+    display: flex;
+    gap: 10px; // A more modern way to add spacing between flex items
+  }
+  
+  
+  .social-icons a {
+    margin: 0 10px; // Keep margin for now if needed
+    display: inline-block;
+  }
+  
+  .social-icons img {
+    width: 30px;
+    height: 30px;
+  }
