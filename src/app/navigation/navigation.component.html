@@ -1,31 +1,60 @@
 <header>
+  <!-- Menu Icon (Visible on small screens) -->
   <div class="menu-icon" [ngClass]="{ open: isMenuOpen }" (click)="toggleMenu()">
     <div class="bar"></div>
     <div class="bar"></div>
     <div class="bar"></div>
   </div>
 
+  <!-- Logo Container -->
+   <div class="logo-container">
+    <img src="assets/images/logo.png" alt="Your Logo" class="logo" (click)="navigateToEasterEgg()" />
+   </div>
+
+  <!-- Navigation Menu -->
   <nav [ngClass]="{ open: isMenuOpen }">
     <ul>
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">HOME</a></li>
-      <li><a routerLink="/about" routerLinkActive="active">ABOUT</a></li>
-      <li><a routerLink="/resume" routerLinkActive="active">RESUME</a></li>
-      <li class="portfolio-dropdown" [class.open]="isSubmenuOpen" (click)="toggleSubmenu($event)">
-        <a>
-          PORTFOLIO
-          <span class="dropdown-arrow" [class.open]="isSubmenuOpen">&#9660;</span>
-        </a>
-        <ul class="dropdown-menu" [class.open]="isSubmenuOpen">
-          <li><a routerLink="/programming" routerLinkActive="active">PROGRAMMING</a></li>
-          <li><a routerLink="/digital-art" routerLinkActive="active">DIGITAL ART</a></li>
-          <li><a routerLink="/cgi" routerLinkActive="active">CGI</a></li>
+      <!-- Regular top-level links -->
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuOpen = false; closeAllSubmenus()">HOME</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">ABOUT</a></li>
+      <li><a routerLink="/resume" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">RESUME</a></li>
+
+      <!-- Mobile-friendly Portfolio Menu Item (Visible on small screens via CSS) -->
+      <li class="mobile-portfolio-item">
+        <!-- Clickable trigger for the mobile submenu -->
+        <!-- Uses toggleSubmenu with index 0 and passes the event -->
+        <div class="mobile-menu-trigger" (click)="toggleSubmenu(0, $event)">
+          <a>PORTFOLIO</a>
+          <!-- Plus icon - open state controlled by isSubmenuOpenByIndex(0) -->
+          <span class="plus-icon" [ngClass]="{ open: isSubmenuOpenByIndex(0) }"></span>
+        </div>
+        <!-- Mobile submenu ul - open state controlled by isSubmenuOpenByIndex(0) -->
+        <ul class="mobile-submenu" [ngClass]="{ open: isSubmenuOpenByIndex(0) }">
+          <li><a routerLink="/programming" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">PROGRAMMING</a></li>
+          <li><a routerLink="/digital-art" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">DIGITAL ART</a></li>
+          <li><a routerLink="/cgi" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">CGI</a></li>
         </ul>
       </li>
+
+      <!-- Desktop Portfolio Dropdown Item (Visible on large screens via CSS) -->
+      <li class="desktop-portfolio-dropdown">
+        <!-- Clickable trigger for the desktop dropdown -->
+        <!-- Uses toggleSubmenu with index 0 and passes the event -->
+        <div class="portfolio-dropdown" [class.open]="isSubmenuOpenByIndex(0)" (click)="toggleSubmenu(0, $event)">
+          <a>
+            PORTFOLIO
+            <!-- Desktop dropdown arrow - open state controlled by isSubmenuOpenByIndex(0) -->
+            <span class="dropdown-arrow" [class.open]="isSubmenuOpenByIndex(0)">▼</span>
+          </a>
+          <!-- Desktop dropdown menu ul - open state controlled by isSubmenuOpenByIndex(0) -->
+          <ul class="dropdown-menu" [class.open]="isSubmenuOpenByIndex(0)">
+            <li><a routerLink="/programming" routerLinkActive="active">PROGRAMMING</a></li>
+            <li><a routerLink="/digital-art" routerLinkActive="active">DIGITAL ART</a></li>
+            <li><a routerLink="/cgi" routerLinkActive="active">CGI</a></li>
+          </ul>
+        </div>
+      </li>
+
     </ul>
   </nav>
-
-  <div class="logo-container">
-    <img src="assets/images/logo.png" alt="Your Logo" class="logo" (click)="navigateToEasterEgg()" />
-  </div>
 </header>
-
