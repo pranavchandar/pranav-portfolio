@@ -1,28 +1,41 @@
-<div class="home-container" #homeContainer>
+<div class="home-container" #homeContainer (mousemove)="onMouseMove($event)">
   <div class="background-image"></div>
   <div class="black-overlay"></div>
   <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
-  <section class="hero">
-    <div class="hero-content">
-    <h1 class="name">
-    <span class="first-name">PRANAV</span>
-    <span class="last-name">CHANDAR</span>
-    <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="vector-l-shape">
-    </h1>
-    <p class="title">SOFTWARE ENGINEER</p>
-    <p class="introduction">
-      Welcome to my website! The more you explore, the more you'll learn about me and the skills I've honed throughout my adult life. Another purpose of this site is to reliably archive my work and projects on a platform where I have complete autonomy. I hope you enjoy your visit and find something interesting. If so, please feel free to reach out. I love meeting new people and hearing about their work.
-    </p>
-    <div class="call-to-actions">
-    <button class="resume-button" routerLink="/resume">RESUME</button>
-    <button class="about-button" routerLink="/about">ABOUT ME</button>
-    </div>
-    </div>
-    <div class="hero-image">
-    <img src="assets/images/3mid.png" alt="Retro Computer">
-    </div>
-    
+
+  <!-- Added interactive-area-container to capture mousemove and hold sections -->
+  <div class="interactive-area-container" #interactiveAreaContainer>
+    <!-- Hero section content remains, positioned over the interactive areas -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="name">
+          <span class="first-name">PRANAV</span>
+          <span class="last-name">CHANDAR</span>
+          <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="vector-l-shape">
+        </h1>
+        <p class="title">SOFTWARE ENGINEER</p>
+        <p class="introduction">
+          Welcome to my website! The more you explore, the more you'll learn about me and the skills I've honed throughout my adult life. Another purpose of this site is to reliably archive my work and projects on a platform where I have complete autonomy. I hope you enjoy your visit and find something interesting. If so, please feel free to reach out. I love meeting new people and hearing about their work.
+        </p>
+        <div class="call-to-actions">
+          <button class="resume-button" routerLink="/resume">RESUME</button>
+          <button class="about-button" routerLink="/about">ABOUT ME</button>
+        </div>
+      </div>
+      <!-- Hero image displays the dynamic image -->
+      <div class="hero-image">
+        <img [src]="currentHeroImageUrl" alt="Retro Computer">
+      </div>
     </section>
-  
+
+    <!-- Added 5 divs to represent the interactive sections -->
+    <!-- These divs will handle the mouse event triggering -->
+    <div class="interactive-section" data-index="0"></div>
+    <div class="interactive-section" data-index="1"></div>
+    <div class="interactive-section" data-index="2"></div>
+    <div class="interactive-section" data-index="3"></div>
+    <div class="interactive-section" data-index="4"></div>
+  </div>
+
+  <app-footer></app-footer>
 </div>
-<app-footer></app-footer>
