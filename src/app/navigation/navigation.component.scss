@@ -1,8 +1,7 @@
 // Styles for the header container itself (lives in app-navigation component)
 header {
   display: flex;
-  // Adjust justify-content for desktop layout
-  justify-content: space-between; // Keep this for desktop initially, we'll adjust within the media query
+  justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
@@ -45,171 +44,177 @@ header {
 
 // --- Navigation Menu (Base Styles - for Desktop) ---
 nav {
-ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
+  ul {
+    list-style: none;
+    display: flex; // Main nav items are horizontal (flex row)
+    margin: 0;
+    padding: 0;
 
-  li {
-    position: relative;
+    li {
+      position: relative;
 
-    a {
-      display: block;
-      padding: 10px 20px;
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      font-family: 'Koulen', sans-serif;
+      a {
+        display: block;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-family: 'Koulen', sans-serif;
 
-      &.active {
-        color: red;
-      }
+        &.active {
+          color: red;
+        }
 
-      &:hover {
-        color: red;
-      }
-    }
-  }
-
-  // --- Desktop Dropdown Styles ---
-  .portfolio-dropdown {
-    cursor: pointer;
-    font-family: 'Koulen', sans-serif;
-
-    .dropdown-arrow {
-      margin-left: 8px;
-      transition: transform 0.3s ease;
-      display: inline-block;
-
-      &.open {
-        transform: rotate(180deg);
-      }
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      display: none; // Desktop default is hidden
-      background: rgba(0, 0, 0, 0.925);
-      padding: 10px 0;
-      border-bottom: 2px solid red;
-      transition: all 0.3s ease;
-
-      li {
-        a {
-          display: block;
-          padding: 10px 20px;
-          color: white;
-          background: transparent;
-          transition: background 0.3s ease, color 0.3s ease;
-          font-family: 'Koulen', sans-serif;
-
-          &:hover {
-            background: white;
-            color: red;
-          }
-
-          &.active {
-            color: red;
-          }
-
-          &:active {
-            color: white;
-          }
+        &:hover {
+          color: red;
         }
       }
     }
 
-    &.open {
-      .dropdown-menu {
-        display: block; // Show when parent has .open
+    // --- Desktop Dropdown Styles ---
+    .portfolio-dropdown {
+      cursor: pointer;
+      font-family: 'Koulen', sans-serif;
+
+      .dropdown-arrow {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+        display: inline-block;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+
+      .dropdown-menu { // This IS the ul element
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: rgba(0, 0, 0, 0.925);
+        padding: 10px 0;
+        border-bottom: 2px solid red;
+        list-style: none; // Ensure list styles are removed
+        margin: 0; // Ensure margin is removed
+
+        // --- Animation properties (Desktop) ---
+        max-height: 0; // Start height at 0 for animation
+        overflow: hidden; // Hide content that overflows
+        opacity: 0; // Start opacity at 0
+        visibility: hidden; // Hide the element from screen readers and interaction when closed
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s; // Smooth transition
+
+        // --- Layout for list items within the desktop dropdown ---
+        display: flex;
+        flex-direction: column;
+
+
+        li { // Style for individual list items in desktop dropdown
+            a {
+              display: block; // Keep link as block for clickable area
+              padding: 10px 20px; // Apply padding to the link
+              color: white;
+              width: 100%;
+              background: transparent;
+              transition: background 0.3s ease, color 0.3s ease;
+              font-family: 'Koulen', sans-serif;
+
+              &:hover {
+                color: red;
+              }
+
+              &.active {
+                color: red;
+              }
+
+              &:active {
+                color: white;
+              }
+            }
+          }
+      }
+
+      &.open {
+        .dropdown-menu {
+          // --- Animation properties when open (Desktop) ---
+          max-height: 300px; // Set a max-height large enough to contain all items
+          opacity: 1; // Fade in
+          visibility: visible; // Make visible for interaction
+        }
       }
     }
-  }
 
-  // Hide mobile portfolio item in desktop
-  .mobile-portfolio-item {
-      display: none;
+    // Hide mobile portfolio item in desktop
+    .mobile-portfolio-item {
+        display: none;
+    }
   }
-}
 }
 
 // --- Menu Icon (Hidden by default on Desktop) ---
 .menu-icon {
-display: none; // Hidden by default on large screens
-flex-direction: column;
-cursor: pointer;
-padding: 10px;
-z-index: 102;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 102;
 
-.bar {
-  height: 3px;
-  width: 25px;
-  background-color: white; // Default color is white
-  margin: 4px 0;
-  transition: all 0.3s ease;
-}
-
-// Style for the bars when the menu-icon is open (clicked)
-&.open {
   .bar {
-    background-color: red; // Change the background color to red
+    height: 3px;
+    width: 25px;
+    background-color: white; // Default color is white
+    margin: 4px 0;
+    transition: all 0.3s ease;
   }
 
-  .bar:nth-child(1) {
-    transform: rotate(-45deg) translate(-9px, 6px);
-  }
+  &.open {
+    .bar {
+      background-color: red;
+    }
 
-  .bar:nth-child(2) {
-    opacity: 0;
-  }
+    .bar:nth-child(1) {
+      transform: rotate(-45deg) translate(-9px, 6px);
+    }
 
-  .bar:nth-child(3) {
-    transform: rotate(45deg) translate(-9px, -6px);
+    .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .bar:nth-child(3) {
+      transform: rotate(45deg) translate(-9px, -6px);
+    }
   }
-}
 }
 
 
 // --- Media Query for Desktop (min-width >= 559px) ---
-// Using min-width for desktop overrides
 @media (min-width: 559px) {
   header {
-    // Reverse the order of nav and logo-container in the flex container
-    // This moves nav to the left and logo to the right
     flex-direction: row-reverse;
-    justify-content: space-between; // Still space between the reversed items
+    justify-content: space-between;
   }
 
   .logo-container {
-      // Specific desktop styles for logo container positioning
-      // Remove absolute positioning used in mobile
       position: static;
-      padding-right: 0px; // Keep padding for spacing from right edge/content
+      padding-right: 0px;
       padding-top: 0px;
-      margin: 0; // Ensure no conflicting margin from mobile styles
+      margin: 0;
   }
 
   nav {
-      // Nav takes its natural position on the left due to flex-direction: row-reverse
-      // Ensure it's displayed as flex for horizontal layout
-      font-size: 24px; // Adjust font size for desktop
+      font-size: 24px;
       display: flex;
-      position: static; // Remove absolute positioning used in mobile
-      top: auto; // Remove top positioning
-      width: auto; // Allow nav to take width based on content
-      background-color: transparent; // Remove mobile background
-      flex-direction: row; // Ensure nav items are in a row
+      position: static;
+      top: auto;
+      width: auto;
+      background-color: transparent;
+      flex-direction: row;
 
       ul {
-         flex-direction: row; // Nav list items in a row
+         flex-direction: row; // Main nav list items are horizontal
          align-items: center;
       }
   }
 
-  // Show desktop portfolio item and hide mobile one
   nav ul {
       .desktop-portfolio-dropdown {
           display: block;
@@ -219,161 +224,179 @@ z-index: 102;
       }
   }
 
-  // Ensure desktop dropdown menu is positioned correctly
   nav ul .portfolio-dropdown .dropdown-menu {
       position: absolute;
       top: 100%;
-      left: 0; // Position the dropdown below the parent link
+      left: 0;
   }
 }
 
 
 // --- Media Query for Mobile (< 558px) ---
-@media (max-width: 567px) {
+@media (max-width: 563px) {
 
-header {
-  flex-direction: row; // Keep header as flex-direction: row for smaller screens
-  align-items: center;
-  justify-content: space-between; // Space between logo (right) and menu icon (left)
-  padding: 10px 20px; // Adjust padding for smaller screens
-}
-
-.logo-container {
-  padding: 0;
-  margin: 0;
-  position: absolute; // Position the logo absolutely within the header
-  top: 50%;
-  right: 20px; // Position from the right (adjust based on desired spacing)
-  transform: translateY(-50%);
-}
-
-// Show the menu icon below 558px
-.menu-icon {
-  display: flex;
-}
-
-// --- Mobile Navigation Menu ---
-nav {
-  position: absolute; // Position the nav absolutely below the header
-  top: 60px; // Adjust based on header height
-  left: 0;
-  width: 100%;
-  background-color: #111;
-  flex-direction: column;
-  display: none; // Default state is hidden on small screens
-  z-index: 999; // Ensure the nav is above most content when open
-
-  ul {
-    flex-direction: column;
-    align-items: flex-start;
-
-    li {
-      width: 100%;
-      position: static; // Reset position for list items in mobile menu
-
-      a {
-        width: 100%;
-        padding: 10px 20px;
-      }
-    }
-
-    // Hide the desktop portfolio item in mobile
-    .desktop-portfolio-dropdown {
-        display: none;
-    }
-
-    // Show the mobile portfolio item
-    .mobile-portfolio-item {
-        display: block;
-        width: 100%;
-
-        .mobile-menu-trigger {
-            display: flex;
-            // Align items in a row for the trigger
-            flex-direction: row;
-            // Change justify-content to keep text and icon together
-            justify-content: flex-start; // Align items to the start
-            align-items: center; // Vertically align items
-            padding: 10px 20px; // Match padding of other links
-            cursor: pointer;
-
-            a {
-                padding: 0; // Remove padding from the nested 'a'
-                margin-right: 5px; // Add a small margin between text and icon
-            }
-
-            .plus-icon {
-                width: 20px;
-                height: 20px;
-                position: relative;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                transition: transform 0.3s ease;
-
-                &::before,
-                &::after {
-                    content: '';
-                    position: absolute;
-                    background-color: white;
-                    transition: transform 0.3s ease;
-                }
-
-                &::before {
-                    width: 100%;
-                    height: 2px;
-                }
-
-                &::after {
-                    width: 2px;
-                    height: 100%;
-                }
-
-                &.open {
-                    transform: rotate(45deg);
-                     &::before,
-                     &::after {
-                         background-color: red;
-                     }
-                }
-            }
-        }
-
-        .mobile-submenu {
-            list-style: none;
-            display: none;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 0 10px 30px;
-            border-bottom: 2px solid red;
-
-            li {
-                width: auto;
-                a {
-                    padding: 8px 10px;
-                    font-size: 0.9em;
-                }
-            }
-
-            &.open {
-                display: block;
-            }
-        }
-    }
-
-     // Ensure the desktop dropdown menu is hidden within the mobile nav
-     .portfolio-dropdown {
-         .dropdown-menu {
-             display: none !important;
-         }
-         .dropdown-arrow {
-             display: none !important;
-         }
-     }
+  header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
   }
 
-  // Rule to display the main nav when the .open class is added by JS (for mobile menu toggle)
-  &.open {
+  .logo-container {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+
+  .menu-icon {
     display: flex;
   }
-}
+
+  // --- Mobile Navigation Menu ---
+  nav {
+    position: absolute;
+    top: 60px; // Position below the header
+    left: 0;
+    width: 100%;
+    background-color: #111;
+    flex-direction: column; // Main mobile nav items are vertical
+    z-index: 999;
+
+    // --- Animation properties (Mobile Main Menu) ---
+    max-height: 0; // Start height at 0 for animation
+    overflow: hidden; // Hide content that overflows
+    opacity: 0; // Start opacity at 0
+    visibility: hidden; // Hide the element from screen readers and interaction when closed
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s; // Smooth transition
+
+
+    ul {
+      flex-direction: column; // Main nav ul is a flex column
+      align-items: flex-start;
+      padding: 0; // Ensure no padding from base ul styles
+
+
+      li {
+        width: 100%;
+        position: static;
+
+        a {
+          padding: 10px 20px;
+        }
+      }
+
+      .desktop-portfolio-dropdown {
+          display: none;
+      }
+
+      .mobile-portfolio-item {
+          display: block;
+          width: 100%;
+
+          .mobile-menu-trigger {
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              padding: 10px 20px;
+              cursor: pointer;
+
+              a {
+                  padding: 0;
+                  margin-right: 5px;
+              }
+
+              .plus-icon {
+                  width: 20px;
+                  height: 20px;
+                  position: relative;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  transition: transform 0.3s ease;
+
+                  &::before,
+                  &::after {
+                      content: '';
+                      position: absolute;
+                      background-color: white;
+                      transition: transform 0.3s ease;
+                  }
+
+                  &::before {
+                      width: 100%;
+                      height: 2px;
+                  }
+
+                  &::after {
+                      width: 2px;
+                      height: 100%;
+                  }
+
+                  &.open {
+                      transform: rotate(45deg);
+                       &::before,
+                       &::after {
+                           background-color: red;
+                       }
+                  }
+              }
+          }
+
+          .mobile-submenu {
+              list-style: none;
+              max-height: 0;
+              overflow: hidden;
+              opacity: 0;
+              visibility: hidden;
+              transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s;
+
+
+              background: rgba(0, 0, 0, 0.5);
+              padding: 10px 0 10px 30px;
+              border-bottom: 2px solid red;
+
+              li {
+                  width: auto;
+                  display: block;
+
+                  a {
+                      padding: 8px 10px;
+                      font-size: 0.9em;
+                  }
+              }
+
+              &.open {
+                  max-height: 500px;
+                  opacity: 1;
+                  visibility: visible;
+              }
+          }
+      }
+
+       // Ensure the desktop dropdown menu is hidden within the mobile nav
+       .portfolio-dropdown {
+           .dropdown-menu {
+               display: none !important;
+           }
+           .dropdown-arrow {
+               display: none !important;
+           }
+       }
+    }
+
+    // Rule to display the main nav when the .open class is added by JS (for mobile menu toggle)
+    &.open {
+      // --- Animation properties when open (Mobile Main Menu) ---
+      max-height: 600px; // Set a max-height large enough for the entire mobile menu
+      opacity: 1;
+      visibility: visible;
+
+      // Remove the display: flex; rule here
+      // display: flex;
+    }
+  }
 }
