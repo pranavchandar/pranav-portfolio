@@ -1,30 +1,47 @@
-// --- Home Container and Background ---
-.black-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  opacity: 0.86;
-  z-index: 1; /* Black overlay above background */
-  transition: opacity 2s ease-in-out;
+// --- CSS Variables for Consistency ---
+// Define variables for colors, spacing, etc.
+// This makes it easy to change values consistently across the component.
+:host {
+  --color-primary: #ffffff; // White text
+  --color-accent: #920000; // Red accent
+  --font-family-koulen: 'Koulen', sans-serif;
+
+  // Spacing Variables (adjust as needed)
+  --space-xs: 5px;
+  --space-sm: 10px;
+  --space-md: 20px;
+  --space-lg: 30px;
+  --space-lglilmore: 35%;
+  --space-xl: 50px;
+
+  // Typography Variables (adjust as needed)
+  --font-size-name-first-lg: 96px;
+  --font-size-name-last-lg: 128px;
+  --font-size-title-lg: 28px;
+  --font-size-intro-lg: 16px;
+  --font-size-button: 24px;
+
+  --padding-hero-content-left: 6%; // Original 16% - Consider making this more flexible with media queries
+  --max-width-intro: 516px;
 }
 
-.home-container.fade-out .black-overlay {
-  opacity: 0;
-}
-
-.home-container {
+// --- Base Home Container ---
+.home {
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-family: 'Koulen', sans-serif; /* Apply Koulen to the container for inheritance */
+  font-family: var(--font-family-koulen);
 }
 
-.background-image {
+// Fade out effect on the container itself
+.home.fade-out .home__overlay {
+  opacity: 0;
+}
+
+// --- Background Elements ---
+.home__background {
   position: absolute;
   top: 0;
   left: 0;
@@ -33,38 +50,50 @@
   background-image: url("../../assets/images/intro-placeholder2.png");
   background-size: cover;
   background-position: center;
-  z-index: 0; /* Background image at the lowest level */
+  z-index: 0; /* Lowest layer */
   opacity: 1;
 }
 
-// --- app-navigation positioning (z-index handled in navigation.component.scss) ---
-// This positions the navigation component within the home page flow
+.home__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 86%; /* Semi-transparent black overlay */
+  /* Consider using  for better readability */
+  z-index: 1; /* Above background image */
+  transition: opacity 2s ease-in-out;
+}
+
+// --- Navigation Positioning ---
+// Positioned relative in the flow. Z-index should be handled by the navigation component itself,
+// typically fixed or sticky and high z-index.
 app-navigation {
-  display: block; // Important for layout flow
-  position: relative; // Ensure it creates a stacking context above elements with lower z-index
-  z-index: 1000; // Keep this high to match its fixed counterpart in navigation SCSS
+  display: block;
+  position: relative; /* Creates stacking context */
+  z-index: 10; /* Ensure it's above main page content layers but below potential modals/footers */
 }
 
 
 // --- Interactive Area Container ---
-// This container holds the hero content and the interactive sections for mouse tracking.
-// It takes up available vertical space and sits below the navigation.
-.interactive-area-container {
-    position: relative; // Needed for absolute positioning of children (hero, sections)
-    flex-grow: 1; // Allow this container to take up available vertical space
-    display: flex; // Use flexbox for layout
-    flex-direction: column; // Stack interactive sections vertically
-    justify-content: center; // Vertically center the content if needed
-    padding: 0 10px; // Keep padding for side spacing
-    z-index: 4; /* Place interactive sections below hero content (5) but above image (3)/overlay (1)/vector (4) */
-    pointer-events: auto; /* Ensure this container can capture mouse events for image change */
+// This container holds the Hero content (positioned absolutely) and the
+// Interactive Sections (flex items). It takes up available vertical space.
+.home__interactive-area {
+    position: relative; /* Needed for absolute positioning of children (.home__hero) */
+    flex-grow: 1; /* Takes up available vertical space */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack interactive sections vertically */
+    // justify-content: center; // Use if you want to center vertically within the remaining space
+    padding: 0 var(--space-sm); // Use variable for horizontal padding
+    z-index: 2; /* Below the Hero content (z=3), above background/overlay (z=0,1) */
+    pointer-events: auto; /* Ensure this container can capture mouse events */
 }
 
-
 // --- Hero Section (Content and Image) ---
-// The hero section is positioned absolutely OVER the interactive area container.
-// Its content has higher z-index to be on top.
-.hero {
+// Positioned absolutely over the interactive area container.
+.home__hero {
   position: absolute;
   top: 0;
   left: 0;
@@ -73,89 +102,106 @@ app-navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 10px; // Padding for internal content spacing
-  color: white;
-  z-index: 5; /* Hero content block is above interactive container (4) and image (3) */
-  pointer-events: none; /* Allows mouse events to pass through to the interactive sections below for mousemove */
+  padding: 0 var(--space-sm); // Use variable for horizontal padding, adjust vertically if needed
+  color: var(--color-primary);
+  z-index: 3; /* Above interactive area container (z=2) */
+  pointer-events: none; /* Allows mouse events to pass through to the interactive sections below */
 }
 
-// Content and Image elements within the hero section need pointer-events auto to be interactive
-.hero-content {
+// --- Hero Content Block ---
+// Contains the text, title, intro, and buttons. Re-enables pointer events.
+.home__hero-content {
     pointer-events: auto; /* Re-enable pointer events for the content block */
-    z-index: 5; /* Ensure hero content block is above the image (z-index 3) within the .hero stacking context */
+    position: relative; // Create new stacking context within .home__hero
+    z-index: 3; // Ensure this is above the image (z=1) and vector (z=2) within .home__hero
+    padding-left: var(--padding-hero-content-left); // Original 16% left padding
+    // Consider adding max-width here to prevent content from stretching too wide
+    // max-width: 800px; /* Example max-width */
+    // margin: 0 auto; /* Example centering if max-width is used */
 }
 
-.hero-image {
-    position: absolute; // Keep original positioning relative to the hero flex container
-    top: 50%;
-    right: -50px;
+// --- Hero Image Block ---
+// Positioned absolutely within the .home__hero flex container.
+.home__hero-image {
+    position: absolute;
+    top: 45%; // Original 45%
+    right: -50px; // Original -50px
     transform: translateY(-50%);
     pointer-events: auto; /* Re-enable pointer events for the image block if needed */
-    z-index: 3; /* Retro Computer Image is below hero content (5) and interactive areas (4) */
+    z-index: 1; /* Below hero content (z=3) and vector (z=2) within .home__hero */
 }
 
+.home__hero-image img {
+  width: 1041.78px; // Original width
+  height: 586px; // Original height
+  object-fit: contain;
+  margin-bottom: -150px; /* Keep original margin */
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
 
-.hero .name {
-  margin-bottom: -6px;
+// --- Name Block ---
+.home__name {
+  margin-bottom: calc(var(--space-md) - 26px); // Adjusted negative margin slightly based on MD space
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 16%;
-  position: relative;
-  z-index: 1; /* Default z-index within .hero-content stacking context */
+  position: relative; // Needed for positioning the vector inside
+  z-index: 1; /* Default z-index within .home__hero-content stacking context */
 }
 
-.hero .name .first-name {
-  font-size: 96px;
+.home__name-first {
+  font-size: var(--font-size-name-first-lg);
   line-height: 1;
 }
 
-.hero .name .last-name {
-  font-size: 128px;
-  color: red;
+.home__name-last {
+  font-size: var(--font-size-name-last-lg);
+  color: var(--color-accent);
   line-height: 1;
   display: inline-block;
 }
 
-.hero .title {
-  font-size: 28px;
-  margin-top: 0px;
-  margin-bottom: 20px;
-  padding-left: 16%;
-  z-index: 5;
+// --- Title Block ---
+.home__title {
+  font-size: var(--font-size-title-lg);
+  margin-top: 0px; // Keep original
+  margin-bottom: var(--space-md); // Use variable
+  z-index: 1; /* Default z-index within .home__hero-content stacking context */
 }
 
-.hero .introduction {
+// --- Introduction Block ---
+.home__introduction {
   line-height: 1.6;
-  margin-bottom: 30px;
-  padding-left: 16%;
-  font-size: 16px;
-  max-width: 516px;
+  margin-bottom: var(--space-lg); // Use variable
+  font-size: var(--font-size-intro-lg);
+  max-width: var(--max-width-intro);
   max-height: auto;
-  z-index: 1; /* Default z-index within .hero-content stacking context */
+  z-index: 1; /* Default z-index within .home__hero-content stacking context */
 }
 
-.hero .call-to-actions {
-  padding-left: 16%;
-  z-index: 1; /* Default z-index within .hero-content stacking context */
+// --- Call to Actions Block ---
+.home__call-to-actions {
+  z-index: 1; /* Default z-index within .home__hero-content stacking context */
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: var(--space-lglilmore); // Use gap for spacing between buttons
 }
 
-.hero .call-to-actions button {
-  width: 131px;
-  height: 40px;
+// --- Button Base Style ---
+.home__button {
+  width: 131px; // Original width
+  height: 40px; // Original height
   padding: 0;
-  font-size: 24px;
+  font-size: var(--font-size-button);
   cursor: pointer;
   border: none;
   border-radius: 999px;
-  margin-right: 15px;
-  font-family: 'Koulen', sans-serif;
-  color: #920000;
+  font-family: var(--font-family-koulen);
+  color: var(--color-accent);
   background-color: transparent;
-  box-shadow: inset 0 0 0 4px #920000;
+  box-shadow: inset 0 0 0 4px var(--color-accent);
   transition: all 0.3s ease-in-out;
   display: flex;
   justify-content: center;
@@ -163,156 +209,126 @@ app-navigation {
   pointer-events: auto; /* Ensure buttons are clickable */
 }
 
-.hero .call-to-actions .resume-button {
-  /* No additional styles needed here */
+// --- Button Modifiers (optional, could also be handled by generic button styles) ---
+.home__button--resume {
+  //margin-right: 40%
+  // Specific styles for resume button if needed
 }
 
-.hero .call-to-actions .about-button {
-  margin-left: auto;
+.home__button--about {
+  // margin-left: auto; // Original style - removed due to gap usage in parent.
+  // If you need the About button to be far right in a row, re-evaluate parent layout or use this.
+  // With `gap`, it's simply spaced from the Resume button.
 }
 
-.hero .call-to-actions button:hover {
-  color: #920000;
-  background-color: #ffffff;
-  box-shadow: inset 0 0 0 4px #ffffff;
+// --- Button Hover/Active States ---
+.home__button:hover {
+  color: var(--color-accent);
+  background-color: var(--color-primary);
+  box-shadow: inset 0 0 0 4px var(--color-primary);
 }
 
-.hero .call-to-actions button:active {
+.home__button:active {
   box-shadow:
-    inset 0 0 0 4px #ffffff,
-    0 0 10px 5px rgba(146, 0, 0, 0.7);
+    inset 0 0 0 4px var(--color-primary),
+    0 0 10px 5px rgba(146, 0, 0, 0.7); // Use accent color for shadow
   outline: none;
 }
 
-.hero-image {
-  position: absolute; // Position hero image absolutely within the hero flex container
-  top: 45%;
-  right: -50px;
-  transform: translateY(-50%);
-  z-index: 2; // Ensure image is above other hero content if needed
-}
-
-.hero-image img {
-  width: 1041.78px;
-  height: 586px;
-  object-fit: contain;
-  margin-bottom: -150px; /* Keep original margin */
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.vector-l-shape {
+// --- Vector L-Shape Image ---
+// Positioned relative to .home__name
+.home__vector {
   position: absolute;
-  margin-left: -35px;
+  margin-left: -35px; // Original value
   top: 100%;
-  margin-top: -255px;
-  width: 300px;
+  margin-top: -255px; // Original value
+  width: 300px; // Original value
   height: auto;
-  z-index: 4; /* Vector is above the image (3) but below hero content (5) */
+  z-index: 2; /* Above the image (z=1), below content (z=3) within .home__hero */
   transform: none;
 }
 
 
 // --- Interactive Sections ---
-// These divs are layered behind the hero content and capture mouse events
-// They inherit z-index from .interactive-area-container (z-index 4)
-.interactive-section {
-    flex-grow: 1; // Each section takes up equal vertical space
+// These divs are layered behind the hero content (due to parent z-index)
+// and divide the .home__interactive-area vertically to capture mouse events.
+.home__interactive-section {
+    flex-grow: 1; /* Each section takes up equal vertical space */
     width: 100%;
     pointer-events: auto; /* Ensure these sections capture mouse events */
     // Add backgrounds or borders here for visualization during development if needed
+    // border-bottom: 1px dashed grey; // Example for debugging
 }
 
 
 // --- Footer ---
-// Positioned relative to appear in normal flow after .home-container content
+// Positioned relative to appear in normal flow after .home content.
+// Z-index handled by the footer component itself, but ensure it's high here too.
 app-footer {
-  position: relative;
-  bottom: auto;
-  left: auto;
+  position: relative; // Keep relative for normal flow
   width: 100%;
   margin-top: auto; /* Push footer to the bottom if content is shorter than viewport */
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-  overflow: hidden;
-  background: transparent;
-  z-index: 9999; /* FOOTER IS ON TOP OF EVERYTHING */
-  pointer-events: auto;
+  display: block; // Ensure it takes up space
+  z-index: 999; /* Ensure footer layer is high */
+  pointer-events: auto; // Ensure interactions are possible
 }
 
-// Gradient overlay (background layer for footer)
-.gradient-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-  z-index: 2; /* Gradient below social icons (4) */
-  pointer-events: none;
-}
+// --- RESPONSIVE STYLES ---
 
-.social-icons {
-  position: relative;
-  z-index: 4; /* Social icons above gradient overlay (2) */
-  display: flex;
-  gap: 10px;
-}
-
-.social-icons a {
-  display: inline-block;
-  margin: 0 10px; /* Keep original margin */
-}
-
-.social-icons img {
-  width: 30px;
-  height: 30px;
-}
-
-
-/* Responsive Opacity for hero-image img - Kept as original */
+// Desktop view (hero image visible)
 @media (min-width: 1221px) {
-  .hero-image img {
+  .home__hero-image img {
     opacity: 1;
   }
 }
 
+// Below desktop (hero image hidden)
 @media (max-width: 1221px) {
-  .hero-image img {
+  .home__hero-image img {
     opacity: 0;
-      // Transition is handled on the img element now
-    }
+    // Consider also using display: none or visibility: hidden if hiding the image
+    // entirely improves performance on smaller screens. Opacity transition is kept as original.
   }
-    @media (max-width: 567px) {
-    .hero .name {
-      padding-left: 5vh;
-    }
-    .hero  .name .first-name {
-      font-size: 48px; // Adjusted for smaller screens
-    }
-    .hero .name .last-name {
-      font-size: 64px; // Adjusted for smaller screens
-    }
-    .vector-l-shape {
-      margin-left: -25px;
-      top: 100%;
-      margin-top: -165px;
-      width: 200px; // Adjusted for smaller screens
-    }
-    .hero .title {
-      padding-left: 5vh; // Remove left padding for smaller screens
-      font-size: 24px; // Adjusted for smaller screens
-    }
-    .hero .introduction {
-      padding-left: 5vh; // Remove left padding for smaller screens
-      padding-right: 5vh;
-    }
-    .hero .call-to-actions {
-      padding-left: 5vh; // Remove left padding for smaller screens
-      padding-right: 5vh;
-    }
+}
+
+// Smaller mobile screens
+@media (max-width: 567px) {
+  :host {
+    --font-size-name-first-lg: 48px; // Adjusted for smaller screens
+    --font-size-name-last-lg: 64px; // Adjusted for smaller screens
+    --font-size-title-lg: 24px; // Adjusted for smaller screens
+    --padding-hero-content-left: 5vh; // Use vh for relative padding
   }
+
+  .home__hero-content {
+    padding-right: 5vh; // Add right padding on smaller screens
+  }
+
+  .home__name {
+     margin-bottom: var(--space-md); // Re-evaluate name margin for smaller size
+  }
+
+  .home__vector {
+    margin-left: -25px; // Adjusted value
+    margin-top: -165px; // Adjusted value
+    width: 200px; // Adjusted size
+  }
+
+  .home__introduction {
+      padding-right: 5vh; // Add right padding on smaller screens
+      // Max width might need adjustment or removal on very small screens
+  }
+
+  .home__call-to-actions {
+      // Gap works well here, no need for margin-right or margin-left: auto
+      // If you need them stacked, change display/flex-direction here
+      // flex-direction: column; // Example: Stack buttons
+      // align-items: flex-start; // Example: Align stacked buttons left
+  }
+
+   .home__button {
+      font-size: 20px; // Slightly smaller button text if needed
+   }
+
+}

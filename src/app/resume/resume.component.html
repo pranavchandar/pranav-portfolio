@@ -1,25 +1,43 @@
-<div class="home-container" #homeContainer>
-    <div class="background-image"></div>
-    <div class="black-overlay"></div>
+<!--
+  Main container for the resume page.
+  Uses a component-specific class (.resume) and #resumeContainer for TS reference.
+-->
+<div class="resume" #resumeContainer>
+
+    <!-- Background elements - Duplicated from home, potential for shared component -->
+    <div class="resume__background"></div>
+    <div class="resume__overlay"></div>
+  
+    <!-- Navigation component - Z-index handled internally -->
     <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
-    
-      <section class="about-content-section">
-        <div class="about-text-container">
-          <h1>About Me</h1>
-          <p>
-            This is the content for the About Me page. You can add your biography, professional journey, skills, philosophies, etc., here.
-          </p>
-          <p>
-            Make this section engaging and reflective of who you are. Tell your story!
-          </p>
-          <!-- Add more paragraphs or content elements as needed -->
-        </div>
-        <!-- Optional: Add an image or other visual elements for the about section -->
-        <!-- <div class="about-image-container">
-          <img src="path/to/your/about/image.jpg" alt="About Image">
-        </div> -->
-      </section>
-    
-      <app-footer></app-footer> <!-- Include the footer -->
-    
-    </div>
+  
+    <!--
+      resume Content Section:
+      - Main area for the page's content.
+      - Positioned relative/static to flow below the navigation.
+      - Should be above background/overlay layers.
+    -->
+    <section class="resume__content-section">
+      <!-- Container specifically for text content -->
+      <div class="resume__text-container">
+        <!-- Use BEM for the heading or simple descendant selector if it's the only h1 -->
+        <h1 class="resume__heading">resume Me</h1>
+        <!-- Use BEM for paragraphs or simple descendant selector if they are standard text -->
+        <p class="resume__paragraph">
+          This is the content for the resume Me page. You can add your biography, professional journey, skills, philosophies, etc., here.
+        </p>
+        <p class="resume__paragraph">
+          Make this section engaging and reflective of who you are. Tell your story!
+        </p>
+        <!-- Add more paragraphs or content elements as needed -->
+      </div>
+      <!-- Optional: Add an image container -->
+      <!-- <div class="resume__image-container">
+        <img src="path/to/your/resume/image.jpg" alt="resume Image">
+      </div> -->
+    </section>
+  
+    <!-- Footer component - Z-index handled internally -->
+    <app-footer></app-footer>
+  
+  </div>

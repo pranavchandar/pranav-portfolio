@@ -1,41 +1,174 @@
-.black-overlay {
+// --- CSS Variables for Consistency ---
+:host {
+    --color-primary: #ffffff; // White text
+    --color-accent: #920000; // Red accent
+    --color-background-overlay: rgba(0, 0, 0, 0.86);
+    --font-family-koulen: 'Koulen', sans-serif;
+  
+    // Spacing Variables (adjust as needed)
+    --space-sm: 10px;
+    --space-md: 20px;
+    --space-lg: 30px;
+  
+    // Content specific padding/margins
+    --padding-content-section-v: var(--space-lg); // Vertical padding for the main content section
+    --padding-content-section-h: var(--space-sm); // Horizontal padding
+    --max-width-text-container: 800px; // Example max width for text block
+  }
+  
+  // --- Base resume Container ---
+  // Styles are very similar to .home-container - potential for shared styles/component
+  .resume {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: var(--font-family-koulen);
+  }
+  
+  // Fade out effect on the container itself - matches handleLogoClick logic
+  .resume.fade-out .resume__overlay {
+    opacity: 0;
+  }
+  
+  // --- Background Elements ---
+  // Styles are very similar to home__background/home__overlay - potential for shared styles/component
+  .resume__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/intro-placeholder2.png"); // Using the same background
+    background-size: cover;
+    background-position: center;
+    z-index: 0; /* Lowest layer */
+    opacity: 1;
+  }
+  
+  .resume__overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: black;
-    opacity: 0.86;
-    z-index: 1; /* Black overlay above background */
+    opacity: 86%;
+    z-index: 1; /* Above background image */
     transition: opacity 2s ease-in-out;
   }
   
-  .home-container.fade-out .black-overlay {
-    opacity: 0;
+  // --- Navigation Positioning ---
+  app-navigation {
+    display: block;
+    position: relative; /* Creates stacking context */
+    z-index: 10; /* High, above main content layers */
   }
   
-  .home-container {
+  // --- resume Content Section ---
+  // This section holds the main visible content (text, potentially image).
+  // It flows normally after the navigation.
+  .resume__content-section {
+    position: relative; // Needed to create a stacking context above background/overlay
+    flex-grow: 1; // Allows this section to take up available vertical space
+    padding: var(--padding-content-section-v) var(--padding-content-section-h);
+    color: var(--color-primary);
+    z-index: 2; /* Above background/overlay (z=0,1) */
+    display: flex; // Use flexbox to potentially align text and image containers
+    justify-content: center; // Center the content horizontally
+    align-items: flex-start; // Align items to the top by default
+  }
+  
+  // --- Text Container within resume Section ---
+  .resume__text-container {
+      max-width: var(--max-width-text-container); // Limit width for readability
+      width: 100%; // Allow it to shrink below max-width
+      box-sizing: border-box; // Include padding/border in width calculation if added
+  }
+  
+  // --- Styling for Content Elements within the Text Container ---
+  // Using descendant selectors for generic text elements within the text container
+  // This is acceptable for rich text blocks where direct BEM naming on every p/h tag might be overkill
+  .resume__text-container h1 {
+      font-size: 48px; // Example size, adjust as needed
+      margin-bottom: var(--space-md); // Example margin
+      color: var(--color-accent); // Example color
+  }
+  
+  .resume__text-container p {
+      font-size: 18px; // Example size
+      line-height: 1.6;
+      margin-bottom: var(--space-md); // Add spacing between paragraphs
+      // color: var(--color-primary); // Inherits from parent, but can set explicitly
+  }
+  
+  // Remove bottom margin from the last paragraph
+  .resume__text-container p:last-child {
+      margin-bottom: 0;
+  }
+  
+  
+  // --- Optional Image Container ---
+  /*
+  .resume__image-container {
+      // Add styles for your image container here
+      // flex-shrink: 0; // Prevent shrinking if text wraps
+      // margin-left: var(--space-lg); // Example spacing from text
+  }
+  */
+  
+  
+  // --- Footer ---
+  app-footer {
     position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    font-family: 'Koulen', sans-serif; /* Apply Koulen to the container for inheritance */
-  }
-  
-  .background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    background-image: url("../../assets/images/intro-placeholder2.png");
-    background-size: cover;
-    background-position: center;
-    z-index: 0; /* Background image at the lowest level */
-    opacity: 1;
+    margin-top: auto; /* Push footer to the bottom */
+    box-sizing: border-box;
+    display: block;
+    z-index: 999; /* High, on top of everything */
   }
   
-  // --- app-navigation positioning (z-index handled in navigation.component.scss) ---
-  // This positions the navigation component within the home page flow
+  // --- RESPONSIVE STYLES ---
   
+  @media (max-width: 768px) {
+    :host {
+       --font-size-heading-lg: 36px; // Adjusted heading size
+       --padding-content-section-v: var(--space-md);
+       --padding-content-section-h: var(--space-md);
+    }
+  
+    .resume__content-section {
+        flex-direction: column; // Stack text and image on smaller screens
+        align-items: center; // Center stacked items
+    }
+  
+    .resume__text-container {
+        max-width: 100%; // Allow text to take full width minus padding
+        // margin-bottom: var(--space-md); // Add space below text container if stacking
+    }
+  
+    /*
+    .resume__image-container {
+        margin-left: 0; // Remove left margin when stacked
+        margin-top: var(--space-md); // Add top margin when stacked
+    }
+    */
+  }
+  
+  @media (max-width: 480px) {
+      :host {
+          --font-size-heading-lg: 30px; // Further adjust heading size
+          --font-size-paragraph: 16px; // Adjust paragraph size
+          --padding-content-section-v: var(--space-sm);
+          --padding-content-section-h: var(--space-sm);
+      }
+  
+      .resume__text-container h1 {
+          font-size: var(--font-size-heading-lg);
+      }
+  
+      .resume__text-container p {
+          font-size: var(--font-size-paragraph);
+      }
+  }

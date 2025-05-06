@@ -1,28 +1,34 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { NavigationComponent } from '../navigation/navigation.component'; // Import NavigationComponent
-import { FooterComponent } from '../footer/footer.component'; // Import FooterComponent
+import { CommonModule } from '@angular/common';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { FooterComponent } from '../footer/footer.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about',
-  standalone: true, // Mark as standalone
-  imports: [CommonModule, NavigationComponent, FooterComponent], // Import necessary components and modules
+  standalone: true,
+  imports: [CommonModule, NavigationComponent, FooterComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
 export class AboutComponent {
 
-  @ViewChild('homeContainer') homeContainer!: ElementRef;
+  // Renamed ViewChild selector and variable to match HTML
+  @ViewChild('aboutContainer') aboutContainer!: ElementRef<HTMLElement>;
 
-  constructor(private router: Router, private elementRef: ElementRef) {} // Inject ElementRef
-
+  // Note: This method is duplicated from HomeComponent.
+  // Consider moving the fade-out logic related to logo click
+  // higher up (e.g., to the app-navigation component itself if applicable,
+  // or a shared service/parent container) if this pattern repeats often.
   handleLogoClick() {
-    const homeElement = this.homeContainer.nativeElement as HTMLElement;
-    homeElement.classList.add('fade-out');
+    // Use optional chaining
+    this.aboutContainer?.nativeElement.classList.add('fade-out');
 
     setTimeout(() => {
       this.router.navigate(['/secret']);
     }, 2000);
   }
+
+  // ElementRef injection not strictly necessary for this component's logic
+  constructor(private router: Router) {}
 }

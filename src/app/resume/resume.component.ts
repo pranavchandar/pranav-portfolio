@@ -12,17 +12,22 @@ import { Router } from '@angular/router';
   styleUrl: './resume.component.scss'
 })
 export class ResumeComponent {
+  // Renamed ViewChild selector and variable to match HTML
+  @ViewChild('aboutContainer') aboutContainer!: ElementRef<HTMLElement>;
 
-  @ViewChild('homeContainer') homeContainer!: ElementRef;
-
-  constructor(private router: Router, private elementRef: ElementRef) {} // Inject ElementRef
-
+  // Note: This method is duplicated from HomeComponent.
+  // Consider moving the fade-out logic related to logo click
+  // higher up (e.g., to the app-navigation component itself if applicable,
+  // or a shared service/parent container) if this pattern repeats often.
   handleLogoClick() {
-    const homeElement = this.homeContainer.nativeElement as HTMLElement;
-    homeElement.classList.add('fade-out');
+    // Use optional chaining
+    this.aboutContainer?.nativeElement.classList.add('fade-out');
 
     setTimeout(() => {
       this.router.navigate(['/secret']);
     }, 2000);
   }
+
+  // ElementRef injection not strictly necessary for this component's logic
+  constructor(private router: Router) {}
 }
