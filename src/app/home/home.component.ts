@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from '../navigation/navigation.component'; // Adjust path
 import { FooterComponent } from '../footer/footer.component'; // Adjust path
@@ -7,7 +7,7 @@ import { FooterComponent } from '../footer/footer.component'; // Adjust path
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NavigationComponent, FooterComponent],
+  imports: [CommonModule,  RouterLink, RouterLinkActive, NavigationComponent, FooterComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
