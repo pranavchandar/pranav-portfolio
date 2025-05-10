@@ -2,22 +2,25 @@
 :host {
   --color-primary: #ffffff; // White text
   --color-accent: #920000; // Red accent
-  --color-background-overlay: rgba(0, 0, 0, 0.86);
+  --color-background-overlay: rgba(0, 0, 0, 0.86); // Corrected opacity calculation if needed (0.86 vs 86%)
   --font-family-koulen: 'Koulen', sans-serif;
 
   // Spacing Variables (adjust as needed)
+  --space-xs: 5px;
   --space-sm: 10px;
   --space-md: 20px;
   --space-lg: 30px;
+  --space-xl: 50px;
 
   // Content specific padding/margins
-  --padding-content-section-v: var(--space-lg); // Vertical padding for the main content section
-  --padding-content-section-h: var(--space-sm); // Horizontal padding
-  --max-width-text-container: 800px; // Example max width for text block
+  --padding-content-section-v: var(--space-md); // Increased vertical padding for better spacing
+  --padding-content-section-h: var(--space-lg); // Increased horizontal padding
+  --max-width-text-container: 600px; // Example max width for text block, adjust as needed
+  --about-image-width-desktop: 45%; // Percentage of the section width for the image on desktop
+  --about-text-width-desktop: 50%; // Percentage for the text on desktop (should add up to ~100% minus gap/margin)
 }
 
 // --- Base About Container ---
-// Styles are very similar to .home-container - potential for shared styles/component
 .about {
   position: relative;
   min-height: 100vh;
@@ -27,20 +30,19 @@
   font-family: var(--font-family-koulen);
 }
 
-// Fade out effect on the container itself - matches handleLogoClick logic
+// Fade out effect on the container itself
 .about.fade-out .about__overlay {
   opacity: 0;
 }
 
 // --- Background Elements ---
-// Styles are very similar to home__background/home__overlay - potential for shared styles/component
 .about__background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/images/intro-placeholder2.png"); // Using the same background
+  background-image: url("../../assets/images/intro-placeholder2.png");
   background-size: cover;
   background-position: center;
   z-index: 0; /* Lowest layer */
@@ -54,7 +56,7 @@
   width: 100%;
   height: 100%;
   background-color: black;
-  opacity: 86%;
+  opacity: 86%; // Use variable
   z-index: 1; /* Above background image */
   transition: opacity 2s ease-in-out;
 }
@@ -66,33 +68,73 @@ app-navigation {
   z-index: 10; /* High, above main content layers */
 }
 
-// --- About Content Section ---
-// This section holds the main visible content (text, potentially image).
-// It flows normally after the navigation.
+// --- About Content Section (Flex Container) ---
 .about__content-section {
-  position: relative; // Needed to create a stacking context above background/overlay
-  flex-grow: 1; // Allows this section to take up available vertical space
-  padding: var(--padding-content-section-v) var(--padding-content-section-h);
+  position: relative;
+  flex-grow: 1;
+  display: flex; // <-- Ensure this is flex
+  flex-direction: row; // <-- Stack items in a row on desktop
+  justify-content: center; // <-- Center the flex items horizontally
+  align-items: stretch; // <-- Stretch items to fill the container height! CRITICAL for image height
+  padding: 0;
   color: var(--color-primary);
-  z-index: 2; /* Above background/overlay (z=0,1) */
-  display: flex; // Use flexbox to potentially align text and image containers
-  justify-content: center; // Center the content horizontally
-  align-items: flex-start; // Align items to the top by default
+  z-index: 2; /* Above background/overlay */
+  gap: var(--space-lg); // <-- Add gap between text and image
 }
 
-// --- Text Container within About Section ---
+.home__vector {
+   position: absolute;
+   margin-left: -35px; // Original value
+  // top: 100%;
+   margin-top: -235px; // Original value
+   width: 300px; // Original value
+   height: auto;
+   z-index: 2; /* Above the image (z=1), below content (z=3) within .home__hero */
+   transform: none;
+}
+
+// --- Image Container (Flex Item - Visual Left) ---
+.about__image-container {
+    // This item should appear visually first
+    order: 1; // <-- Set order to 1 to make it appear first in the flex row
+    width: auto; // <-- Give it a desktop width
+    flex-shrink: 0; // <-- Prevent it from shrinking below its width
+   height: 100vh; // <-- Not strictly needed due to align-items: stretch on parent and img height: 100%
+   object-fit: contain;
+    display: flex; // <-- Use flex to potentially center the image vertically if object-fit: contain
+    align-items: center; // <-- Center image vertically if using contain
+    justify-content: center; // <-- Center image horizontally if using contain
+}
+
+// --- Styling for the actual image inside the container ---
+.about__image-container img {
+    display: block; // Remove extra space below image
+    width: 100%; // Make image fill the container width
+    height: 100%; // <-- CRITICAL: Make image fill the container height
+    object-fit: cover; // <-- CRITICAL: Crop image to cover the area while maintaining aspect ratio
+    // Use object-fit: contain; if you want to see the whole image, possibly with gaps
+    object-position: center left; // <-- Optional: Adjust which part of the image is visible, align left
+}
+
+
+// --- Text Container (Flex Item - Visual Right) ---
 .about__text-container {
-    max-width: var(--max-width-text-container); // Limit width for readability
-    width: 100%; // Allow it to shrink below max-width
-    box-sizing: border-box; // Include padding/border in width calculation if added
+    // This item should appear visually second
+    order: 2; // <-- Set order to 2 to make it appear second in the flex row
+    //max-width: var(--max-width-text-container); // <-- Limit text block width for readability
+    width: var(--about-text-width-desktop); // <-- Give it a desktop width suggestion
+    padding: var(--padding-content-section-v) var(--padding-content-section-h);
+    flex-grow: 1; // <-- Allow it to grow if needed
+    flex-shrink: 1; // <-- Allow it to shrink if needed (but min-width on text or flex-basis helps prevent squeezing)
+    box-sizing: border-box;
+    // No need for padding/margin adjustments based on image width like with absolute positioning
 }
 
 // --- Styling for Content Elements within the Text Container ---
-// Using descendant selectors for generic text elements within the text container
-// This is acceptable for rich text blocks where direct BEM naming on every p/h tag might be overkill
 .about__text-container h1 {
-    font-size: 48px; // Example size, adjust as needed
-    margin-bottom: var(--space-md); // Example margin
+    font-size: 128px; // Example size, adjust as needed
+    margin-top: auto;
+    margin-bottom: -70px; // Example margin
     color: var(--color-accent); // Example color
 }
 
@@ -100,23 +142,11 @@ app-navigation {
     font-size: 18px; // Example size
     line-height: 1.6;
     margin-bottom: var(--space-md); // Add spacing between paragraphs
-    // color: var(--color-primary); // Inherits from parent, but can set explicitly
 }
 
-// Remove bottom margin from the last paragraph
 .about__text-container p:last-child {
     margin-bottom: 0;
 }
-
-
-// --- Optional Image Container ---
-/*
-.about__image-container {
-    // Add styles for your image container here
-    // flex-shrink: 0; // Prevent shrinking if text wraps
-    // margin-left: var(--space-lg); // Example spacing from text
-}
-*/
 
 
 // --- Footer ---
@@ -131,44 +161,65 @@ app-footer {
 
 // --- RESPONSIVE STYLES ---
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { // Adjust breakpoint if needed for smaller desktops/laptops
+   :host {
+      --about-image-width-desktop: 40%; // Adjust percentage on smaller desktop screens
+      --about-text-width-desktop: 55%;
+      --padding-content-section-v: var(--space-lg);
+      --padding-content-section-h: var(--space-md);
+   }
+}
+
+
+@media (max-width: 962px) {
   :host {
-     --font-size-heading-lg: 36px; // Adjusted heading size
+     --font-size-heading-lg: 36px;
+     --font-size-paragraph: 16px; // Adjusted paragraph size for mobile
      --padding-content-section-v: var(--space-md);
      --padding-content-section-h: var(--space-md);
+     --about-image-width-mobile: 80%; // Image width when stacked
   }
 
   .about__content-section {
-      flex-direction: column; // Stack text and image on smaller screens
-      align-items: center; // Center stacked items
+      flex-direction: column; // <-- Stack text and image on smaller screens
+      align-items: center; // <-- Center stacked items horizontally
+      justify-content: flex-start; // Reset justify-content if needed
+      gap: var(--space-md); // Reduce gap when stacked vertically
+  }
+
+  // Reset order for stacking (they will appear in HTML order)
+  .about__image-container,
+  .about__text-container {
+      order: initial; // Or order: 0;
+      width: 100%; // Take full width minus padding
+      flex-shrink: 1; // Allow shrinking if needed
+      flex-grow: 0; // Don't aggressively grow
+      margin: 0; // Remove any specific desktop margins
+  }
+
+  .about__image-container {
+      width: var(--about-image-width-mobile); // Use mobile width variable
+      height: auto; // <-- CRITICAL: Let height be determined by content/width when stacked
+      margin-bottom: var(--space-md); // Add space below image when stacked
+  }
+
+  .about__image-container img {
+      height: auto; // <-- Let image height scale with width
+      object-fit: contain; // <-- Use contain or cover as preferred for the stacked view
+      object-position: center; // Reset object position
   }
 
   .about__text-container {
       max-width: 100%; // Allow text to take full width minus padding
-      // margin-bottom: var(--space-md); // Add space below text container if stacking
   }
 
-  /*
-  .about__image-container {
-      margin-left: 0; // Remove left margin when stacked
-      margin-top: var(--space-md); // Add top margin when stacked
+  .about__text-container h1 {
+    margin-top: 70px;
+    margin-bottom: -20px;
+      font-size: var(--font-size-heading-lg);
   }
-  */
-}
 
-@media (max-width: 480px) {
-    :host {
-        --font-size-heading-lg: 30px; // Further adjust heading size
-        --font-size-paragraph: 16px; // Adjust paragraph size
-        --padding-content-section-v: var(--space-sm);
-        --padding-content-section-h: var(--space-sm);
-    }
-
-    .about__text-container h1 {
-        font-size: var(--font-size-heading-lg);
-    }
-
-    .about__text-container p {
-        font-size: var(--font-size-paragraph);
-    }
+  .about__text-container p {
+      font-size: var(--font-size-paragraph);
+  }
 }
