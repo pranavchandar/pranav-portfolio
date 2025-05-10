@@ -21,26 +21,35 @@
   <section class="about__content-section">
     <!-- Text Container - This will be on the RIGHT visually using 'order' -->
     <div class="about__text-container">
-      <h1 class="about__heading">About Me</h1>
-      <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="home__vector">
+
+      <!-- Heading group container (always present) -->
+      <div class="about__heading-group">
+        <h1 class="about__heading">About Me</h1>
+        <!-- Renamed vector class for component scope -->
+        <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="about__vector">
+      </div>
+
+      <!-- Mobile header group (only visible on mobile) -->
+      <div class="about__mobile-header-group">
+          <!-- Container for the small circular image (only visible on mobile) -->
+          <div class="about__small-image-container">
+            <img src="assets/images/abouutSmall.png" alt="Small About Image">
+          </div>
+      </div>
+      <!-- End .about__mobile-header-group -->
+
+      <!-- Paragraphs (always present) -->
       <p class="about__paragraph">Hey, I’m glad you’re here.</p>
-
       <p class="about__paragraph">I’m a developer, problem-solver, and all-around curious human who loves building cool, useful things, mostly with Java, Spring Boot, and Angular. I’ve been in the software world for over five years now, and I still get a kick out of turning ideas into clean, working code that actually makes a difference.</p>
-      
       <p class="about__paragraph">Lately, I’ve also been diving into the world of AI. I’m fascinated by how it's reshaping everything—from how we build software to how we think about creativity. I enjoy experimenting with new AI tools, exploring their potential (and limits), and finding ways to blend them into my projects to work smarter and create faster.</p>
-      
       <p class="about__paragraph">By day, I design and build backend systems. By night (and sometimes on weekends), I dive into digital art and CGI—creating in Blender, sketching, and bringing visuals to life just for the fun of it. I like to think of my brain as split between logic and creativity—and honestly, I wouldn’t have it any other way.</p>
-      
       <p class="about__paragraph">I started this portfolio to showcase what I’ve done, what I’m learning, and what I’m excited about next. If you’re into thoughtful design, solid code, AI experiments, or a bit of creative flair, you’ll probably feel right at home here.</p>
-      
       <p class="about__paragraph">Let’s connect if you’re building something interesting, or just want to talk tech, art, or life.</p>
-      
-
       <!-- Add more paragraphs or content elements as needed -->
     </div>
 
-    <!-- Image Container - This will be on the LEFT visually using 'order' -->
-    <div class="about__image-container">
+    <!-- Container for the large full image -->
+    <div class="about__large-image-container">
       <img src="assets/images/abouut.png" alt="About Image">
     </div>
   </section>

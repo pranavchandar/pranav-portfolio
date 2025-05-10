@@ -2,7 +2,7 @@
 :host {
   --color-primary: #ffffff; // White text
   --color-accent: #920000; // Red accent
-  --color-background-overlay: rgba(0, 0, 0, 0.86); // Corrected opacity calculation if needed (0.86 vs 86%)
+  --color-background-overlay: rgba(0, 0, 0, 0.86);
   --font-family-koulen: 'Koulen', sans-serif;
 
   // Spacing Variables (adjust as needed)
@@ -13,11 +13,38 @@
   --space-xl: 50px;
 
   // Content specific padding/margins
-  --padding-content-section-v: var(--space-md); // Increased vertical padding for better spacing
-  --padding-content-section-h: var(--space-lg); // Increased horizontal padding
-  --max-width-text-container: 600px; // Example max width for text block, adjust as needed
-  --about-image-width-desktop: 45%; // Percentage of the section width for the image on desktop
-  --about-text-width-desktop: 50%; // Percentage for the text on desktop (should add up to ~100% minus gap/margin)
+  --padding-content-section-h: var(--space-lg); // Horizontal padding for the main content section
+
+  // Image sizes
+  --about-large-image-width-desktop: 45%; // Percentage of the section width for the large image on desktop
+  --about-small-image-size-mobile: 100px; // Size for the circular image on mobile
+
+  // Heading font size and margins (Reverted to Home component values)
+  --font-size-heading-desktop: 96px; // Reverted to PRANAV size
+  --heading-group-margin-bottom-desktop: calc(var(--space-md) - 26px); // Desktop margin bottom for heading group
+
+  // Vector positioning (Reverted to Home component values relative to heading group)
+  --vector-margin-left-desktop: -35px;
+  --vector-margin-top-desktop: -250px; // Desktop vector margin-top
+  --vector-width-desktop: 300px;
+
+  // Paragraph font size - Kept previous desktop value
+  --font-size-paragraph-desktop: 18px;
+
+  // Mobile specific vector styles
+  --vector-width-mobile: 80px; // Adjusted for smaller screens
+  --vector-margin-mobile-h: var(--space-sm); // Horizontal margin beside heading
+  --vector-margin-mobile-v: 0; // No vertical margin when beside heading
+
+  // Mobile heading font size and margins
+  --font-size-heading-mobile: 36px;
+  --heading-margin-mobile-right: var(--space-sm); // Margin after heading when beside vector
+
+  // Mobile header group spacing
+  --mobile-header-group-gap: var(--space-md); // Space between heading/vector group and small image
+
+  // Width needed for text container to clear the fixed image on desktop
+  --space-to-clear-image: calc(var(--about-large-image-width-desktop) + var(--space-lg) + var(--padding-content-section-h));
 }
 
 // --- Base About Container ---
@@ -56,7 +83,7 @@
   width: 100%;
   height: 100%;
   background-color: black;
-  opacity: 86%; // Use variable
+  opacity: 86%;
   z-index: 1; /* Above background image */
   transition: opacity 2s ease-in-out;
 }
@@ -70,82 +97,316 @@ app-navigation {
 
 // --- About Content Section (Flex Container) ---
 .about__content-section {
-  position: relative;
+  position: relative; // Keep relative for context for other elements if needed, though image is fixed
   flex-grow: 1;
-  display: flex; // <-- Ensure this is flex
-  flex-direction: row; // <-- Stack items in a row on desktop
-  justify-content: center; // <-- Center the flex items horizontally
-  align-items: stretch; // <-- Stretch items to fill the container height! CRITICAL for image height
-  padding: 0;
+  display: flex;
+  flex-direction: row; // Default is row for desktop
+  padding: 0; // No padding here, padding applied to inner text container for positioning
   color: var(--color-primary);
-  z-index: 2; /* Above background/overlay */
-  gap: var(--space-lg); // <-- Add gap between text and image
+  z-index: 2; /* Above background/overlay, below text/image */
+
+  // --- CRITICAL FOR VERTICAL CENTERING ON DESKTOP ---
+  margin-top: auto;
+  margin-bottom: auto;
+  // -------------------------------------------------
+
+  align-items: flex-start; // Align text content block to the top
+  // justify-content: flex-end; // Let text container handle its own position with padding
 }
 
-.home__vector {
-   position: absolute;
-   margin-left: -35px; // Original value
-  // top: 100%;
-   margin-top: -235px; // Original value
-   width: 300px; // Original value
-   height: auto;
-   z-index: 2; /* Above the image (z=1), below content (z=3) within .home__hero */
-   transform: none;
+// --- Default Styles (> 567px) ---
+// These styles apply when width is > 567px
+
+// Large image container (Fixed positioned to fill viewport height)
+.about__large-image-container {
+  position: fixed; // <--- Changed to FIXED
+  top: 0;          // <--- Position relative to viewport top
+  bottom: 0;       // <--- Position relative to viewport bottom (Stretches to fill height between top and bottom)
+  left: var(--padding-content-section-h); // Align to the content section's left padding
+  width: var(--about-large-image-width-desktop); // Set width using variable (Percentage of viewport width)
+  z-index: 3; // <--- Z-index above content section (z=2), below navigation (z=10)
+  opacity: 1; // Visible by default above 962px (Opacity changes at 962px breakpoint)
+  transition: opacity 1s ease-in-out; // Fade out transition
+
+  display: flex; // Use flex to potentially center the image vertically if object-fit: contain
+  align-items: center; // Center image vertically
+  justify-content: center; // Center image horizontally
+  pointer-events: none; // Allow interactions through the image container if needed
+
+  // Note: When object-fit is contain, the flexbox centering above helps ensure the image
+  // is centered within this fixed container if it doesn't fill all dimensions.
 }
 
-// --- Image Container (Flex Item - Visual Left) ---
-.about__image-container {
-    // This item should appear visually first
-    order: 1; // <-- Set order to 1 to make it appear first in the flex row
-    width: auto; // <-- Give it a desktop width
-    flex-shrink: 0; // <-- Prevent it from shrinking below its width
-   height: 100vh; // <-- Not strictly needed due to align-items: stretch on parent and img height: 100%
-   object-fit: contain;
-    display: flex; // <-- Use flex to potentially center the image vertically if object-fit: contain
-    align-items: center; // <-- Center image vertically if using contain
-    justify-content: center; // <-- Center image horizontally if using contain
+.about__large-image-container img {
+  display: block;
+  width: 100%;
+  height: 100%; // Make image fill the container height (or width if aspect ratio dictates)
+  object-fit: contain; // <--- CHANGED: Ensure the entire image is visible within the container
+  object-position: center; // Position the contained image (e.g., align left if there's horizontal space)
+                                // You might want to change this to 'center center' or just 'center'
+                                // if you prefer the contained image to be simply centered within the space.
 }
 
-// --- Styling for the actual image inside the container ---
-.about__image-container img {
-    display: block; // Remove extra space below image
-    width: 100%; // Make image fill the container width
-    height: 100%; // <-- CRITICAL: Make image fill the container height
-    object-fit: cover; // <-- CRITICAL: Crop image to cover the area while maintaining aspect ratio
-    // Use object-fit: contain; if you want to see the whole image, possibly with gaps
-    object-position: center left; // <-- Optional: Adjust which part of the image is visible, align left
-}
-
-
-// --- Text Container (Flex Item - Visual Right) ---
+// Text container (Flex item - positioned to clear the fixed image)
 .about__text-container {
-    // This item should appear visually second
-    order: 2; // <-- Set order to 2 to make it appear second in the flex row
-    //max-width: var(--max-width-text-container); // <-- Limit text block width for readability
-    width: var(--about-text-width-desktop); // <-- Give it a desktop width suggestion
-    padding: var(--padding-content-section-v) var(--padding-content-section-h);
-    flex-grow: 1; // <-- Allow it to grow if needed
-    flex-shrink: 1; // <-- Allow it to shrink if needed (but min-width on text or flex-basis helps prevent squeezing)
+    order: 2; // Text container on the right in flex order
+    flex-grow: 1; // Allow text container to grow
+    flex-shrink: 1; // Allow shrinking
+    // --- CRITICAL FOR CLEARING FIXED IMAGE ---
+    // Removed margin-left, use padding-left instead to control text content flow
+    padding-left: var(--space-to-clear-image);
+    padding-right: 50px; // Ensure no extra padding on the right
+    margin-bottom: 50px;
+    // -----------------------------------------
+    max-width: 100%; // Allow text block to shrink
+    width: auto; // Let flexbox handle the width
     box-sizing: border-box;
-    // No need for padding/margin adjustments based on image width like with absolute positioning
+    display: flex; // Text container is a flex column on desktop and mobile
+    flex-direction: column; // Stack heading group and paragraphs vertically
+    align-items: flex-start; // Align items to the left
+    position: relative; // Needed for vector positioning inside, and z-index
+    z-index: 4; // <--- Z-index above the fixed image (z=3)
 }
+
+// Heading group container (always present, different flex on desktop/mobile)
+.about__heading-group {
+  margin-top: 90px;
+   display: flex; // Make this a flex container
+   flex-direction: column; // Stack heading and vector vertically on desktop
+   align-items: flex-start; // Align items to the left
+   position: relative; // CRITICAL: Needed for absolute positioning of the vector inside
+   margin-bottom: var(--heading-group-margin-bottom-desktop); // Desktop margin bottom
+   width: auto; // Allow to size based on content + vector position
+   flex-shrink: 0; // Don't shrink on desktop
+}
+
+// Heading (Desktop styles)
+.about__heading {
+    font-size: var(--font-size-heading-desktop); // Use variable for desktop heading size
+    line-height: 1;
+    margin: 0; // Remove margins here, spacing controlled by heading-group
+    color: var(--color-accent);
+    position: relative; // Ensures it creates a stacking context if needed (e.g. for vector z-index)
+    z-index: 1; // Default z-index within heading group
+
+    white-space: nowrap; // Prevent text from wrapping
+    overflow: hidden; // Hide any text that overflows
+    text-overflow: ellipsis; // Add "..." to indicate clipped text
+}
+
+// Vector image (Desktop styling)
+.about__vector {
+  position: absolute; // Keep absolute positioning relative to .about__heading-group
+  margin-left: var(--vector-margin-left-desktop); // Use variable
+  top: 100%; // Position below the heading group
+  margin-top: var(--vector-margin-top-desktop); // Use variable for negative margin
+  width: var(--vector-width-desktop); // Use variable for width
+  height: auto;
+  z-index: 2; /* Above default content (z=1) within heading group, potentially below heading (z=1, relative) */
+  transform: none;
+  pointer-events: none; // Prevent blocking text selection/clicks
+}
+
+// Small image container - always within mobile-header-group, hidden on desktop (> 567px)
+.about__small-image-container {
+    display: none; // Hidden by default (> 567px)
+    opacity: 0; // Not visible
+    transition: opacity 3s ease-in-out; // Fade in transition
+    flex-shrink: 0; // Prevent shrinking when it becomes a flex item
+}
+
+// Container for mobile header group - hidden by default (> 567px)
+.about__mobile-header-group {
+    display: none; // Hidden on desktop and intermediate sizes
+}
+
 
 // --- Styling for Content Elements within the Text Container ---
-.about__text-container h1 {
-    font-size: 128px; // Example size, adjust as needed
-    margin-top: auto;
-    margin-bottom: -70px; // Example margin
-    color: var(--color-accent); // Example color
-}
-
-.about__text-container p {
-    font-size: 18px; // Example size
+// Paragraphs - Reverted font size for desktop
+.about__paragraph {
+    font-size: var(--font-size-paragraph-desktop); // Use variable for desktop size
     line-height: 1.6;
+    margin-top: var(--space-md); // Add space above paragraphs
     margin-bottom: var(--space-md); // Add spacing between paragraphs
 }
 
+// Remove bottom margin from the last paragraph
 .about__text-container p:last-child {
     margin-bottom: 0;
+}
+
+// --- Rotation Animation Keyframes ---
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// --- Styles for <= 962px (Large image fades out) ---
+// This media query ONLY controls the opacity of the large image
+@media (max-width: 962px) {
+    .about__large-image-container {
+        opacity: 0; // Fade out the large image at this breakpoint
+        // The transition property is on the base style, so it animates
+    }
+}
+
+
+// --- Styles for <= 567px (Layout changes, large image display: none, small image appears) ---
+// This media query controls layout, small image visibility/fade-in/animation, and large image display: none
+@media (max-width: 567px) {
+
+  :host {
+     // Adjusted variables for mobile
+     --font-size-heading-mobile: 36px;
+     --font-size-paragraph-mobile: 16px;
+     --padding-content-section-v: var(--space-md); // Re-add vertical padding for stacking
+     --padding-content-section-h: var(--space-md);
+     // Large image width is not relevant here as it's display: none
+     --about-small-image-size-mobile: 100px; // Size for the circular image on mobile
+  }
+
+  .about__content-section {
+      flex-direction: column; /* Stack text container and large image container area */
+      align-items: center; /* Center stacked items horizontally */
+      justify-content: flex-start;
+      gap: var(--space-md); // Reduce gap between stacked items
+      padding: var(--padding-content-section-v) var(--padding-content-section-h); /* Re-add vertical padding */
+      // --- CRITICAL FOR VERTICAL CENTERING RESET ---
+      margin-top: 0;
+      margin-bottom: 0;
+      // --------------------------------------------
+  }
+
+  // Large image container becomes display: none at this breakpoint, occupying no space
+  .about__large-image-container {
+      display: none; // Removes the large image from flow
+      // Opacity is already 0 from @media (max-width: 962px)
+      position: static; // Revert to static (good practice when display: none)
+      order: initial; // Reset order
+      pointer-events: none; // Still ensure no pointer events
+      width: auto; height: auto; top: auto; bottom: auto; left: auto; // Remove absolute constraints
+  }
+
+  // Text container becomes the primary content block in the column
+  .about__text-container {
+      order: initial; // Reset order
+      flex-grow: 0; flex-shrink: 0;
+      // --- CRITICAL FOR CLEARING FIXED IMAGE RESET ---
+      padding-left: 0; // Remove desktop padding-left
+      // ------------------------------------------------
+      margin-left: 0; // Ensure margin-left is 0
+      max-width: 100%; // Allow text to take full width minus padding
+      width: 100%; // Take full width
+      display: flex; // Keep as flex
+      flex-direction: column; // Stack items
+      align-items: flex-start; // Align content to the left
+      padding: 0; // No internal padding needed here, spacing handled by inner elements/section padding
+      margin-bottom: var(--space-md); // Added margin back for space below text block
+  }
+
+  // Container for mobile header group (becomes visible and flex row)
+  .about__mobile-header-group {
+      display: flex; // Make visible at <= 567px
+      flex-direction: row; // Arrange heading group and small image side-by-side
+      align-items: center; // Vertically align items in the row
+      
+      gap: var(--mobile-header-group-gap); // Space between heading group and small image
+      margin-bottom: var(--space-md); // Space below the entire header group
+      width: 100%; // Take full width of text container
+      flex-wrap: wrap; // Allow items to wrap if the screen is very narrow
+  }
+
+
+  // Heading group container (static and becomes flex row)
+  .about__heading-group {
+
+     position: static; // Revert to static
+     margin-bottom: 0; // Remove desktop margin bottom
+     display: flex; // Make this a flex container
+     flex-direction: row; // Arrange heading and vector side-by-side
+     align-items: center; // Align heading and vector vertically
+     flex-shrink: 1; // Allow heading group to shrink if needed
+     flex-grow: 1; // Allow heading group to grow to push image to the right (optional)
+  }
+
+  // Adjust heading margin for stacked layout (now beside vector)
+  .about__heading {
+    
+      margin: 0 var(--heading-margin-mobile-right) 0 0; // Margin right to space from vector
+      font-size: var(--font-size-heading-mobile); // Use mobile heading size
+      width: auto; // Allow heading to size based on content
+      text-align: left;
+font-size: 64px;
+      white-space: normal; // Allow text to wrap on mobile
+      overflow: visible; text-overflow: clip; // Remove ellipsis
+  }
+
+   // Vector image - Positioned relative to the text flow (beside heading)
+   .about__vector {
+      position: static; // Revert to static for normal flow
+      margin: 0; // Remove margins, spacing handled by heading-group flex
+      margin-left: -250px;
+        margin-top: -80px;
+        width: 200px;
+      height: auto;
+      z-index: auto; transform: none; pointer-events: auto; // Reset other properties
+   }
+
+  // Small image container becomes visible and styled
+  .about__small-image-container {
+      display: block; // Make visible at <= 567px
+      opacity: 1; // Fade in at <= 567px (transition property is outside media query)
+      width: var(--about-small-image-size-mobile); // Set size (use variable)
+      height: var(--about-small-image-size-mobile); // Set size (use variable)
+      border-radius: 50%; // Circular crop
+      overflow: hidden; // Hide parts outside the circle
+      flex-shrink: 0; // Don't shrink
+      margin: 0; // Remove margins, spacing handled by mobile-header-group gap
+      align-self: auto; // Reset align-self
+      position: relative; z-index: 1;
+      // Apply rotation animation
+      animation: rotateClockwise 10s linear infinite; // 10s duration, linear, repeats forever
+  }
+
+  .about__small-image-container img {
+      margin-bottom: 0; // Remove margin
+      display: block;
+      width: 100%; // Fill the small container
+      height: 100%; // Fill the small container
+      object-fit: cover; // Cover the circular area
+  }
+
+  // Paragraphs
+  .about__paragraph {
+      font-size: var(--font-size-paragraph-mobile); // Use mobile paragraph size
+      width: 100%; // Allow paragraphs to take width
+      margin-top: var(--space-sm); // Add space above paragraphs
+      margin-bottom: var(--space-sm); // Add spacing between paragraphs
+  }
+
+  .about__text-container p:first-child {
+      margin-top: var(--space-md); // Add more space above the first paragraph after the header group
+  }
+
+  .about__text-container p:last-child {
+      margin-bottom: 0; // Ensure last paragraph has no bottom margin
+  }
+}
+
+// Optional: Further adjustments for smaller mobile screens if needed
+@media (max-width: 480px) {
+    :host {
+        --about-small-image-size-mobile: 80px; // Smaller image size on tiny screens
+        --font-size-heading-mobile: 30px; // Further adjust heading size
+        --vector-width-mobile: 60px; // Smaller vector
+        --heading-margin-mobile-right: var(--space-sm); // Keep space same or adjust
+        --mobile-header-group-gap: var(--space-md); // Keep space same or adjust
+    }
+    // Adjust margins if needed for smaller screens
 }
 
 
@@ -157,69 +418,4 @@ app-footer {
   box-sizing: border-box;
   display: block;
   z-index: 999; /* High, on top of everything */
-}
-
-// --- RESPONSIVE STYLES ---
-
-@media (max-width: 1024px) { // Adjust breakpoint if needed for smaller desktops/laptops
-   :host {
-      --about-image-width-desktop: 40%; // Adjust percentage on smaller desktop screens
-      --about-text-width-desktop: 55%;
-      --padding-content-section-v: var(--space-lg);
-      --padding-content-section-h: var(--space-md);
-   }
-}
-
-
-@media (max-width: 962px) {
-  :host {
-     --font-size-heading-lg: 36px;
-     --font-size-paragraph: 16px; // Adjusted paragraph size for mobile
-     --padding-content-section-v: var(--space-md);
-     --padding-content-section-h: var(--space-md);
-     --about-image-width-mobile: 80%; // Image width when stacked
-  }
-
-  .about__content-section {
-      flex-direction: column; // <-- Stack text and image on smaller screens
-      align-items: center; // <-- Center stacked items horizontally
-      justify-content: flex-start; // Reset justify-content if needed
-      gap: var(--space-md); // Reduce gap when stacked vertically
-  }
-
-  // Reset order for stacking (they will appear in HTML order)
-  .about__image-container,
-  .about__text-container {
-      order: initial; // Or order: 0;
-      width: 100%; // Take full width minus padding
-      flex-shrink: 1; // Allow shrinking if needed
-      flex-grow: 0; // Don't aggressively grow
-      margin: 0; // Remove any specific desktop margins
-  }
-
-  .about__image-container {
-      width: var(--about-image-width-mobile); // Use mobile width variable
-      height: auto; // <-- CRITICAL: Let height be determined by content/width when stacked
-      margin-bottom: var(--space-md); // Add space below image when stacked
-  }
-
-  .about__image-container img {
-      height: auto; // <-- Let image height scale with width
-      object-fit: contain; // <-- Use contain or cover as preferred for the stacked view
-      object-position: center; // Reset object position
-  }
-
-  .about__text-container {
-      max-width: 100%; // Allow text to take full width minus padding
-  }
-
-  .about__text-container h1 {
-    margin-top: 70px;
-    margin-bottom: -20px;
-      font-size: var(--font-size-heading-lg);
-  }
-
-  .about__text-container p {
-      font-size: var(--font-size-paragraph);
-  }
 }
