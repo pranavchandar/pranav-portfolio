@@ -1,6 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Koulen&family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+  --color-primary: #ffffff;
+  --color-accent: #920000;
+  --color-accent-soft: #b10000;
+  --color-bg: #000000;
+  --color-muted: #b8b8b8;
+
+  --font-display: 'Koulen', sans-serif;
+  --font-mono: 'Courier Prime', monospace;
+
+  --space-xs: 5px;
+  --space-sm: 10px;
+  --space-md: 20px;
+  --space-lg: 30px;
+  --space-xl: 50px;
+
+  --radius-pill: 999px;
+  --shadow-glow-accent: 0 0 12px rgba(255, 0, 0, 0.5);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 
 body {
-    margin: 0;
-    overflow-x: hidden; 
-    }
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

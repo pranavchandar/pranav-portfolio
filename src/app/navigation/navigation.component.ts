@@ -30,9 +30,12 @@ export class NavigationComponent {
 
   // Method to toggle a specific submenu by index
   // The event argument is optional if you're just using stopPropagation
-  toggleSubmenu(index: number, event?: MouseEvent): void { // Make event optional
+  toggleSubmenu(index: number, event?: Event): void {
     if (event) {
-       event.stopPropagation(); // Prevent click from bubbling up
+      event.stopPropagation();
+      if (event instanceof KeyboardEvent) {
+        event.preventDefault();
+      }
     }
 
     // Close other submenus if only one should be open at a time (optional)
