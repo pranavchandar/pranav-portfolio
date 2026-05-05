@@ -17,6 +17,7 @@ export class LandingPageComponent implements OnInit {
   messageIndex = 0;
   messages: string[] = ['Welcome!', 'Would you like to enter? (Y/N)'];
   videoStarted = false;
+  textDissolving = false;
   userInteractionCompleted = false;
 
   private isBrowser: boolean;
@@ -96,6 +97,8 @@ export class LandingPageComponent implements OnInit {
 
   startVideo() {
     this.videoStarted = true;
+    this.textDissolving = true;
+    this.showCursor = false;
     if (!this.isBrowser) return;
     setTimeout(() => {
       this.introVideo?.nativeElement.play().catch(() => {});
