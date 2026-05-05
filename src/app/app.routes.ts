@@ -29,9 +29,8 @@ export const routes: Routes = [
   {
     path: 'work/digital-art',
     title: 'Digital Art — Pranav Chandar',
-    data: { discipline: 'Digital Art', tagline: 'Sketches, illustrations, and visual experiments.' },
     loadComponent: () =>
-      import('./placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      import('./digital-art/digital-art.component').then((m) => m.DigitalArtComponent),
   },
   {
     path: 'work/cgi',
