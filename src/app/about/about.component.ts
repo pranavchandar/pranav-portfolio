@@ -28,7 +28,6 @@ export class AboutComponent {
   }
 
   onImageClick() {
-    console.log('Image clicked!'); // Debugging log
     this.clickCount++;
     this.isClicked = true;
     

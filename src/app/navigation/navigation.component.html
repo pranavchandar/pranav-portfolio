@@ -1,60 +1,90 @@
 <header>
-  <!-- Menu Icon (Visible on small screens) -->
-  <div class="menu-icon" [ngClass]="{ open: isMenuOpen }" (click)="toggleMenu()">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
+  <button
+    type="button"
+    class="menu-icon"
+    [ngClass]="{ open: isMenuOpen }"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isMenuOpen"
+    aria-controls="primary-nav"
+    aria-label="Toggle navigation menu"
+  >
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <div class="logo-container">
+    <img
+      src="assets/images/logo.png"
+      alt="Pranav Chandar logo"
+      class="logo"
+      (click)="navigateToEasterEgg()"
+    />
   </div>
 
-  <!-- Logo Container -->
-   <div class="logo-container">
-    <img src="assets/images/logo.png" alt="Your Logo" class="logo" (click)="navigateToEasterEgg()" />
-   </div>
-
-  <!-- Navigation Menu -->
-  <nav [ngClass]="{ open: isMenuOpen }">
+  <nav id="primary-nav" [ngClass]="{ open: isMenuOpen }" aria-label="Primary">
     <ul>
-      <!-- Regular top-level links -->
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="isMenuOpen = false; closeAllSubmenus()">HOME</a></li>
-      <li><a routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">ABOUT</a></li>
-      <li><a routerLink="/resume" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">RESUME</a></li>
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           (click)="isMenuOpen = false; closeAllSubmenus()">HOME</a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active"
+           (click)="isMenuOpen = false; closeAllSubmenus()">ABOUT</a>
+      </li>
+      <li>
+        <a routerLink="/resume" routerLinkActive="active"
+           (click)="isMenuOpen = false; closeAllSubmenus()">RESUME</a>
+      </li>
 
-      <!-- Mobile-friendly Portfolio Menu Item (Visible on small screens via CSS) -->
       <li class="mobile-portfolio-item">
-        <!-- Clickable trigger for the mobile submenu -->
-        <!-- Uses toggleSubmenu with index 0 and passes the event -->
-        <div class="mobile-menu-trigger" (click)="toggleSubmenu(0, $event)">
-          <a>PORTFOLIO</a>
-          <!-- Plus icon - open state controlled by isSubmenuOpenByIndex(0) -->
-          <span class="plus-icon" [ngClass]="{ open: isSubmenuOpenByIndex(0) }"></span>
+        <div
+          class="mobile-menu-trigger"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="isSubmenuOpenByIndex(0)"
+          aria-controls="mobile-portfolio-submenu"
+          (click)="toggleSubmenu(0, $event)"
+          (keydown.enter)="toggleSubmenu(0, $event)"
+          (keydown.space)="toggleSubmenu(0, $event)"
+        >
+          <span class="mobile-menu-trigger__label">PORTFOLIO</span>
+          <span class="plus-icon" [ngClass]="{ open: isSubmenuOpenByIndex(0) }" aria-hidden="true"></span>
         </div>
-        <!-- Mobile submenu ul - open state controlled by isSubmenuOpenByIndex(0) -->
-        <ul class="mobile-submenu" [ngClass]="{ open: isSubmenuOpenByIndex(0) }">
-          <li><a routerLink="/programming" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">PROGRAMMING</a></li>
-          <li><a routerLink="/digital-art" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">DIGITAL ART</a></li>
-          <li><a routerLink="/cgi" routerLinkActive="active" (click)="isMenuOpen = false; closeAllSubmenus()">CGI</a></li>
+        <ul id="mobile-portfolio-submenu" class="mobile-submenu" [ngClass]="{ open: isSubmenuOpenByIndex(0) }">
+          <li><a routerLink="/work/programming" routerLinkActive="active"
+                 (click)="isMenuOpen = false; closeAllSubmenus()">PROGRAMMING</a></li>
+          <li><a routerLink="/work/digital-art" routerLinkActive="active"
+                 (click)="isMenuOpen = false; closeAllSubmenus()">DIGITAL ART</a></li>
+          <li><a routerLink="/work/cgi" routerLinkActive="active"
+                 (click)="isMenuOpen = false; closeAllSubmenus()">CGI</a></li>
         </ul>
       </li>
 
-      <!-- Desktop Portfolio Dropdown Item (Visible on large screens via CSS) -->
       <li class="desktop-portfolio-dropdown">
-        <!-- Clickable trigger for the desktop dropdown -->
-        <!-- Uses toggleSubmenu with index 0 and passes the event -->
-        <div class="portfolio-dropdown" [class.open]="isSubmenuOpenByIndex(0)" (click)="toggleSubmenu(0, $event)">
-          <a>
+        <div
+          class="portfolio-dropdown"
+          [class.open]="isSubmenuOpenByIndex(0)"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="isSubmenuOpenByIndex(0)"
+          aria-haspopup="true"
+          aria-controls="desktop-portfolio-submenu"
+          (click)="toggleSubmenu(0, $event)"
+          (keydown.enter)="toggleSubmenu(0, $event)"
+          (keydown.space)="toggleSubmenu(0, $event)"
+        >
+          <span class="portfolio-dropdown__label">
             PORTFOLIO
-            <!-- Desktop dropdown arrow - open state controlled by isSubmenuOpenByIndex(0) -->
-            <span class="dropdown-arrow" [class.open]="isSubmenuOpenByIndex(0)">▼</span>
-          </a>
-          <!-- Desktop dropdown menu ul - open state controlled by isSubmenuOpenByIndex(0) -->
-          <ul class="dropdown-menu" [class.open]="isSubmenuOpenByIndex(0)">
-            <li><a routerLink="/programming" routerLinkActive="active">PROGRAMMING</a></li>
-            <li><a routerLink="/digital-art" routerLinkActive="active">DIGITAL ART</a></li>
-            <li><a routerLink="/cgi" routerLinkActive="active">CGI</a></li>
+            <span class="dropdown-arrow" [class.open]="isSubmenuOpenByIndex(0)" aria-hidden="true">▼</span>
+          </span>
+          <ul id="desktop-portfolio-submenu" class="dropdown-menu" [class.open]="isSubmenuOpenByIndex(0)">
+            <li><a routerLink="/work/programming" routerLinkActive="active">PROGRAMMING</a></li>
+            <li><a routerLink="/work/digital-art" routerLinkActive="active">DIGITAL ART</a></li>
+            <li><a routerLink="/work/cgi" routerLinkActive="active">CGI</a></li>
           </ul>
         </div>
       </li>
-
     </ul>
   </nav>
 </header>

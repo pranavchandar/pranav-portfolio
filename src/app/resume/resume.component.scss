@@ -1,174 +1,226 @@
-// --- CSS Variables for Consistency ---
-:host {
-    --color-primary: #ffffff; // White text
-    --color-accent: #920000; // Red accent
-    --color-background-overlay: rgba(0, 0, 0, 0.86);
-    --font-family-koulen: 'Koulen', sans-serif;
-  
-    // Spacing Variables (adjust as needed)
-    --space-sm: 10px;
-    --space-md: 20px;
-    --space-lg: 30px;
-  
-    // Content specific padding/margins
-    --padding-content-section-v: var(--space-lg); // Vertical padding for the main content section
-    --padding-content-section-h: var(--space-sm); // Horizontal padding
-    --max-width-text-container: 800px; // Example max width for text block
+.resume {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-display);
+}
+
+.resume.fade-out .resume__overlay {
+  opacity: 0;
+}
+
+.resume__background {
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/images/intro-placeholder2.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.resume__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.86);
+  z-index: 1;
+  transition: opacity 2s ease-in-out;
+}
+
+app-navigation {
+  display: block;
+  position: relative;
+  z-index: 10;
+}
+
+.resume__content-section {
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+  padding: 120px 6vw 80px;
+  color: var(--color-primary);
+}
+
+.resume__inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.resume__header {
+  margin-bottom: var(--space-xl);
+}
+
+.resume__eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-size: 14px;
+  margin: 0 0 var(--space-sm);
+}
+
+.resume__heading {
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 1;
+  margin: 0 0 var(--space-md);
+  color: var(--color-accent);
+}
+
+.resume__summary {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 640px;
+  color: var(--color-primary);
+}
+
+.resume__section {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.resume__section-heading {
+  font-size: 32px;
+  margin: 0 0 var(--space-lg);
+  color: var(--color-primary);
+  letter-spacing: 0.04em;
+
+  &::before {
+    content: '// ';
+    color: var(--color-accent);
   }
-  
-  // --- Base resume Container ---
-  // Styles are very similar to .home-container - potential for shared styles/component
-  .resume {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    font-family: var(--font-family-koulen);
+}
+
+.resume__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.resume__job {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--space-lg);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--color-accent);
+}
+
+.resume__job-period {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.resume__job-role {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  color: var(--color-primary);
+}
+
+.resume__job-company {
+  margin: 4px 0 var(--space-sm);
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-size: 15px;
+}
+
+.resume__job-bullets {
+  margin: 0;
+  padding-left: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-muted);
+
+  li + li {
+    margin-top: 6px;
   }
-  
-  // Fade out effect on the container itself - matches handleLogoClick logic
-  .resume.fade-out .resume__overlay {
-    opacity: 0;
-  }
-  
-  // --- Background Elements ---
-  // Styles are very similar to home__background/home__overlay - potential for shared styles/component
-  .resume__background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("../../assets/images/intro-placeholder2.png"); // Using the same background
-    background-size: cover;
-    background-position: center;
-    z-index: 0; /* Lowest layer */
-    opacity: 1;
-  }
-  
-  .resume__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    opacity: 86%;
-    z-index: 1; /* Above background image */
-    transition: opacity 2s ease-in-out;
-  }
-  
-  // --- Navigation Positioning ---
-  app-navigation {
-    display: block;
-    position: relative; /* Creates stacking context */
-    z-index: 10; /* High, above main content layers */
-  }
-  
-  // --- resume Content Section ---
-  // This section holds the main visible content (text, potentially image).
-  // It flows normally after the navigation.
-  .resume__content-section {
-    position: relative; // Needed to create a stacking context above background/overlay
-    flex-grow: 1; // Allows this section to take up available vertical space
-    padding: var(--padding-content-section-v) var(--padding-content-section-h);
+}
+
+.resume__skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+}
+
+.resume__skill-title {
+  font-size: 18px;
+  margin: 0 0 var(--space-sm);
+  color: var(--color-accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.resume__skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+
+  li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-pill);
     color: var(--color-primary);
-    z-index: 2; /* Above background/overlay (z=0,1) */
-    display: flex; // Use flexbox to potentially align text and image containers
-    justify-content: center; // Center the content horizontally
-    align-items: flex-start; // Align items to the top by default
   }
-  
-  // --- Text Container within resume Section ---
-  .resume__text-container {
-      max-width: var(--max-width-text-container); // Limit width for readability
-      width: 100%; // Allow it to shrink below max-width
-      box-sizing: border-box; // Include padding/border in width calculation if added
+}
+
+.resume__education {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.resume__edu-degree {
+  margin: 0;
+  font-size: 20px;
+  color: var(--color-primary);
+}
+
+.resume__edu-school {
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+app-footer {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+  display: block;
+  z-index: 999;
+}
+
+@media (max-width: 720px) {
+  .resume__job {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
   }
-  
-  // --- Styling for Content Elements within the Text Container ---
-  // Using descendant selectors for generic text elements within the text container
-  // This is acceptable for rich text blocks where direct BEM naming on every p/h tag might be overkill
-  .resume__text-container h1 {
-      font-size: 48px; // Example size, adjust as needed
-      margin-bottom: var(--space-md); // Example margin
-      color: var(--color-accent); // Example color
+}
+
+@media (max-width: 480px) {
+  .resume__content-section {
+    padding: 100px 6vw 80px;
   }
-  
-  .resume__text-container p {
-      font-size: 18px; // Example size
-      line-height: 1.6;
-      margin-bottom: var(--space-md); // Add spacing between paragraphs
-      // color: var(--color-primary); // Inherits from parent, but can set explicitly
+
+  .resume__section-heading {
+    font-size: 26px;
   }
-  
-  // Remove bottom margin from the last paragraph
-  .resume__text-container p:last-child {
-      margin-bottom: 0;
-  }
-  
-  
-  // --- Optional Image Container ---
-  /*
-  .resume__image-container {
-      // Add styles for your image container here
-      // flex-shrink: 0; // Prevent shrinking if text wraps
-      // margin-left: var(--space-lg); // Example spacing from text
-  }
-  */
-  
-  
-  // --- Footer ---
-  app-footer {
-    position: relative;
-    width: 100%;
-    margin-top: auto; /* Push footer to the bottom */
-    box-sizing: border-box;
-    display: block;
-    z-index: 999; /* High, on top of everything */
-  }
-  
-  // --- RESPONSIVE STYLES ---
-  
-  @media (max-width: 768px) {
-    :host {
-       --font-size-heading-lg: 36px; // Adjusted heading size
-       --padding-content-section-v: var(--space-md);
-       --padding-content-section-h: var(--space-md);
-    }
-  
-    .resume__content-section {
-        flex-direction: column; // Stack text and image on smaller screens
-        align-items: center; // Center stacked items
-    }
-  
-    .resume__text-container {
-        max-width: 100%; // Allow text to take full width minus padding
-        // margin-bottom: var(--space-md); // Add space below text container if stacking
-    }
-  
-    /*
-    .resume__image-container {
-        margin-left: 0; // Remove left margin when stacked
-        margin-top: var(--space-md); // Add top margin when stacked
-    }
-    */
-  }
-  
-  @media (max-width: 480px) {
-      :host {
-          --font-size-heading-lg: 30px; // Further adjust heading size
-          --font-size-paragraph: 16px; // Adjust paragraph size
-          --padding-content-section-v: var(--space-sm);
-          --padding-content-section-h: var(--space-sm);
-      }
-  
-      .resume__text-container h1 {
-          font-size: var(--font-size-heading-lg);
-      }
-  
-      .resume__text-container p {
-          font-size: var(--font-size-paragraph);
-      }
-  }
+}

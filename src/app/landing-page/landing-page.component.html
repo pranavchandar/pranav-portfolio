@@ -1,23 +1,27 @@
 <div class="container">
   <img
+    *ngIf="!videoStarted"
     src="assets/images/intro-placeholder2.png"
     class="background"
-    *ngIf="true"
+    alt=""
+    aria-hidden="true"
   />
-  <!-- Always show the image initially if you want it as the video's first frame -->
-  <div class="text-overlay">
+
+  <video
+    *ngIf="videoStarted"
+    #introVideo
+    class="hidden-video"
+    autoplay
+    muted
+    playsinline
+    preload="auto"
+  >
+    <source src="assets/videos/intro3.mp4" type="video/mp4" />
+  </video>
+
+  <div class="text-overlay" [class.dissolving]="textDissolving" role="status" aria-live="polite">
     <p class="typewriter">
-      {{ displayText }}<span *ngIf="showCursor" class="cursor">|</span>
+      {{ displayText }}<span *ngIf="showCursor" class="cursor" aria-hidden="true">|</span>
     </p>
   </div>
 </div>
-<video
-  #introVideo
-  class="hidden-video"
-  *ngIf="videoStarted"
-  autoplay
-  muted
-  preload="auto"
->
-  <source src="assets/videos/intro3.mp4" type="video/mp4" />
-</video>

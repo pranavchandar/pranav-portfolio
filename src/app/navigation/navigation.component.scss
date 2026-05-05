@@ -76,6 +76,17 @@ nav {
       cursor: pointer;
       font-family: 'Koulen', sans-serif;
 
+      .portfolio-dropdown__label {
+        display: block;
+        padding: 10px 20px;
+        color: white;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: red;
+        }
+      }
+
       .dropdown-arrow {
         margin-left: 8px;
         transition: transform 0.3s ease;
@@ -157,11 +168,14 @@ nav {
   cursor: pointer;
   padding: 10px;
   z-index: 102;
+  background: transparent;
+  border: 0;
 
   .bar {
+    display: block;
     height: 3px;
     width: 25px;
-    background-color: white; // Default color is white
+    background-color: white;
     margin: 4px 0;
     transition: all 0.3s ease;
   }
@@ -303,9 +317,10 @@ nav {
               align-items: center;
               padding: 10px 20px;
               cursor: pointer;
+              color: white;
+              font-family: 'Koulen', sans-serif;
 
-              a {
-                  padding: 0;
+              .mobile-menu-trigger__label {
                   margin-right: 5px;
               }
 

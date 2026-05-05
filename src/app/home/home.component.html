@@ -1,71 +1,41 @@
-<!--
-  Main container for the home page.
-  Uses #homeContainer for the fade-out animation controlled by TS.
--->
 <div class="home" #homeContainer>
-
-  <!-- Background elements -->
   <div class="home__background"></div>
   <div class="home__overlay"></div>
 
-  <!-- Navigation component - Z-index handled internally by navigation.component.scss -->
   <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
 
-  <!--
-    Interactive area container:
-    - Captures mousemove events for image changing.
-    - Holds both the visual Hero section (positioned over) and the
-      invisible Interactive Sections (for mouse hit detection).
-    - Uses #interactiveAreaContainer for TS reference.
-  -->
   <div class="home__interactive-area" #interactiveAreaContainer (mousemove)="onMouseMove($event)">
-
-    <!--
-      Hero Section:
-      - Contains the main visible content (Name, Title, Intro, Buttons, Image).
-      - Positioned absolutely to layer over the interactive sections below.
-    -->
-    <section class="home__hero">
+    <section class="home__hero" aria-labelledby="home-name">
       <div class="home__hero-content">
-        <h1 class="home__name">
+        <h1 class="home__name" id="home-name">
           <span class="home__name-first">PRANAV</span>
           <span class="home__name-last">CHANDAR</span>
-          <!-- Vector image - placed relative to .home__name -->
-          <img src="assets/images/Vector.svg" alt="L-shaped Vector" class="home__vector">
+          <img src="assets/images/Vector.svg" alt="" aria-hidden="true" class="home__vector" />
         </h1>
         <p class="home__title">SOFTWARE ENGINEER</p>
         <p class="home__introduction">
-          Welcome to my website! (best experienced in desktop view) The more you explore, the more you'll learn about me and the skills I've honed throughout my adult life. Another purpose of this site is to reliably archive my work and projects on a platform where I have complete autonomy. I hope you enjoy your visit and find something interesting. If so, please feel free to reach out. I love meeting new people and hearing about their work.
+          Welcome to my website (best experienced on a desktop). The more you explore, the more you'll
+          learn about me and the skills I've honed throughout my adult life. This is also where I
+          archive my work and projects on a platform I fully own. If something here catches your eye,
+          please reach out — I love meeting new people and hearing about their work.
         </p>
         <div class="home__call-to-actions">
-          <button class="home__button home__button--resume" routerLink="/resume">RESUME</button>
-          <button class="home__button home__button--about" routerLink="/about">ABOUT ME</button>
+          <a class="home__button home__button--resume" routerLink="/resume">RESUME</a>
+          <a class="home__button home__button--about" routerLink="/about">ABOUT ME</a>
         </div>
       </div>
-      <!-- Hero image displays the dynamic image -->
-      <div class="home__hero-image">
-        <img [src]="currentHeroImageUrl" alt="Retro Computer">
+
+      <div class="home__hero-image" aria-hidden="true">
+        <img [src]="currentHeroImageUrl" alt="" />
       </div>
     </section>
 
-    <!--
-      Interactive Sections:
-      - These empty divs are siblings of the .home__hero within the .home__interactive-area.
-      - They are styled to divide the container vertically and capture mouse events.
-      - They are invisible but necessary for the onMouseMove logic.
-    -->
     <div class="home__interactive-section" data-index="0"></div>
     <div class="home__interactive-section" data-index="1"></div>
     <div class="home__interactive-section" data-index="2"></div>
     <div class="home__interactive-section" data-index="3"></div>
     <div class="home__interactive-section" data-index="4"></div>
-
   </div>
 
-  <!--
-    Footer component - Its internal Z-index should be high.
-    Note: Gradient overlay and social icons removed from Home HTML.
-    These should be part of the app-footer component's template.
-  -->
   <app-footer></app-footer>
 </div>

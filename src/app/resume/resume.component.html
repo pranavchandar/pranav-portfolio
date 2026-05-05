@@ -1,43 +1,58 @@
-<!--
-  Main container for the resume page.
-  Uses a component-specific class (.resume) and #resumeContainer for TS reference.
--->
 <div class="resume" #resumeContainer>
+  <div class="resume__background"></div>
+  <div class="resume__overlay"></div>
 
-    <!-- Background elements - Duplicated from home, potential for shared component -->
-    <div class="resume__background"></div>
-    <div class="resume__overlay"></div>
-  
-    <!-- Navigation component - Z-index handled internally -->
-    <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
-  
-    <!--
-      resume Content Section:
-      - Main area for the page's content.
-      - Positioned relative/static to flow below the navigation.
-      - Should be above background/overlay layers.
-    -->
-    <section class="resume__content-section">
-      <!-- Container specifically for text content -->
-      <div class="resume__text-container">
-        <!-- Use BEM for the heading or simple descendant selector if it's the only h1 -->
-        <h1 class="resume__heading">resume Me</h1>
-        <!-- Use BEM for paragraphs or simple descendant selector if they are standard text -->
-        <p class="resume__paragraph">
-          This is the content for the resume Me page. You can add your biography, professional journey, skills, philosophies, etc., here.
-        </p>
-        <p class="resume__paragraph">
-          Make this section engaging and reflective of who you are. Tell your story!
-        </p>
-        <!-- Add more paragraphs or content elements as needed -->
-      </div>
-      <!-- Optional: Add an image container -->
-      <!-- <div class="resume__image-container">
-        <img src="path/to/your/resume/image.jpg" alt="resume Image">
-      </div> -->
-    </section>
-  
-    <!-- Footer component - Z-index handled internally -->
-    <app-footer></app-footer>
-  
-  </div>
+  <app-navigation (logoClick)="handleLogoClick()"></app-navigation>
+
+  <main class="resume__content-section">
+    <div class="resume__inner">
+      <header class="resume__header">
+        <p class="resume__eyebrow">/ resume</p>
+        <h1 class="resume__heading">Resume</h1>
+        <p class="resume__summary">{{ summary }}</p>
+      </header>
+
+      <section class="resume__section" aria-labelledby="experience-heading">
+        <h2 id="experience-heading" class="resume__section-heading">Experience</h2>
+        <ol class="resume__timeline">
+          <li class="resume__job" *ngFor="let job of experience">
+            <div class="resume__job-meta">
+              <span class="resume__job-period">{{ job.period }}</span>
+            </div>
+            <div class="resume__job-body">
+              <h3 class="resume__job-role">{{ job.role }}</h3>
+              <p class="resume__job-company">{{ job.company }}</p>
+              <ul class="resume__job-bullets">
+                <li *ngFor="let bullet of job.bullets">{{ bullet }}</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="resume__section" aria-labelledby="skills-heading">
+        <h2 id="skills-heading" class="resume__section-heading">Skills</h2>
+        <div class="resume__skills">
+          <div class="resume__skill-group" *ngFor="let group of skills">
+            <h3 class="resume__skill-title">{{ group.title }}</h3>
+            <ul class="resume__skill-list">
+              <li *ngFor="let item of group.items">{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume__section" aria-labelledby="education-heading">
+        <h2 id="education-heading" class="resume__section-heading">Education</h2>
+        <ul class="resume__education">
+          <li *ngFor="let edu of education">
+            <p class="resume__edu-degree">{{ edu.degree }}</p>
+            <p class="resume__edu-school">{{ edu.school }} · {{ edu.period }}</p>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+</div>

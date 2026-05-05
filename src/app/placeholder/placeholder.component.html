@@ -1,0 +1,29 @@
+<div class="placeholder">
+  <div class="placeholder__background"></div>
+  <div class="placeholder__overlay"></div>
+
+  <app-navigation></app-navigation>
+
+  <main class="placeholder__content">
+    <p class="placeholder__eyebrow">/ work</p>
+    <h1 class="placeholder__heading">{{ discipline }}</h1>
+    <p class="placeholder__tagline">{{ tagline }}</p>
+
+    <div class="placeholder__status" role="status" aria-live="polite">
+      <span class="placeholder__dot"></span>
+      <span>Section under construction</span>
+    </div>
+
+    <p class="placeholder__body">
+      This page will house case studies, breakdowns, and full-resolution work for {{ discipline }}.
+      In the meantime, you can read more about me or check the rest of the site.
+    </p>
+
+    <div class="placeholder__actions">
+      <a class="placeholder__cta" routerLink="/about">About me</a>
+      <a class="placeholder__cta placeholder__cta--ghost" routerLink="/">Back home</a>
+    </div>
+  </main>
+
+  <app-footer></app-footer>
+</div>
