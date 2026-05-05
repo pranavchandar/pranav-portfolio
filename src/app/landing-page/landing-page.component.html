@@ -19,7 +19,7 @@
     <source src="assets/videos/intro3.mp4" type="video/mp4" />
   </video>
 
-  <div class="text-overlay" role="status" aria-live="polite">
+  <div class="text-overlay" [class.dissolving]="textDissolving" role="status" aria-live="polite">
     <p class="typewriter">
       {{ displayText }}<span *ngIf="showCursor" class="cursor" aria-hidden="true">|</span>
     </p>
