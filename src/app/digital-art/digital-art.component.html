@@ -1,0 +1,215 @@
+<app-navigation></app-navigation>
+
+<!-- Section Header -->
+<section class="gallery-header">
+  <div class="gallery-header__top">
+    <div>
+      <div class="gallery-header__label">— Section 02 · Works</div>
+      <h1 class="gallery-header__title">
+        An archive of <em>kept</em> things.
+      </h1>
+    </div>
+    <p class="gallery-header__desc">
+      {{ pieces.length }} pieces from across the years — characters, places, and
+      the small objects in between. Click any piece to view it full. Search to
+      find your way around.
+    </p>
+  </div>
+</section>
+
+<!-- Featured Hero -->
+<section class="featured" (click)="openLightbox(featuredPiece)">
+  <div class="featured__grid">
+    <div class="featured__image-wrap">
+      <img
+        [src]="featuredPiece.thumbPath"
+        [alt]="featuredPiece.title"
+        class="featured__image"
+      />
+    </div>
+    <div class="featured__info">
+      <div class="featured__info-header">
+        <span class="featured__badge">Featured · Currently</span>
+        <span class="featured__divider"></span>
+        <span class="featured__counter"
+          >{{ featuredPiece.num }} / {{ pieces.length | number : '3.0-0' }}</span
+        >
+      </div>
+
+      <h2 class="featured__title">{{ featuredPiece.title }}</h2>
+
+      <div class="featured__meta">
+        <div class="meta-item">
+          <span class="meta-item__label">Piece</span>
+          <span class="meta-item__value">{{ featuredPiece.num }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-item__label">Medium</span>
+          <span class="meta-item__value">Digital</span>
+        </div>
+        <div style="flex: 1"></div>
+        <button class="featured__view-btn">View →</button>
+      </div>
+
+      <!-- Decorative corner -->
+      <span class="featured__corner featured__corner--h"></span>
+      <span class="featured__corner featured__corner--v"></span>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Bar -->
+<section class="filters">
+  <div class="filters__search-row">
+    <span class="filters__search-icon">⌕</span>
+    <input
+      class="filters__search-input"
+      [(ngModel)]="searchQuery"
+      (input)="filterPieces()"
+      placeholder="search title, theme..."
+    />
+  </div>
+
+  <!-- Result count -->
+  <div class="filters__result-count">
+    <span class="filters__arrow">→</span>
+    <span
+      >{{ filteredPieces.length }}
+      {{ filteredPieces.length === 1 ? 'piece' : 'pieces' }}</span
+    >
+    <span class="filters__line"></span>
+    <span>SORT // RECENT FIRST</span>
+  </div>
+</section>
+
+<!-- Mosaic Grid -->
+<section class="gallery-grid">
+  @if (filteredPieces.length === 0) {
+    <div class="gallery-grid__empty">· NO PIECES MATCH THIS SEARCH ·</div>
+  } @else {
+    <div class="gallery-grid__mosaic">
+      @for (piece of filteredPieces; track piece.id) {
+        <article
+          class="piece-card"
+          [class.piece-card--portrait]="piece.aspect === 'portrait'"
+          [class.piece-card--square]="piece.aspect === 'square'"
+          [class.piece-card--landscape]="piece.aspect === 'landscape'"
+          (click)="openLightbox(piece)"
+        >
+          <div class="piece-card__image-wrap">
+            <img
+              [src]="piece.thumbPath"
+              [alt]="piece.title"
+              loading="lazy"
+              class="piece-card__image"
+            />
+          </div>
+
+          <!-- Gradient overlay -->
+          <div class="piece-card__overlay"></div>
+
+          <!-- Meta strip -->
+          <div class="piece-card__meta">
+            <div class="piece-card__meta-top">
+              <span class="piece-card__num">{{ piece.num }}</span>
+            </div>
+            <h3 class="piece-card__title">{{ piece.title }}</h3>
+          </div>
+
+          <!-- Corner accents -->
+          <span class="piece-card__corner piece-card__corner--h"></span>
+          <span class="piece-card__corner piece-card__corner--v"></span>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<!-- Stats Footer -->
+<footer class="gallery-stats">
+  <div class="stat">
+    <span class="stat__number">{{ pieces.length }}</span>
+    <span class="stat__label">Pieces in archive</span>
+  </div>
+  <div class="stat">
+    <span class="stat__number">04</span>
+    <span class="stat__label">Active years</span>
+  </div>
+  <div class="stat">
+    <span class="stat__number">11</span>
+    <span class="stat__label">Commissions delivered</span>
+  </div>
+  <div class="stat">
+    <span class="stat__number">∞</span>
+    <span class="stat__label">Studies kept private</span>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+@if (selectedPiece) {
+  <div class="lightbox" (click)="closeLightbox()">
+    <!-- Top bar -->
+    <div class="lightbox__topbar" (click)="$event.stopPropagation()">
+      <span class="lightbox__viewing">■ Viewing</span>
+      <span class="lightbox__pos"
+        >{{ selectedPiece.num }} /
+        {{ filteredPieces.length | number : '3.0-0' }}</span
+      >
+      <span style="flex: 1"></span>
+      <button class="lightbox__btn" (click)="navigateLightbox(-1)">
+        ← PREV
+      </button>
+      <button class="lightbox__btn" (click)="navigateLightbox(1)">
+        NEXT →
+      </button>
+      <button
+        class="lightbox__btn lightbox__btn--close"
+        (click)="closeLightbox()"
+      >
+        ESC ×
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="lightbox__body" (click)="$event.stopPropagation()">
+      <!-- Image area -->
+      <div class="lightbox__image-area">
+        <img
+          [src]="selectedPiece.imagePath"
+          [alt]="selectedPiece.title"
+          class="lightbox__image"
+        />
+      </div>
+
+      <!-- Side panel -->
+      <aside class="lightbox__panel">
+        <div>
+          <div class="lightbox__piece-num">{{ selectedPiece.num }}</div>
+          <h2 class="lightbox__piece-title">{{ selectedPiece.title }}</h2>
+        </div>
+
+        <div class="lightbox__piece-meta">
+          <div class="meta-item">
+            <span class="meta-item__label">Piece</span>
+            <span class="meta-item__value">{{ selectedPiece.num }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-item__label">Medium</span>
+            <span class="meta-item__value">Digital</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-item__label">Format</span>
+            <span class="meta-item__value">{{ selectedPiece.aspect }}</span>
+          </div>
+        </div>
+
+        <div class="lightbox__nav-hint">
+          <div>USE ← → TO NAVIGATE</div>
+          <div>ESC TO CLOSE</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+}
+
+<app-footer></app-footer>
