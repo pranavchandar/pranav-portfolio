@@ -35,9 +35,8 @@ export const routes: Routes = [
   {
     path: 'work/cgi',
     title: 'CGI — Pranav Chandar',
-    data: { discipline: 'CGI', tagline: 'Blender renders, lookdev, and 3D scenes.' },
     loadComponent: () =>
-      import('./placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      import('./cgi/cgi.component').then((m) => m.CgiComponent),
   },
   {
     path: 'secret',

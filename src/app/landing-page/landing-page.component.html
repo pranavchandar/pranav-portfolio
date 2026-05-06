@@ -1,7 +1,7 @@
 <div class="container">
   <img
     *ngIf="!videoStarted"
-    src="assets/images/intro-placeholder2.png"
+    src="assets/images/intro-placeholder2.webp"
     class="background"
     alt=""
     aria-hidden="true"
@@ -23,5 +23,17 @@
     <p class="typewriter">
       {{ displayText }}<span *ngIf="showCursor" class="cursor" aria-hidden="true">|</span>
     </p>
+    <input
+      *ngIf="promptReady && !userInteractionCompleted"
+      #promptInput
+      class="prompt-input"
+      type="text"
+      maxlength="1"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      (input)="onPromptInput($event)"
+      aria-label="Enter Y or N"
+    />
   </div>
 </div>
