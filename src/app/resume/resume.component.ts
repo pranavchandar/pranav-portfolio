@@ -42,9 +42,11 @@ export class ResumeComponent implements OnInit, OnDestroy {
   @ViewChild('resumeContainer') resumeContainer!: ElementRef<HTMLElement>;
 
   private timerInterval: ReturnType<typeof setInterval> | null = null;
+  private downloadFeedbackTimeout: ReturnType<typeof setTimeout> | null = null;
   private readonly startDate = new Date(2019, 7, 19); // August 19, 2019
 
   elapsed: ElapsedTime = { years: 0, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+  downloadTriggered = false;
 
   // Summary is now inline in the template with keyword highlights
 
@@ -137,6 +139,22 @@ export class ResumeComponent implements OnInit, OnDestroy {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
     }
+    if (this.downloadFeedbackTimeout) {
+      clearTimeout(this.downloadFeedbackTimeout);
+    }
+  }
+
+  onDownloadClick(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    if (this.downloadFeedbackTimeout) clearTimeout(this.downloadFeedbackTimeout);
+    this.downloadTriggered = false;
+    requestAnimationFrame(() => {
+      this.downloadTriggered = true;
+      this.downloadFeedbackTimeout = setTimeout(() => {
+        this.downloadTriggered = false;
+        this.downloadFeedbackTimeout = null;
+      }, 3000);
+    });
   }
 
   private updateElapsed(): void {
