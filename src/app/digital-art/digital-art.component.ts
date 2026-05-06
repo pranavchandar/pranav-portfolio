@@ -25,8 +25,6 @@ function buildPieces(): ArtPiece[] {
     ['1-fish.jpg', '1 Fish'],
     ['2-wisp.jpg', '2 Wisp'],
     ['3-bulky.jpg', '3 Bulky'],
-    ['chel.jpg', 'Chel'],
-    ['raven.jpg', 'Raven'],
     ['rubendone.jpg', 'Rubendone'],
     ['shackles-hands-final.jpg', 'Shackles'],
     ['starfire.jpg', 'Starfire'],
