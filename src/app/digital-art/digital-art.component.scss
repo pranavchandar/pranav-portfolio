@@ -501,6 +501,7 @@ $font-mono:    'JetBrains Mono', ui-monospace, monospace;
     padding: 40px;
     background: $bg;
     overflow: hidden;
+    cursor: pointer;
   }
 
   &__image {

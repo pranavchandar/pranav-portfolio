@@ -171,9 +171,9 @@
     </div>
 
     <!-- Body -->
-    <div class="lightbox__body" (click)="$event.stopPropagation()">
-      <!-- Image area -->
-      <div class="lightbox__image-area">
+    <div class="lightbox__body">
+      <!-- Image area: left half = prev, right half = next -->
+      <div class="lightbox__image-area" (click)="onImageAreaClick($event)">
         <img
           [src]="selectedPiece.imagePath"
           [alt]="selectedPiece.title"
@@ -204,8 +204,8 @@
         </div>
 
         <div class="lightbox__nav-hint">
-          <div>USE ← → TO NAVIGATE</div>
-          <div>ESC TO CLOSE</div>
+          <div>CLICK LEFT · PREV &nbsp; CLICK RIGHT · NEXT</div>
+          <div>CLICK OUTSIDE · CLOSE</div>
         </div>
       </aside>
     </div>

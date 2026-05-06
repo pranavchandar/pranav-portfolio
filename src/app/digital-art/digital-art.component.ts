@@ -181,6 +181,17 @@ export class DigitalArtComponent implements OnInit {
     this.selectedPiece = this.filteredPieces[this.lightboxIndex];
   }
 
+  onImageAreaClick(event: MouseEvent): void {
+    event.stopPropagation();
+    const el = event.currentTarget as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    if (event.clientX < rect.left + rect.width / 2) {
+      this.navigateLightbox(-1);
+    } else {
+      this.navigateLightbox(1);
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent): void {
     if (!this.selectedPiece) return;
