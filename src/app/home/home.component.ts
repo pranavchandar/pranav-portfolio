@@ -16,11 +16,11 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild('interactiveAreaContainer') interactiveAreaContainer!: ElementRef<HTMLElement>;
 
   heroImageUrls: string[] = [
-    'assets/images/1top.jpg',
-    'assets/images/2topmid.jpg',
-    'assets/images/3mid.jpg',
-    'assets/images/4botmid.jpg',
-    'assets/images/5bot.jpg',
+    'assets/images/1top.png',
+    'assets/images/2topmid.png',
+    'assets/images/3mid.png',
+    'assets/images/4botmid.png',
+    'assets/images/5bot.png',
   ];
 
   currentHeroImageUrl: string = this.heroImageUrls[0];
