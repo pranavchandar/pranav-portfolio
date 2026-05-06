@@ -43,8 +43,27 @@ app-navigation {
 }
 
 .resume__inner {
-  max-width: 880px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 56px 48px;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(0, 0, 0, 0.5) 30%,
+    rgba(0, 0, 0, 0.55) 70%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .resume__header {
@@ -71,9 +90,43 @@ app-navigation {
   font-family: var(--font-mono);
   font-size: 17px;
   line-height: 1.7;
-  margin: 0;
-  max-width: 640px;
+  margin: 0 0 var(--space-lg);
+  max-width: 900px;
   color: var(--color-primary);
+
+  .resume__keyword {
+    color: #ff0000;
+    text-shadow: 0 0 6px rgba(255, 0, 0, 0.6), 0 0 12px rgba(255, 0, 0, 0.3);
+  }
+}
+
+// Download CV button
+.resume__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(146, 0, 0, 0.5), 0 0 40px rgba(146, 0, 0, 0.2);
+  }
+}
+
+.resume__download-icon {
+  flex-shrink: 0;
 }
 
 .resume__section {
@@ -92,6 +145,48 @@ app-navigation {
     content: '// ';
     color: var(--color-accent);
   }
+}
+
+// Digital clock timer
+.resume__timer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: var(--space-lg);
+}
+
+.resume__timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 14px 8px;
+  background: rgba(20, 0, 0, 0.8);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 6px;
+  min-width: 60px;
+}
+
+.resume__timer-value {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 36px;
+  font-weight: normal;
+  color: #ff0000;
+  text-shadow:
+    0 0 7px #ff0000,
+    0 0 15px #ff0000,
+    0 0 30px #cc0000,
+    0 0 50px #990000;
+  line-height: 1;
+}
+
+.resume__timer-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 100, 100, 0.6);
+  text-shadow: 0 0 4px rgba(255, 0, 0, 0.3);
+  margin-top: 6px;
+  text-transform: uppercase;
 }
 
 .resume__timeline {
@@ -142,7 +237,7 @@ app-navigation {
   color: var(--color-muted);
 
   li + li {
-    margin-top: 6px;
+    margin-top: 14px;
   }
 }
 
@@ -176,6 +271,32 @@ app-navigation {
     border-radius: var(--radius-pill);
     color: var(--color-primary);
   }
+}
+
+// Projects section
+.resume__projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.resume__project-title {
+  margin: 0;
+  font-size: 20px;
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+}
+
+.resume__project-desc {
+  margin: 6px 0 0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-muted);
+  max-width: 640px;
 }
 
 .resume__education {
@@ -213,6 +334,15 @@ app-footer {
     grid-template-columns: 1fr;
     gap: var(--space-sm);
   }
+
+  .resume__timer-value {
+    font-size: 24px;
+  }
+
+  .resume__timer-unit {
+    min-width: 48px;
+    padding: 10px 10px 6px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -222,5 +352,22 @@ app-footer {
 
   .resume__section-heading {
     font-size: 26px;
+  }
+
+  .resume__timer {
+    gap: 6px;
+  }
+
+  .resume__timer-value {
+    font-size: 20px;
+  }
+
+  .resume__timer-unit {
+    min-width: 40px;
+    padding: 8px 6px 5px;
+  }
+
+  .resume__timer-label {
+    font-size: 9px;
   }
 }
