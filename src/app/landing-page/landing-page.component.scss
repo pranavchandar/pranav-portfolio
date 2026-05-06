@@ -69,11 +69,40 @@
   50% { opacity: 0; }
 }
 
+.prompt-input {
+  display: block;
+  margin: 1rem auto 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgb(255, 88, 233);
+  color: rgb(255 255 187);
+  font-family: var(--font-mono, 'Courier Prime', monospace);
+  font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+  width: 3ch;
+  outline: none;
+  caret-color: rgb(255, 88, 233);
+  text-shadow: 0 0 10px rgb(255, 88, 233);
+  pointer-events: auto;
+}
+
 .hidden-video {
   position: fixed;
   width: 100vw;
   height: 100vh;
   object-fit: cover;
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+  .hidden-video {
+    width: 100vw;
+    height: 100vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    object-fit: cover;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

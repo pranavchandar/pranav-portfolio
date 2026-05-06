@@ -1,0 +1,150 @@
+<app-navigation></app-navigation>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__bg">
+    <div class="hero__fallback"></div>
+    <iframe
+      [src]="heroEmbedUrl"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      class="hero__iframe"
+    ></iframe>
+  </div>
+  <div class="hero__vignette"></div>
+  <div class="hero__content">
+    <div class="hero__eyebrow">Featured Work · 2026</div>
+    <h1 class="hero__title">Worlds<br/>Built In<br/><span class="hero__title--red">Pixels</span></h1>
+    <div class="hero__meta">
+      <span>CGI Showcase</span>
+      <span class="hero__dot"></span>
+      <span>{{ videos.length }} Pieces</span>
+      <span class="hero__dot"></span>
+      <span>Blender · Unreal Engine · DaVinci Resolve</span>
+    </div>
+    <p class="hero__desc">
+      A collection of digital art, simulations, and CGI experiments — from quick
+      studies to finished shots. Every frame is rendered, composited, and graded
+      in-house.
+    </p>
+    <div class="hero__actions">
+      <button class="btn btn--primary" (click)="playFeatured()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Play Featured
+      </button>
+      <button class="btn btn--ghost" (click)="scrollToShowcase()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Browse Reel
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Showcase -->
+<section class="section" id="showcase">
+  <div class="section__head">
+    <h2 class="section__title">The Reel</h2>
+    <div class="section__sub">{{ filteredVideos.length }} piece{{ filteredVideos.length === 1 ? '' : 's' }}</div>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="filters">
+    @for (cat of categories; track cat.name) {
+      <button
+        class="chip"
+        [class.chip--active]="filter === cat.name"
+        (click)="setFilter(cat.name)"
+      >
+        {{ cat.name }}<span class="chip__count">{{ cat.count }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Grid -->
+  <div class="grid">
+    @for (video of filteredVideos; track video.id; let i = $index) {
+      <!-- Card -->
+      <div
+        class="card"
+        [class.card--active]="video.id === activeId"
+        (click)="toggleVideo(video.id)"
+      >
+        <div class="card__thumb-wrap">
+          @if (!thumbFailed[video.id]) {
+            <img
+              class="card__thumb"
+              [src]="thumbSrcs[video.id]"
+              [alt]="video.title"
+              loading="lazy"
+              (error)="onThumbError(video.id)"
+            />
+          } @else {
+            <div class="card__thumb-fallback">No thumbnail</div>
+          }
+          <span
+            class="card__duration-tag"
+            [class.card__duration-tag--short]="video.orientation === 'tall'"
+          >
+            {{ video.orientation === 'tall' ? 'Short' : 'Reel' }}
+          </span>
+          <div class="card__play-pip">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
+          </div>
+          <div class="card__overlay">
+            <div class="card__overlay-cat">{{ video.category }}</div>
+            <div class="card__overlay-title">{{ video.title }}</div>
+          </div>
+          <div class="card__ring"></div>
+        </div>
+        <div class="card__meta">
+          <div class="card__meta-title">{{ video.title }}</div>
+          <div class="card__meta-cat">{{ video.category }}</div>
+        </div>
+      </div>
+
+      <!-- Inline Player -->
+      @if (shouldShowPlayerAfter(i) && activeVideo) {
+        <div class="player-row">
+          <div class="player-inner" [class.player-inner--shorts]="activeVideo.orientation === 'tall'">
+            <div class="player-frame" [class.player-frame--shorts]="activeVideo.orientation === 'tall'">
+              <iframe
+                [src]="getEmbedUrl(activeVideo.id)"
+                [title]="activeVideo.title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div class="player-info">
+              <button class="player-close" (click)="closePlayer(); $event.stopPropagation()" aria-label="Close player">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+              <div class="player-cat">{{ activeVideo.category }}</div>
+              <h3 class="player-title">{{ activeVideo.title }}</h3>
+              <div class="player-stats">
+                <span class="player-stats__pill">{{ activeVideo.orientation === 'tall' ? 'Vertical' : 'Widescreen' }}</span>
+                <span>HD · 1080p</span>
+                <span>YouTube</span>
+              </div>
+              <p class="player-desc">{{ activeVideo.description }}</p>
+              <div class="player-actions">
+                <a
+                  class="btn btn--primary"
+                  [href]="'https://www.youtube.com/watch?v=' + activeVideo.id"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (click)="$event.stopPropagation()"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3h7v7M21 3l-9 9M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/></svg>
+                  Open on YouTube
+                </a>
+                <button class="btn btn--ghost" (click)="closePlayer(); $event.stopPropagation()">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</section>
+
+<app-footer></app-footer>

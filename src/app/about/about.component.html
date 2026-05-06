@@ -13,7 +13,7 @@
 
       <div class="about__mobile-header-group">
         <div class="about__small-image-container">
-          <img src="assets/images/abouutSmall.png" alt="Small About Image">
+          <img src="assets/images/abouutSmall.webp" alt="Small About Image">
         </div>
       </div>
 
@@ -26,16 +26,16 @@
     </div>
 
     <div class="about__large-image-container">
-      <img src="assets/images/about bg.png" alt="About Background Image" class="about__bg-image">
+      <img src="assets/images/about bg.webp" alt="About Background Image" class="about__bg-image">
       <div class="about__me-image-wrapper" 
            [class.faded]="clickCount >= 5"
            (click)="onImageClick()">
-        <img src="assets/images/about me.png" 
+        <img src="assets/images/about me.webp" 
              alt="About Me Image" 
              class="about__me-image"
              [class.rotated]="clickCount >= 5">
         <img *ngIf="isClicked" 
-             src="assets/images/about me oof.png" 
+             src="assets/images/about me oof.webp" 
              alt="Click Poof Effect" 
              class="click-poof-image">
         <span *ngFor="let hp of hpTexts" 
@@ -44,11 +44,11 @@
               [style.opacity]="hp.opacity">-20HP</span>
       </div>
       <img *ngIf="clickCount >= 5" 
-           src="assets/images/poof.png" 
+           src="assets/images/poof.webp" 
            alt="Poof Effect" 
            class="poof-image">
       <img *ngIf="clickCount >= 5" 
-           src="assets/images/resume.png" 
+           src="assets/images/resume.webp" 
            alt="Resume Image" 
            class="resume-image"
            [routerLink]="['/resume']">

@@ -10,6 +10,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 })
 export class LandingPageComponent implements OnInit {
   @ViewChild('introVideo') introVideo?: ElementRef<HTMLVideoElement>;
+  @ViewChild('promptInput') promptInput?: ElementRef<HTMLInputElement>;
 
   displayText = '';
   showCursor = true;
@@ -19,6 +20,7 @@ export class LandingPageComponent implements OnInit {
   videoStarted = false;
   textDissolving = false;
   userInteractionCompleted = false;
+  promptReady = false;
 
   private isBrowser: boolean;
 
@@ -43,6 +45,9 @@ export class LandingPageComponent implements OnInit {
         setTimeout(typeNextChar, this.typingSpeed);
       } else if (this.messageIndex === 0) {
         setTimeout(() => this.startBackspaceEffect(), 1000);
+      } else if (this.messageIndex === 1) {
+        this.promptReady = true;
+        setTimeout(() => this.focusInput(), 100);
       }
     };
 
@@ -63,20 +68,38 @@ export class LandingPageComponent implements OnInit {
     removeChar();
   }
 
+  focusInput(): void {
+    this.promptInput?.nativeElement.focus();
+  }
+
+  onPromptInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.toLowerCase();
+    input.value = '';
+    if (value === 'y' || value === 'n') {
+      this.handleChoice(value);
+    }
+  }
+
   @HostListener('window:keydown', ['$event'])
   handleKeyPress(event: KeyboardEvent) {
     if (this.userInteractionCompleted) return;
-
     const key = event.key.toLowerCase();
     if (key === 'y' || key === 'n') {
-      this.userInteractionCompleted = true;
-      if (key === 'y') {
-        this.startVideo();
-      } else {
-        this.displayText = '';
-        this.startTypingEffectWithNewMessage("I'm taking you in anyway... :)");
-        setTimeout(() => this.startVideo(), 2500);
-      }
+      this.handleChoice(key);
+    }
+  }
+
+  private handleChoice(key: string): void {
+    if (this.userInteractionCompleted) return;
+    this.userInteractionCompleted = true;
+    this.promptReady = false;
+    if (key === 'y') {
+      this.startVideo();
+    } else {
+      this.displayText = '';
+      this.startTypingEffectWithNewMessage("I'm taking you in anyway... :)");
+      setTimeout(() => this.startVideo(), 2500);
     }
   }
 
