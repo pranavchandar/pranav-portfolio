@@ -139,7 +139,7 @@ function buildPieces(): ArtPiece[] {
 export class DigitalArtComponent implements OnInit {
   pieces: ArtPiece[] = buildPieces();
   filteredPieces: ArtPiece[] = [];
-  featuredPiece: ArtPiece = this.pieces.find(p => p.fileName === 'tent-crop-4.jpg')!;
+  featuredPiece: ArtPiece = this.pieces.find(p => p.fileName === 'vishnu.jpg')!;
 
   searchQuery = '';
   selectedPiece: ArtPiece | null = null;
