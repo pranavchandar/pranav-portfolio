@@ -1,7 +1,7 @@
 > **Note (PRANAV OS overhaul):** this roadmap was written for the previous multi-page
 > design. On the overhaul branch the site became a desktop OS, which covers most of the P3 ideas
 > (CRT shader, custom cursor, boot sequence and desktop, audio with a mute toggle, Konami code,
-> terminal) and the shared page-shell refactor. Still open: real contact email/phone, a real
+> terminal) and the shared page-shell refactor. Still open: a real
 > domain, robots/sitemap, image `srcset`s, compressing `intro3.mp4`, and ESLint/Prettier/CI.
 
 # Portfolio TODO — Prioritized Roadmap

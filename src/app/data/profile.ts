@@ -88,7 +88,7 @@ export const EDUCATION = [
 ];
 
 export const LINKS: Link[] = [
-  { label: 'Email', href: 'mailto:hello@pranavchandar.com', handle: 'hello@pranavchandar.com' },
+  { label: 'Email', href: 'mailto:pranavchandar19@gmail.com', handle: 'pranavchandar19@gmail.com' },
   { label: 'GitHub', href: 'https://github.com/pranavchandar', handle: '@pranavchandar' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/pranav-chandar-v-b-530950147/', handle: 'pranav-chandar-v-b' },
   { label: 'Instagram', href: 'https://www.instagram.com/pranavchandarvb/', handle: '@pranavchandarvb' },
