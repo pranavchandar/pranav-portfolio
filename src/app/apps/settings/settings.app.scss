@@ -1,0 +1,146 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--chrome);
+}
+
+.panel {
+  flex: 1;
+  padding: 4px 6px 10px;
+}
+
+.group {
+  margin: 0 0 12px;
+  padding: 10px 12px 12px;
+  border: 0;
+  box-shadow: inset 1px 1px 0 var(--bevel-lo), inset -1px -1px 0 var(--bevel-hi), inset 2px 2px 0 var(--bevel-hi), inset -2px -2px 0 var(--bevel-lo);
+
+  legend {
+    padding: 0 6px;
+    color: var(--amber);
+  }
+}
+
+.walls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.wall {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  padding: 6px;
+  border: 0;
+  background: none;
+  font-size: 17px;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px var(--bevel-mid);
+
+  &.is-on {
+    box-shadow: inset 0 0 0 2px var(--red);
+    background: rgba(224, 27, 27, 0.12);
+  }
+
+  &__swatch {
+    width: 100%;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    background: #111 center / cover;
+    box-shadow: inset 0 0 0 2px #000;
+
+    &--bars {
+      background: url('../../../assets/images/intro-placeholder2.webp') center / cover;
+    }
+
+    &--grid {
+      background:
+        repeating-linear-gradient(90deg, #ff2a6d 0 1px, transparent 1px 12px) bottom / 100% 45% no-repeat,
+        linear-gradient(180deg, #050008, #2a0020 55%, #000 55%);
+    }
+
+    &--teal {
+      background: #008080;
+    }
+  }
+}
+
+.note {
+  margin: 8px 0 0;
+  font-size: 16px;
+  color: var(--ink-dim);
+}
+
+.check {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 0;
+
+  input {
+    accent-color: var(--red);
+    width: 18px;
+    height: 18px;
+  }
+
+  small {
+    color: var(--ink-dim);
+    font-size: 16px;
+  }
+}
+
+.slider {
+  display: grid;
+  grid-template-columns: 130px 1fr 150px;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 0;
+
+  input {
+    accent-color: var(--red);
+  }
+
+  b {
+    font-weight: 400;
+    color: var(--phosphor);
+  }
+
+  .hot {
+    color: var(--red);
+  }
+}
+
+.sys {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  margin: 0 0 10px;
+
+  dt {
+    color: var(--ink-dim);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .slider {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .check {
+    grid-template-columns: auto 1fr;
+
+    small {
+      grid-column: 2;
+    }
+  }
+}

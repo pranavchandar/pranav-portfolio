@@ -1,0 +1,376 @@
+:host {
+  display: block;
+}
+
+.os {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  user-select: none;
+
+  &.is-shaking {
+    animation: shake 0.12s linear infinite;
+  }
+
+  &.is-jittery {
+    animation: jitter 0.25s steps(2) infinite;
+  }
+
+  &.is-party .wall {
+    animation: rainbow 1.2s linear infinite;
+  }
+}
+
+// ── Wallpapers ─────────────────────────────────────────────────
+.wall {
+  position: absolute;
+  inset: 0;
+  background-color: #0c0405;
+  background-size: cover;
+  background-position: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.82));
+  }
+
+  &--bars {
+    background-image: url('../../assets/images/intro-placeholder2.webp');
+  }
+
+  &--teal {
+    background: #008080;
+
+    &::after {
+      background: none;
+    }
+  }
+
+  &--art::after {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.5));
+  }
+
+  &--grid {
+    background: linear-gradient(180deg, #050008 0%, #2a0020 52%, #000 52%);
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &__sun {
+    position: absolute;
+    left: 50%;
+    top: 14%;
+    width: min(46vw, 420px);
+    aspect-ratio: 1;
+    transform: translateX(-10%);
+    border-radius: 50%;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 58%, #050008 58% 62%, transparent 62% 66%) ,
+      linear-gradient(180deg, #ffcf33, #ff2a6d 70%);
+    -webkit-mask: linear-gradient(180deg, #000 0 75%, transparent 75%);
+    mask: linear-gradient(180deg, #000 0 75%, transparent 75%);
+    filter: drop-shadow(0 0 40px rgba(255, 42, 109, 0.6));
+  }
+
+  &__grid {
+    position: absolute;
+    left: -50%;
+    right: -50%;
+    top: 52%;
+    bottom: -40%;
+    background:
+      repeating-linear-gradient(90deg, rgba(255, 42, 109, 0.8) 0 2px, transparent 2px 80px),
+      repeating-linear-gradient(0deg, rgba(255, 42, 109, 0.8) 0 2px, transparent 2px 80px);
+    transform: perspective(300px) rotateX(70deg);
+    transform-origin: top;
+    animation: drive 1s linear infinite;
+  }
+}
+
+// ── Hero name ───────────────────────────────────────────────────
+.hero {
+  position: absolute;
+  left: max(260px, 22vw);
+  bottom: calc(var(--taskbar-h) + 7vh);
+  max-width: 58vw;
+  pointer-events: none;
+  color: #fff;
+
+  &__name {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font: 400 clamp(56px, 9vw, 150px) / 0.82 var(--font-display);
+    letter-spacing: 0.01em;
+    position: relative;
+  }
+
+  &__first {
+    font-size: 0.72em;
+    text-shadow: 4px 4px 0 var(--red-ink);
+  }
+
+  &__last {
+    color: var(--red);
+    text-shadow:
+      4px 4px 0 #000,
+      0 0 30px rgba(224, 27, 27, 0.5);
+  }
+
+  &__title {
+    margin: 10px 0 0;
+    font: 400 clamp(18px, 1.8vw, 26px) / 1.1 var(--font-pixel);
+    color: var(--amber);
+    letter-spacing: 0.04em;
+    border-left: 3px solid var(--red);
+    padding-left: 10px;
+  }
+
+  &__hint {
+    margin: 8px 0 0 13px;
+    font-size: 17px;
+    color: var(--ink-dim);
+
+    kbd {
+      font-family: var(--font-pixel);
+      padding: 0 5px;
+      border: 1px solid var(--bevel-hi);
+      background: var(--chrome-face);
+    }
+  }
+}
+
+// ── Desktop pet ─────────────────────────────────────────────────
+.pet {
+  position: absolute;
+  right: -40px;
+  bottom: calc(var(--taskbar-h) + 2vh);
+  width: min(46vw, 640px);
+  aspect-ratio: 16 / 9;
+  border: 0;
+  padding: 0;
+  background: none;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+
+    &.on {
+      opacity: 1;
+    }
+  }
+
+  &__quip {
+    position: absolute;
+    left: 6%;
+    top: 0;
+    padding: 8px 12px;
+    background: #fff7d6;
+    color: #120808;
+    font-size: 20px;
+    box-shadow: 3px 3px 0 #000, inset 0 0 0 2px #000;
+    animation: pop 0.2s steps(3) both;
+    white-space: nowrap;
+  }
+}
+
+// ── Icons ──────────────────────────────────────────────────────
+.icons {
+  position: absolute;
+  inset: 0 0 var(--taskbar-h);
+}
+
+.icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 96px;
+  padding: 6px 2px 4px;
+  border: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  touch-action: none;
+  will-change: transform;
+
+  os-icon {
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.7));
+  }
+
+  &__label {
+    font: 400 17px/1.05 var(--font-pixel);
+    color: #fff;
+    text-align: center;
+    overflow-wrap: anywhere;
+    padding: 1px 4px;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  }
+
+  &:hover &__label {
+    color: var(--amber);
+  }
+
+  &.is-selected {
+    .icon__label {
+      background: var(--red-deep);
+      text-shadow: none;
+      outline: 1px dotted var(--amber);
+    }
+
+    os-icon {
+      filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.7)) sepia(1) hue-rotate(-50deg) saturate(3);
+    }
+  }
+}
+
+.windows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+// ── Close guard ────────────────────────────────────────────────
+.modal {
+  position: absolute;
+  inset: 0;
+  z-index: 6000;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 16px;
+}
+
+.dialog {
+  width: min(480px, 100%);
+  padding: 4px;
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    8px 8px 0 rgba(0, 0, 0, 0.6);
+  animation: pop 0.2s steps(3) both;
+
+  &__bar {
+    background: var(--title-active);
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 21px;
+  }
+
+  &__body {
+    display: flex;
+    gap: 16px;
+    padding: 18px 16px 8px;
+    align-items: flex-start;
+
+    p {
+      margin: 0;
+      white-space: pre-line;
+      line-height: 1.15;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px 16px;
+  }
+
+  &__leave {
+    transition: transform 0.12s ease-out;
+
+    small {
+      color: var(--amber);
+    }
+  }
+}
+
+// ── Toasts ─────────────────────────────────────────────────────
+.toasts {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(520px, calc(100vw - 24px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  font-size: 20px;
+  border-left: 6px solid var(--red);
+  animation: pop 0.2s steps(3) both;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  25% { transform: translate(6px, -4px) rotate(0.5deg); }
+  50% { transform: translate(-5px, 5px) rotate(-0.5deg); }
+  75% { transform: translate(4px, 3px); }
+}
+
+@keyframes jitter {
+  50% { transform: translate(1px, -1px); }
+}
+
+@keyframes rainbow {
+  to { filter: hue-rotate(360deg); }
+}
+
+@keyframes drive {
+  to { background-position: 0 80px; }
+}
+
+// ── Small screens: no pet, centred name, tighter icons ───────
+@media (max-width: 1000px) {
+  .pet {
+    opacity: 0.35;
+    width: 70vw;
+    right: -15vw;
+    pointer-events: none;
+  }
+
+  .hero {
+    left: auto;
+    right: 16px;
+    max-width: calc(100vw - 140px);
+    text-align: right;
+
+    &__title {
+      border-left: 0;
+      border-right: 3px solid var(--red);
+      padding: 0 10px 0 0;
+    }
+
+    &__hint {
+      display: none;
+    }
+  }
+}

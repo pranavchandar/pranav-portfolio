@@ -1,0 +1,55 @@
+<div class="ide">
+  <nav class="activity" aria-hidden="true">
+    <span>⧉</span><span>⌕</span><span>⑂</span><span>▷</span><span class="activity__bottom">⚙</span>
+  </nav>
+  <aside class="explorer">
+    <p class="explorer__head">EXPLORER</p>
+    <p class="explorer__dir">▾ PRANAV</p>
+    @for (f of files; track f) {
+      <button type="button" class="explorer__file" [class.is-on]="file() === f" (click)="file.set(f)">
+        <span class="badge" [class.badge--json]="f.endsWith('json')">{{ f.endsWith('json') ? '{}' : 'TS' }}</span>{{ f }}
+      </button>
+    }
+    <p class="explorer__dir explorer__dir--muted">▸ node_modules <small>(4.2 GB)</small></p>
+    <p class="explorer__dir explorer__dir--muted">▸ .sleep <small>(empty)</small></p>
+  </aside>
+
+  <section class="editor">
+    <div class="tabs">
+      @for (f of files; track f) {
+        <button type="button" class="tab" [class.is-on]="file() === f" (click)="file.set(f)">{{ f }}</button>
+      }
+      <span class="tabs__spacer"></span>
+      <button type="button" class="run" (click)="run()">▶ Run</button>
+    </div>
+    <div class="code scroll95">
+      <ol>
+        @for (l of lines(); track $index) {
+          <li [innerHTML]="l"></li>
+        }
+      </ol>
+    </div>
+    @if (output(); as out) {
+      <div class="panel">
+        <div class="panel__head">
+          <span>TERMINAL</span>
+          <button type="button" (click)="output.set(null)" aria-label="Close panel">×</button>
+        </div>
+        <pre class="scroll95">@for (o of out; track $index) {<span [class.warn]="o.startsWith('⚠')" [class.ok]="o.startsWith('✔')">{{ o }}</span>
+}</pre>
+        @if (out.length >= 8) {
+          <button type="button" class="btn95 btn95--primary panel__cta" (click)="contact()">resolve the promise →</button>
+        }
+      </div>
+    }
+  </section>
+</div>
+<footer class="status">
+  <span>⑂ main*</span>
+  <span>⊗ 0 ⚠ 2</span>
+  <span class="status__spacer"></span>
+  <span>Ln 1, Col 1</span>
+  <span>UTF-8</span>
+  <span>{{ file().endsWith('json') ? 'JSON' : 'TypeScript' }}</span>
+  <span>☕ Prettier</span>
+</footer>

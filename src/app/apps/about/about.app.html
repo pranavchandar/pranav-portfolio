@@ -1,0 +1,32 @@
+<div class="menubar">
+  @for (m of menus; track m) {
+    <button type="button" (click)="menu(m)"><u>{{ m[0] }}</u>{{ m.slice(1) }}</button>
+  }
+</div>
+
+<article class="paper scroll95" contenteditable="true" spellcheck="false" (input)="dirty.set(true)"
+         aria-label="About Pranav (editable, but nothing is saved)">
+  <figure class="mugshot" contenteditable="false">
+    <img src="assets/images/abouutSmall.webp" alt="Pranav Chandar, looking thoughtfully off-camera" />
+    <figcaption>fig. 1 — the author, contemplating a NullPointerException</figcaption>
+  </figure>
+  <h1>&gt; whoami</h1>
+  <h2>{{ name }}</h2>
+  @for (p of paragraphs; track $index) {
+    <p>{{ p }}</p>
+  }
+  <p class="aside">// psst: you can type in here. it won't save. nothing ever does.</p>
+</article>
+
+<div class="actions" contenteditable="false">
+  <button type="button" class="btn95 btn95--primary" (click)="open('resume')">Install RESUME.EXE</button>
+  <button type="button" class="btn95" (click)="open('contact')">Say hi</button>
+  <button type="button" class="btn95" (click)="open('punch')">Punch him instead</button>
+</div>
+
+<footer class="status">
+  <span>{{ dirty() ? '*unsaved*' : 'Ln 1, Col 1' }}</span>
+  <span>{{ words }} words</span>
+  <span>100%</span>
+  <span>UTF-8 (with feelings)</span>
+</footer>

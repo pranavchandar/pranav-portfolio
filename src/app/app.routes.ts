@@ -1,54 +1,28 @@
 import { Routes } from '@angular/router';
+import { AppId } from './os/apps';
+
+const os = () => import('./os/os.component').then((m) => m.OsComponent);
+
+/** Every old URL still works: it boots PRANAV OS and opens the matching window. */
+const deepLink = (path: string, open: AppId, title: string) => ({
+  path,
+  title: `${title} — PRANAV OS`,
+  data: { open },
+  loadComponent: os,
+});
 
 export const routes: Routes = [
+  { path: '', title: 'PRANAV OS 95 — Pranav Chandar', loadComponent: os },
+  deepLink('about', 'about', 'ABOUT_ME.TXT'),
+  deepLink('resume', 'resume', 'RESUME.EXE'),
+  deepLink('work/programming', 'code', 'PRANAV.TS'),
+  deepLink('work/digital-art', 'art', 'ART_GALLERY'),
+  deepLink('work/cgi', 'cgi', 'CGI_TAPES'),
+  deepLink('secret', 'intro', 'INTRO.MOV'),
   {
-    path: '',
+    path: 'boring',
     title: 'Pranav Chandar — Software Engineer & Digital Artist',
-    loadComponent: () =>
-      import('./home/home.component').then((m) => m.HomeComponent),
-  },
-  {
-    path: 'about',
-    title: 'About — Pranav Chandar',
-    loadComponent: () =>
-      import('./about/about.component').then((m) => m.AboutComponent),
-  },
-  {
-    path: 'resume',
-    title: 'Resume — Pranav Chandar',
-    loadComponent: () =>
-      import('./resume/resume.component').then((m) => m.ResumeComponent),
-  },
-  {
-    path: 'work/programming',
-    title: 'Programming — Pranav Chandar',
-    data: { discipline: 'Programming', tagline: 'Backend systems, Angular apps, and AI experiments.' },
-    loadComponent: () =>
-      import('./placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
-  },
-  {
-    path: 'work/digital-art',
-    title: 'Digital Art — Pranav Chandar',
-    loadComponent: () =>
-      import('./digital-art/digital-art.component').then((m) => m.DigitalArtComponent),
-  },
-  {
-    path: 'work/cgi',
-    title: 'CGI — Pranav Chandar',
-    loadComponent: () =>
-      import('./cgi/cgi.component').then((m) => m.CgiComponent),
-  },
-  {
-    path: 'secret',
-    title: 'Pranav Chandar',
-    loadComponent: () =>
-      import('./landing-page/landing-page.component').then((m) => m.LandingPageComponent),
-  },
-  {
-    path: 'test',
-    title: 'Test — Pranav Chandar',
-    loadComponent: () =>
-      import('./test/test.component').then((m) => m.TestComponent),
+    loadComponent: () => import('./boring/boring.component').then((m) => m.BoringComponent),
   },
   { path: '**', redirectTo: '' },
 ];

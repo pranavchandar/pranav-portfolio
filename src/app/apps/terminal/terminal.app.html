@@ -1,0 +1,14 @@
+<div class="term scroll95" [class]="'term scroll95 term--' + theme()" #screen (click)="focus()">
+  @for (l of lines(); track $index) {
+    @if (l.href) {
+      <a class="line" [href]="l.href" target="_blank" rel="noopener noreferrer">{{ l.text }} ↗</a>
+    } @else {
+      <div class="line" [class]="'line line--' + (l.cls || 'plain')">{{ l.text || ' ' }}</div>
+    }
+  }
+  <label class="prompt" [class.is-busy]="busy()">
+    <span class="prompt__ps">{{ prompt() }}</span>
+    <input #input class="prompt__in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+           aria-label="Terminal input" (keydown)="onKey($event)" />
+  </label>
+</div>

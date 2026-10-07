@@ -1,0 +1,97 @@
+<div class="banner" role="note">
+  <os-icon name="tie" [size]="28" />
+  <p><b>BORING MODE.</b> All fun has been disabled. Here is everything, in plain text.</p>
+  <a routerLink="/" class="banner__back">Re-enable fun →</a>
+</div>
+
+<main class="page">
+  <header class="intro">
+    <h1>{{ name }}</h1>
+    <p class="role">Senior Software Engineer · Digital Artist · CGI</p>
+    <p class="summary">{{ summary }}</p>
+    <div class="cta">
+      <a class="btn" [href]="cv" download>Download CV (PDF)</a>
+      @for (l of links; track l.label) {
+        <a class="link" [href]="l.href" [attr.target]="l.href.startsWith('http') ? '_blank' : null" rel="noopener noreferrer">{{ l.label }}</a>
+      }
+    </div>
+  </header>
+
+  <section aria-labelledby="exp">
+    <h2 id="exp">Experience</h2>
+    @for (job of jobs; track job.company) {
+      <article class="job">
+        <div class="job__head">
+          <h3>{{ job.role }} — {{ job.company }}</h3>
+          <span>{{ job.period }}</span>
+        </div>
+        <ul>
+          @for (b of job.bullets; track $index) {
+            <li>{{ b }}</li>
+          }
+        </ul>
+      </article>
+    }
+  </section>
+
+  <section aria-labelledby="skills">
+    <h2 id="skills">Skills</h2>
+    <dl class="skills">
+      @for (g of skills; track g.title) {
+        <div>
+          <dt>{{ g.title }}</dt>
+          <dd>{{ g.items.join(', ') }}</dd>
+        </div>
+      }
+    </dl>
+  </section>
+
+  <section aria-labelledby="projects">
+    <h2 id="projects">Projects</h2>
+    @for (p of projects; track p.title) {
+      <article class="project">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.description }}</p>
+      </article>
+    }
+  </section>
+
+  <section aria-labelledby="edu">
+    <h2 id="edu">Education</h2>
+    @for (e of education; track e.degree) {
+      <p class="edu"><b>{{ e.degree }}</b> — {{ e.school }}, {{ e.period }}</p>
+    }
+  </section>
+
+  <section aria-labelledby="about">
+    <h2 id="about">About</h2>
+    @for (p of about; track $index) {
+      <p>{{ p }}</p>
+    }
+  </section>
+
+  <section aria-labelledby="art">
+    <h2 id="art">Digital art <small>({{ artCount }} pieces — <a routerLink="/work/digital-art">see all in the gallery</a>)</small></h2>
+    <div class="art">
+      @for (a of art; track a.id) {
+        <img [src]="a.thumb" [alt]="a.title" loading="lazy" />
+      }
+    </div>
+  </section>
+
+  <section aria-labelledby="cgi">
+    <h2 id="cgi">CGI</h2>
+    <div class="cgi">
+      @for (t of tapes; track t.id) {
+        <a [href]="'https://www.youtube.com/watch?v=' + t.id" target="_blank" rel="noopener noreferrer">
+          <img [src]="thumb(t.id)" [alt]="t.title" loading="lazy" />
+          <span>{{ t.title }}</span>
+        </a>
+      }
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Built with Angular, as a fake operating system. <a routerLink="/">Go back to PRANAV OS →</a></p>
+</footer>

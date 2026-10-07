@@ -1,0 +1,63 @@
+@if (menuOpen()) {
+  <nav class="start-menu bevel" aria-label="Start menu">
+    <div class="start-menu__banner" aria-hidden="true">PRANAV<b>OS</b> 95</div>
+    <ul class="start-menu__list">
+      @for (id of menu; track id) {
+        <li>
+          <button type="button" class="start-menu__item" (click)="launch(id)">
+            <os-icon [name]="apps[id].icon" [size]="28" />
+            <span>{{ apps[id].label }}</span>
+          </button>
+        </li>
+      }
+      <li class="start-menu__sep" role="separator"></li>
+      <li>
+        <a class="start-menu__item" routerLink="/boring">
+          <os-icon name="tie" [size]="28" />
+          <span>Boring Mode <small>(for recruiters)</small></span>
+        </a>
+      </li>
+      <li>
+        <button type="button" class="start-menu__item" (click)="shutdown()">
+          <os-icon name="button" [size]="28" />
+          <span>Shut Down...</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+}
+
+<footer class="taskbar bevel">
+  <button type="button" class="start btn95" [class.is-pressed]="menuOpen()" (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen()" aria-label="Start">
+    <os-icon name="smiley" [size]="24" />
+    <span class="start__label">PRANAV</span>
+  </button>
+
+  <div class="tasks">
+    @for (w of wm.windows(); track w.id) {
+      <button type="button" class="task btn95" [class.is-pressed]="wm.active()?.id === w.id"
+              (click)="wm.toggleFromTaskbar(w.id)" [attr.aria-label]="w.app.title">
+        <os-icon [name]="w.app.icon" [size]="20" />
+        <span class="task__label">{{ w.app.label }}</span>
+      </button>
+    }
+    @if (wm.loading()) {
+      <span class="task task--loading">⌛ loading…</span>
+    }
+  </div>
+
+  <div class="tray sunken">
+    <span class="tray__uptime" title="Time since Pranav wrote his first line of production code">
+      <span class="tray__uptime-label">CAREER UPTIME</span> {{ uptime() }}
+    </span>
+    <button type="button" class="tray__btn" (click)="summonAssistant()" aria-label="Summon assistant" title="Need help?">
+      <os-icon name="smiley" [size]="20" />
+    </button>
+    <button type="button" class="tray__btn" (click)="toggleSound()" [attr.aria-label]="os.settings().sound ? 'Mute' : 'Unmute'"
+            [class.is-muted]="!os.settings().sound" title="Sound">
+      <os-icon name="speaker" [size]="22" />
+    </button>
+    <time class="tray__clock">{{ clock() }}</time>
+  </div>
+</footer>

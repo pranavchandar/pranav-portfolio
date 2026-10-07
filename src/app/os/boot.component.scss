@@ -1,0 +1,149 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: #000;
+  color: #c9c9c9;
+  font-family: var(--font-pixel);
+}
+
+.boot {
+  height: 100%;
+}
+
+.post {
+  padding: 28px 32px;
+  font-size: clamp(16px, 2.2vw, 24px);
+  line-height: 1.15;
+  max-width: 1100px;
+  overflow: hidden;
+  height: 100%;
+
+  &__logo {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    float: right;
+    color: var(--phosphor);
+    text-align: right;
+    font-size: 0.8em;
+
+    @media (max-width: 700px) {
+      display: none;
+    }
+  }
+
+  &__line {
+    margin: 0;
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+    min-height: 1.15em;
+  }
+
+  &__dots {
+    flex: 1;
+    max-width: 240px;
+    border-bottom: 3px dotted #555;
+    margin-bottom: 6px;
+  }
+
+  &__ok {
+    color: #fff;
+
+    &.bad {
+      color: var(--red);
+      animation: blink 0.6s steps(2) infinite;
+    }
+  }
+
+  &__hint {
+    position: absolute;
+    bottom: 20px;
+    left: 32px;
+    right: 32px;
+    margin: 0;
+    color: #777;
+    font-size: 0.85em;
+  }
+}
+
+.splash {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at center, rgba(146, 0, 0, 0.35), transparent 60%),
+    #000;
+
+  &__face {
+    filter: drop-shadow(0 0 18px rgba(61, 255, 110, 0.7));
+    animation: breathe 1.6s ease-in-out infinite;
+  }
+
+  &__title {
+    margin: 12px 0 0;
+    font: 400 clamp(64px, 12vw, 140px) / 0.9 var(--font-display);
+    color: #fff;
+    letter-spacing: 0.02em;
+
+    span {
+      color: var(--red);
+      margin-left: 0.15em;
+    }
+
+    sup {
+      font-family: var(--font-chunky);
+      font-size: 0.18em;
+      color: var(--amber);
+      vertical-align: top;
+      margin-left: 0.3em;
+    }
+  }
+
+  &__sub {
+    margin: 8px 0 28px;
+    color: var(--ink-dim);
+    font-size: 22px;
+  }
+
+  &__bar {
+    display: flex;
+    gap: 3px;
+    padding: 5px;
+    width: min(420px, 80vw);
+    height: 30px;
+
+    i {
+      flex: 1;
+      background: transparent;
+
+      &.on {
+        background: var(--red);
+        box-shadow: 0 0 8px var(--red);
+      }
+    }
+  }
+
+  &__msg {
+    margin: 14px 0 0;
+    color: var(--phosphor);
+    font-size: 20px;
+    min-height: 1.2em;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  50% {
+    transform: scale(1.06);
+  }
+}

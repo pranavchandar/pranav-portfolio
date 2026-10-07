@@ -1,0 +1,44 @@
+<div class="hud">
+  <div class="bar bar--you">
+    <span class="bar__name">YOU</span>
+    <div class="bar__track"><div class="bar__fill" style="width: 100%"></div></div>
+    <span class="bar__note">∞ (unfair)</span>
+  </div>
+  <div class="vs">ROUND {{ rounds() }}</div>
+  <div class="bar bar--him">
+    <span class="bar__name">PRANAV</span>
+    <div class="bar__track"><div class="bar__fill" [style.width.%]="hp()"></div></div>
+    <span class="bar__note">{{ hp() }}/100 HP</span>
+  </div>
+</div>
+
+<button type="button" class="arena" [class.is-hit]="oof()" (click)="punch($event)" [disabled]="ko()"
+        aria-label="Punch Pranav (he consented, mostly)">
+  <span class="fight" aria-hidden="true">FIGHT!</span>
+  <img class="fighter" src="assets/images/about me.webp" alt="" [class.gone]="ko()" />
+  @if (oof()) {
+    <img class="fighter fighter--oof" src="assets/images/about me oof.webp" alt="" />
+  }
+  @for (h of hits(); track h.id) {
+    <span class="dmg" [class.dmg--crit]="h.crit" [style.left.px]="h.x" [style.top.px]="h.y">{{ h.text }}</span>
+  }
+  @if (combo() > 1 && !ko()) {
+    <span class="combo">{{ combo() }} HIT COMBO!</span>
+  }
+  @if (taunt(); as t) {
+    <span class="taunt">"{{ t }}"</span>
+  }
+</button>
+
+@if (ko()) {
+  <div class="ko">
+    <img class="poof" src="assets/images/poof.webp" alt="" />
+    <p class="ko__text">K.O.!</p>
+    <p class="ko__sub">PRANAV has fainted. He dropped something…</p>
+    <button type="button" class="loot" (click)="loot()">
+      <img src="assets/images/resume.webp" alt="" />
+      <span><b>RESUME.EXE</b><br /><em>★ LEGENDARY ★</em><br />click to loot</span>
+    </button>
+    <button type="button" class="btn95" (click)="rematch()">Rematch (he respawns)</button>
+  </div>
+}

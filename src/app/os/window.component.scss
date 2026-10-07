@@ -1,0 +1,162 @@
+:host {
+  display: contents;
+}
+
+.win {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  background: var(--chrome);
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    inset 2px 2px 0 var(--bevel-mid),
+    inset -2px -2px 0 #160f10,
+    8px 10px 0 rgba(0, 0, 0, 0.45);
+  animation: pop 0.22s steps(4) both;
+  min-width: 300px;
+  min-height: 200px;
+
+  &.is-min {
+    display: none;
+  }
+
+  &.is-max {
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: calc(100% - var(--taskbar-h)) !important;
+    box-shadow: none;
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+.win__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 3px 0 6px;
+  background: var(--title-idle);
+  color: var(--ink-dim);
+  user-select: none;
+  touch-action: none;
+  flex: none;
+
+  .is-active & {
+    background: var(--title-active);
+    color: #fff;
+  }
+}
+
+.win__title {
+  flex: 1;
+  margin: 0;
+  font: 400 21px/1 var(--font-ui);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.win__ctl {
+  display: flex;
+  gap: 3px;
+}
+
+.win__btn {
+  width: 26px;
+  height: 23px;
+  border: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: var(--chrome-face);
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    inset -2px -2px 0 #160f10;
+
+  &:active {
+    box-shadow:
+      inset 1px 1px 0 var(--bevel-lo),
+      inset -1px -1px 0 var(--bevel-hi);
+  }
+
+  &--close:hover {
+    background: var(--red);
+  }
+}
+
+.glyph {
+  display: block;
+  color: #fff;
+
+  &--min {
+    width: 10px;
+    height: 3px;
+    background: currentColor;
+    margin-top: 8px;
+  }
+
+  &--max {
+    width: 12px;
+    height: 10px;
+    border: 2px solid currentColor;
+    border-top-width: 3px;
+  }
+
+  &--close {
+    font: 400 28px/0.6 var(--font-ui);
+  }
+}
+
+.win__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  > :first-child {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+.win__grip {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  touch-action: none;
+  background:
+    linear-gradient(135deg, transparent 0 55%, var(--bevel-hi) 55% 62%, transparent 62% 70%, var(--bevel-hi) 70% 77%, transparent 77% 85%, var(--bevel-hi) 85% 92%, transparent 92%);
+
+  .is-max & {
+    display: none;
+  }
+}
+
+@media (max-width: 719px) {
+  .win {
+    padding: 2px;
+  }
+
+  .win__btn--max,
+  .win__grip {
+    display: none;
+  }
+}
