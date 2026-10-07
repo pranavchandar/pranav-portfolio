@@ -1,0 +1,31 @@
+<div class="toolbar">
+  <a class="btn95 btn95--primary" [href]="mailto()" (click)="sent()">✉ Send</a>
+  <button type="button" class="btn95" (click)="shuffle()">🎲 Better subject</button>
+</div>
+
+<div class="fields">
+  <label>To:</label>
+  <span class="field95 static">Pranav Chandar &lt;{{ email.handle }}&gt;</span>
+  <label for="subj">Subject:</label>
+  <input id="subj" class="field95" [value]="subject()" (input)="subject.set($any($event.target).value)" />
+  <label for="urg">Urgency:</label>
+  <div class="urgency">
+    <input id="urg" type="range" min="0" max="5" [value]="urgency()" (input)="urgency.set(+$any($event.target).value)" />
+    <span [class.hot]="urgency() >= 4">{{ urgencyLabel() }}</span>
+  </div>
+</div>
+
+<textarea class="field95 body scroll95" aria-label="Message" [value]="body()" (input)="body.set($any($event.target).value)"></textarea>
+
+<section class="elsewhere">
+  <h2>Other ways to reach this human</h2>
+  <ul>
+    @for (l of socials; track l.label) {
+      <li>
+        <a [href]="l.href" target="_blank" rel="noopener noreferrer">
+          <b>{{ l.label }}</b><span>{{ l.handle }}</span><i>↗</i>
+        </a>
+      </li>
+    }
+  </ul>
+</section>

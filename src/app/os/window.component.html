@@ -1,0 +1,34 @@
+<section
+  class="win"
+  role="dialog"
+  [attr.aria-label]="win().app.title"
+  [class.is-active]="active()"
+  [class.is-max]="win().maximized"
+  [class.is-min]="win().minimized"
+  [style.left.px]="win().x"
+  [style.top.px]="win().y"
+  [style.width.px]="win().w"
+  [style.height.px]="win().h"
+  [style.z-index]="win().z"
+  (pointerdown)="wm.focus(win().id)"
+>
+  <header class="win__bar" (pointerdown)="startDrag($event)" (dblclick)="wm.toggleMax(win().id)">
+    <os-icon [name]="win().app.icon" [size]="20" />
+    <h2 class="win__title">{{ win().app.title }}</h2>
+    <div class="win__ctl" (pointerdown)="$event.stopPropagation()">
+      <button type="button" class="win__btn" aria-label="Minimize" (click)="wm.minimize(win().id)">
+        <span class="glyph glyph--min"></span>
+      </button>
+      <button type="button" class="win__btn win__btn--max" aria-label="Maximize" (click)="wm.toggleMax(win().id)">
+        <span class="glyph glyph--max"></span>
+      </button>
+      <button type="button" class="win__btn win__btn--close" aria-label="Close" (click)="wm.requestClose(win().id)">
+        <span class="glyph glyph--close">×</span>
+      </button>
+    </div>
+  </header>
+  <div class="win__body">
+    <ng-content />
+  </div>
+  <div class="win__grip" aria-hidden="true" (pointerdown)="startResize($event)"></div>
+</section>

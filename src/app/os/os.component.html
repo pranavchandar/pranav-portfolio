@@ -1,0 +1,102 @@
+<div class="os" [class.is-shaking]="os.shaking()" [class.is-jittery]="jittery()" [class.is-party]="os.party()">
+  <!-- Wallpaper -->
+  <div class="wall" [class]="'wall wall--' + wallpaper().kind" [style.background-image]="wallpaper().url" aria-hidden="true">
+    @if (wallpaper().kind === 'grid') {
+      <div class="wall__sun"></div>
+      <div class="wall__grid"></div>
+    }
+  </div>
+
+  <!-- The big name, straight from the old hero -->
+  <header class="hero">
+    <h1 class="hero__name">
+      <span class="hero__first">PRANAV</span>
+      <span class="hero__last">CHANDAR</span>
+    </h1>
+    <p class="hero__title">{{ title() }}</p>
+    <p class="hero__hint">double-click an icon · drag things around · press <kbd>`</kbd> for a terminal</p>
+  </header>
+
+  <!-- Desktop pet -->
+  <button type="button" class="pet" (click)="petClick()" aria-label="Poke the computer">
+    @for (src of petFrames; track src; let i = $index) {
+      <img [src]="src" alt="" [class.on]="i === petFrame()" />
+    }
+    @if (petQuip(); as q) {
+      <span class="pet__quip">{{ q }}</span>
+    }
+  </button>
+
+  <!-- Icons -->
+  <nav class="icons" aria-label="Desktop">
+    @for (icon of icons; track icon.id; let i = $index) {
+      <button
+        type="button"
+        class="icon"
+        [class.is-selected]="selected() === icon.id"
+        [style.transform]="'translate(' + positions()[i].x + 'px,' + positions()[i].y + 'px) rotate(' + positions()[i].r + 'deg)'"
+        (pointerdown)="iconPointerDown($event, i)"
+        (dblclick)="launch(icon.id)"
+        (keydown.enter)="launch(icon.id)"
+        [attr.aria-label]="'Open ' + icon.label"
+      >
+        <os-icon [name]="icon.icon" [size]="48" />
+        <span class="icon__label">{{ icon.wrapped }}</span>
+      </button>
+    }
+  </nav>
+
+  <!-- Windows -->
+  <div class="windows">
+    @for (w of wm.windows(); track w.id) {
+      <os-window [win]="w">
+        <ng-container *ngComponentOutlet="w.component; inputs: w.inputs" />
+      </os-window>
+    }
+  </div>
+
+  @if (wm.dialog(); as d) {
+    <div class="modal" role="alertdialog" aria-modal="true" [attr.aria-label]="d.guard.title">
+      <div class="dialog bevel">
+        <div class="dialog__bar">{{ d.guard.title }}</div>
+        <div class="dialog__body">
+          <os-icon name="warning" [size]="48" />
+          <p>{{ d.guard.message }}</p>
+        </div>
+        <div class="dialog__actions">
+          <button type="button" class="btn95 btn95--primary" (click)="resolveGuard(false)">{{ d.guard.stay }}</button>
+          <button
+            type="button"
+            class="btn95 dialog__leave"
+            [style.transform]="'translate(' + dodge().x + 'px,' + dodge().y + 'px)'"
+            (pointerenter)="dodgeLeave($event)"
+            (click)="resolveGuard(true)"
+          >
+            {{ d.guard.leave }}
+            @if (dodgeText()) {
+              <small>({{ dodgeText() }})</small>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="toasts" aria-live="polite">
+    @for (t of os.toasts(); track t.id) {
+      <div class="toast bevel"><os-icon [name]="t.icon" [size]="28" /><span>{{ t.text }}</span></div>
+    }
+  </div>
+
+  <os-taskbar />
+  <os-assistant />
+</div>
+
+@if (os.phase() === 'boot') {
+  <os-boot [quick]="quickBoot()" (done)="booted()" />
+}
+@if (idle()) {
+  <os-screensaver />
+}
+<os-crash />
+<os-effects />

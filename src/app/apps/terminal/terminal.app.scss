@@ -1,0 +1,105 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.term {
+  --fg: var(--phosphor);
+  --fg-dim: #1f9c45;
+  flex: 1;
+  padding: 12px 14px;
+  background: #020802;
+  color: var(--fg);
+  font: 400 19px/1.15 var(--font-pixel);
+  text-shadow: 0 0 6px color-mix(in srgb, var(--fg) 55%, transparent);
+  user-select: text;
+  box-shadow: inset 2px 2px 0 #000;
+
+  &--amber {
+    --fg: #ffb000;
+    --fg-dim: #a06e00;
+    background: #0a0600;
+  }
+
+  &--red {
+    --fg: #ff4a4a;
+    --fg-dim: #9a2020;
+    background: #0a0202;
+  }
+
+  &--blue {
+    --fg: #76d6ff;
+    --fg-dim: #2f7aa0;
+    background: #01060a;
+  }
+}
+
+.line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 1.15em;
+  color: inherit;
+  text-decoration: none;
+
+  &--dim {
+    color: var(--fg-dim);
+  }
+
+  &--cmd {
+    color: #fff;
+  }
+
+  &--err {
+    color: #ff5a5a;
+  }
+
+  &--hot {
+    color: #fff;
+    background: color-mix(in srgb, var(--fg) 25%, transparent);
+    width: fit-content;
+    padding: 0 4px;
+  }
+
+  &--amber {
+    color: var(--amber);
+  }
+
+  &--ok {
+    color: var(--fg);
+  }
+}
+
+a.line:hover {
+  background: var(--fg);
+  color: #000;
+}
+
+.prompt {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+
+  &__ps {
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  &__in {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--fg);
+    font: inherit;
+    text-shadow: inherit;
+    caret-color: var(--fg);
+    outline: none;
+  }
+
+  &.is-busy {
+    opacity: 0.4;
+  }
+}

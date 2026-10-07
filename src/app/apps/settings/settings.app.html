@@ -1,0 +1,54 @@
+<div class="panel scroll95">
+  <fieldset class="group">
+    <legend>Display</legend>
+    <div class="walls">
+      @for (w of wallpapers; track w.id) {
+        <button type="button" class="wall" [class.is-on]="s().wallpaper === w.id" (click)="setWallpaper(w.id)">
+          <span class="wall__swatch wall__swatch--{{ w.id }}"></span>{{ w.label }}
+        </button>
+      }
+      <button type="button" class="wall" [class.is-on]="!!artWallpaper()" (click)="randomArt()">
+        <span class="wall__swatch" [style.background-image]="artWallpaper() ? 'url(' + artWallpaper()!.thumb + ')' : null">🎲</span>
+        {{ artWallpaper() ? artWallpaper()!.title : 'Random art' }}
+      </button>
+    </div>
+    <p class="note">Tip: any piece in ART_GALLERY can be your wallpaper.</p>
+  </fieldset>
+
+  <fieldset class="group">
+    <legend>Effects</legend>
+    @for (t of toggles; track t.key) {
+      <label class="check">
+        <input type="checkbox" [checked]="s()[t.key]" (change)="toggle(t.key)" />
+        <span>{{ t.label }}</span>
+        <small>{{ t.note }}</small>
+      </label>
+    }
+  </fieldset>
+
+  <fieldset class="group">
+    <legend>Very Important Sliders</legend>
+    <label class="slider">
+      <span>Caffeine</span>
+      <input type="range" min="0" max="100" [value]="s().caffeine" (input)="slide('caffeine', $event)" />
+      <b [class.hot]="s().caffeine >= 85">{{ caffeineLabel() }}</b>
+    </label>
+    <label class="slider">
+      <span>Pretentiousness</span>
+      <input type="range" min="0" max="100" [value]="s().pretension" (input)="slide('pretension', $event)" />
+      <b>{{ s().pretension }}%</b>
+    </label>
+    <p class="note">Pretentiousness rewrites the job title on the desktop. Use responsibly.</p>
+  </fieldset>
+
+  <fieldset class="group">
+    <legend>System</legend>
+    <dl class="sys">
+      <dt>OS</dt><dd>PRANAV OS 95 · build 2026.10</dd>
+      <dt>Processor</dt><dd>1× Logic, 1× Creativity (hyperthreaded)</dd>
+      <dt>Career uptime</dt><dd>{{ uptime() }}</dd>
+      <dt>Registered to</dt><dd>You, apparently</dd>
+    </dl>
+    <button type="button" class="btn95" (click)="reset()">Restore factory settings</button>
+  </fieldset>
+</div>

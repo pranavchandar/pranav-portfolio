@@ -1,0 +1,124 @@
+<div class="wizard">
+  <aside class="banner" aria-hidden="true">
+    <os-icon name="floppy" [size]="96" />
+    <p class="banner__title">PRANAV<br />v6.2</p>
+    <p class="banner__sub">Setup</p>
+    <ol class="banner__steps">
+      @for (s of steps; track s; let i = $index) {
+        <li [class.is-done]="i < step()" [class.is-now]="i === step()">{{ s }}</li>
+      }
+    </ol>
+  </aside>
+
+  <section class="page scroll95">
+    <a class="skip" [href]="cv" download (click)="downloaded()">⤓ impatient? download the CV PDF</a>
+
+    @switch (step()) {
+      @case (0) {
+        <h1>Welcome to the Pranav v6.2 Setup Wizard</h1>
+        <p>This wizard will install <b>PRANAV CHANDAR</b> (Senior Software Engineer) into your organization.</p>
+        <p class="summary">{{ summary }}</p>
+        <p>It is strongly recommended that you close all other candidate applications before continuing.</p>
+        <p>Click <b>Next</b> to continue, or <b>Cancel</b> to remain Pranav-less.</p>
+      }
+      @case (1) {
+        <h1>License Agreement</h1>
+        <p>Please read the following license agreement. Use the scroll bar to view the rest of this agreement.</p>
+        <div class="eula sunken scroll95">
+          <p><b>PRANAV END-USER LICENSE AGREEMENT (EULA)</b></p>
+          <p>1. By installing Pranav, you agree to receive clean, tested, well-reviewed code.</p>
+          <p>2. Pranav may, without prior notice, migrate your legacy systems to something from this decade.</p>
+          <p>3. Pranav will introduce automated tests. Manual regression testing will be reduced by ~70%. You may experience unfamiliar feelings of free time.</p>
+          <p>4. Pranav may draw your team as mythological creatures. These drawings remain the property of Pranav and will be extremely flattering.</p>
+          <p>5. Pranav is not responsible for any productivity lost while watching his CGI reel.</p>
+          <p>6. Coffee is not included and must be supplied separately.</p>
+          <p>7. This license is perpetual, non-transferable, and very good value.</p>
+        </div>
+        <div class="choices">
+          <label><input type="radio" name="eula" [checked]="accepted()" (change)="accepted.set(true)" /> I accept the agreement</label>
+          <label><input type="radio" name="eula" [checked]="!accepted()" (change)="decline()" /> {{ declineLabel() }}</label>
+        </div>
+      }
+      @case (2) {
+        <h1>Experience</h1>
+        <div class="uptime sunken" aria-label="Live experience counter">
+          @for (u of uptimeUnits(); track u.label) {
+            <div class="uptime__unit"><b>{{ u.value }}</b><span>{{ u.label }}</span></div>
+          }
+        </div>
+        <p class="uptime__caption">^ live. it keeps going. that's the point.</p>
+        @for (job of jobs; track job.company) {
+          <div class="job">
+            <h2>{{ job.role }} <span>&#64; {{ job.company }}</span></h2>
+            <p class="job__period">{{ job.period }}</p>
+            <ul>
+              @for (b of job.bullets; track $index) {
+                <li>{{ b }}</li>
+              }
+            </ul>
+          </div>
+        }
+      }
+      @case (3) {
+        <h1>Select Components</h1>
+        <p>Select the components you want to install. All components are required because they are all great.</p>
+        <ul class="components">
+          @for (g of skills; track g.title) {
+            <li>
+              <label class="components__head">
+                <input type="checkbox" checked disabled /> <b>{{ g.title }}</b>
+                <span class="components__size">{{ g.power * 13 }} MB</span>
+              </label>
+              <div class="power" [attr.aria-label]="g.title + ' power ' + g.power"><i [style.width.%]="g.power"></i></div>
+              <p class="components__items">{{ g.items.join(' · ') }}</p>
+            </li>
+          }
+        </ul>
+        <p class="hint">Space required: a desk, a chair, and a decent monitor. Space available: hopefully.</p>
+      }
+      @case (4) {
+        <h1>Projects &amp; Education</h1>
+        @for (p of projects; track p.title) {
+          <div class="job">
+            <h2>{{ p.title }}</h2>
+            <p>{{ p.description }}</p>
+          </div>
+        }
+        <h1 class="mt">Education</h1>
+        @for (e of education; track e.degree) {
+          <div class="job">
+            <h2>{{ e.degree }}</h2>
+            <p class="job__period">{{ e.school }} · {{ e.period }}</p>
+          </div>
+        }
+      }
+      @case (5) {
+        <h1>Installing…</h1>
+        <p>Please wait while Setup installs Pranav into your organization.</p>
+        <div class="progress sunken"><i [style.width.%]="progress()"></i></div>
+        <p class="progress__pct">{{ progress() }}%</p>
+        <div class="log sunken" role="log">
+          @for (l of log(); track $index) {
+            <div>{{ l }}… done</div>
+          }
+        </div>
+      }
+      @case (6) {
+        <h1>Setup Complete</h1>
+        <p>Pranav v6.2 has been successfully installed. Your organization is now <b>~38% cooler</b>.</p>
+        <p><a class="btn95 btn95--primary" [href]="cv" download (click)="downloaded()">⤓ Download CV (PDF)</a></p>
+        <label class="launch"><input type="checkbox" [checked]="launchContact()" (change)="launchContact.set(!launchContact())" /> Launch CONTACT.EML and say hello</label>
+      }
+    }
+  </section>
+</div>
+
+<footer class="nav">
+  <button type="button" class="btn95" (click)="back()" [disabled]="step() === 0 || step() >= 5">&lt; Back</button>
+  @if (step() < 6) {
+    <button type="button" class="btn95 btn95--primary" (click)="next()" [disabled]="(step() === 1 && !accepted()) || step() === 5">Next &gt;</button>
+  } @else {
+    <button type="button" class="btn95 btn95--primary" (click)="finish()">Finish</button>
+  }
+  <button type="button" class="btn95" (click)="cancel()" [disabled]="step() === 6">Cancel</button>
+</footer>

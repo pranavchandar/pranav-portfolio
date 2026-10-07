@@ -1,0 +1,35 @@
+<div class="boot" role="status" aria-live="polite">
+  @if (stage() === 'post') {
+    <div class="post">
+      <div class="post__logo">
+        <os-icon name="smiley" [size]="64" />
+        <div>
+          <strong>Energy Star-ish</strong><br />
+          <span>certified pranav-compliant</span>
+        </div>
+      </div>
+      @for (line of lines(); track $index) {
+        <p class="post__line">
+          <span>{{ line[0] }}</span>
+          @if (line[1]) {
+            <span class="post__dots"></span>
+            <span class="post__ok" [class.bad]="line[1].startsWith('NOT')">{{ line[1] }}</span>
+          }
+        </p>
+      }
+      <p class="post__hint">Press any key (or tap) to skip · DEL to enter SETUP (just kidding)</p>
+    </div>
+  } @else {
+    <div class="splash">
+      <div class="splash__face"><os-icon name="smiley" [size]="160" /></div>
+      <h1 class="splash__title">PRANAV<span>OS</span><sup>95</sup></h1>
+      <p class="splash__sub">Engineer Edition · Artist Edition · Both, somehow</p>
+      <div class="splash__bar bevel" aria-hidden="true">
+        @for (s of segments; track s) {
+          <i [class.on]="s < progress() * 20"></i>
+        }
+      </div>
+      <p class="splash__msg">{{ loadingLine() }}</p>
+    </div>
+  }
+</div>

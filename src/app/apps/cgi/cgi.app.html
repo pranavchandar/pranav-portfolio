@@ -1,0 +1,73 @@
+<div class="room">
+  <section class="set">
+    <div class="tv">
+      <div class="tv__screen" [class.is-tall]="tape()?.orientation === 'tall'">
+        @switch (state()) {
+          @case ('empty') {
+            <div class="noise" aria-hidden="true"></div>
+            <p class="osd osd--center">NO TAPE<br /><small>← pick a tape from the shelf</small></p>
+          }
+          @case ('inserting') {
+            <div class="noise" aria-hidden="true"></div>
+            <p class="osd">TRACKING…</p>
+          }
+          @case ('loaded') {
+            <button type="button" class="poster" (click)="play()" [attr.aria-label]="'Play ' + tape()?.title">
+              <img [src]="thumb(tape()!.id)" alt="" (error)="thumbError($event, tape()!.id)" />
+              <span class="osd osd--center osd--big">▶ PLAY</span>
+            </button>
+          }
+          @case ('playing') {
+            <iframe
+              [src]="embed(tape()!)"
+              [title]="tape()!.title"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          }
+        }
+        <div class="scan" aria-hidden="true"></div>
+      </div>
+      <div class="tv__brand">PRANAVISION<span>·</span>TRINITRON-ISH</div>
+    </div>
+
+    <div class="vcr">
+      <span class="vcr__slot" [class.has-tape]="state() !== 'empty'"></span>
+      <span class="vcr__lcd" [class.blink]="state() === 'empty'">{{ display() }}</span>
+      <div class="vcr__keys">
+        <button type="button" (click)="play()" aria-label="Play">▶</button>
+        <button type="button" (click)="stop()" aria-label="Stop">■</button>
+        <button type="button" (click)="eject()" aria-label="Eject">⏏</button>
+      </div>
+    </div>
+
+    @if (tape(); as t) {
+      <div class="notes">
+        <h2>{{ t.title }} <small>{{ t.kind }} · {{ t.orientation === 'tall' ? 'vertical' : 'widescreen' }}</small></h2>
+        <p>{{ t.description }}</p>
+        <a [href]="'https://www.youtube.com/watch?v=' + t.id" target="_blank" rel="noopener noreferrer">watch on YouTube ↗</a>
+      </div>
+    } @else {
+      <div class="notes">
+        <h2>Worlds built in pixels.</h2>
+        <p>Blender · Unreal Engine · DaVinci Resolve. Simulations, sculpts, environments and short films — every frame rendered,
+          composited and graded in-house (the house being a bedroom).</p>
+      </div>
+    }
+  </section>
+
+  <aside class="shelf scroll95" aria-label="Tape shelf">
+    <div class="shelf__tabs">
+      @for (f of filters; track f) {
+        <button type="button" class="chip95" [class.is-on]="filter() === f" (click)="filter.set(f)">{{ f === 'CGI Short' ? 'Shorts' : f }}</button>
+      }
+    </div>
+    @for (t of tapes(); track t.id) {
+      <button type="button" class="tape" [class.is-in]="tape()?.id === t.id" (click)="insert(t)"
+              [attr.aria-label]="'Insert tape ' + t.title">
+        <span class="tape__label" [style.background]="t.label">{{ t.title }}</span>
+        <span class="tape__kind">{{ t.kind === 'Showcase' ? 'SP · 120' : 'EP · SHORT' }}</span>
+      </button>
+    }
+  </aside>
+</div>

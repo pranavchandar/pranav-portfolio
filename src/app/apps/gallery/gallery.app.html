@@ -1,0 +1,55 @@
+<div class="toolbar">
+  <input class="field95 search" type="search" placeholder="search the archive…" aria-label="Search art"
+         [value]="query()" (input)="query.set($any($event.target).value)" />
+  <div class="chips" role="tablist" aria-label="Category">
+    @for (c of categories; track c) {
+      <button type="button" class="chip95" [class.is-on]="category() === c" (click)="category.set(c)">{{ c }}</button>
+    }
+  </div>
+  <button type="button" class="btn95" (click)="random()">🎲 Surprise me</button>
+</div>
+
+@if (current(); as p) {
+  <section class="viewer">
+    <div class="viewer__wall">
+      <button type="button" class="arrow arrow--l" aria-label="Previous piece" (click)="step(-1)">◀</button>
+      <figure class="frame" (click)="touchArt()">
+        <img [src]="p.image" [alt]="p.title" />
+      </figure>
+      <button type="button" class="arrow arrow--r" aria-label="Next piece" (click)="step(1)">▶</button>
+    </div>
+    <aside class="placard">
+      <p class="placard__num">No. {{ p.num }} · {{ position() }} / {{ pieces().length }}</p>
+      <h2>{{ p.title }}</h2>
+      <p class="placard__artist">Pranav Chandar <span>(b. 1990s, still going)</span></p>
+      <dl>
+        <dt>Genre</dt><dd>{{ p.category }}</dd>
+        <dt>Medium</dt><dd>{{ placard()?.medium }}</dd>
+        <dt>Est. value</dt><dd>{{ placard()?.value }}</dd>
+      </dl>
+      <div class="placard__actions">
+        <button type="button" class="btn95 btn95--primary" (click)="setWallpaper(p)">Set as wallpaper</button>
+        <a class="btn95" [href]="p.image" target="_blank" rel="noopener">Full size ↗</a>
+        <button type="button" class="btn95" (click)="current.set(null)">Back to archive</button>
+      </div>
+      <p class="placard__hint">← → to browse · esc to go back</p>
+    </aside>
+  </section>
+} @else {
+  <section class="grid scroll95">
+    <header class="grid__head">
+      <h1>The Pranavian Museum of Digital Art</h1>
+      <p>{{ pieces().length }} of {{ total }} works on display · admission free · gift shop closed (forever)</p>
+    </header>
+    <div class="masonry">
+      @for (p of pieces(); track p.id) {
+        <button type="button" class="tile" (click)="open(p)" [attr.aria-label]="'View ' + p.title">
+          <img [src]="p.thumb" [alt]="p.title" loading="lazy" [style.aspect-ratio]="p.ratio" />
+          <span class="tile__label"><b>{{ p.num }}</b> {{ p.title }}</span>
+        </button>
+      } @empty {
+        <p class="empty">No art matches that. Pranav will get to drawing it.</p>
+      }
+    </div>
+  </section>
+}

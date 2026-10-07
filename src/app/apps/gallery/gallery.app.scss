@@ -1,0 +1,254 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--chrome);
+  outline: none;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0 6px;
+}
+
+.search {
+  width: 200px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1;
+}
+
+// ── Archive grid ──────────────────────────────────────────────
+.grid {
+  flex: 1;
+  background: #120c0d;
+  padding: 16px;
+  box-shadow: inset 2px 2px 0 #000;
+
+  &__head {
+    margin-bottom: 14px;
+
+    h1 {
+      margin: 0;
+      font: 400 clamp(28px, 4vw, 44px) / 1 var(--font-display);
+      color: var(--gold);
+    }
+
+    p {
+      margin: 4px 0 0;
+      color: var(--ink-dim);
+      font-size: 18px;
+    }
+  }
+}
+
+.masonry {
+  columns: 4 180px;
+  column-gap: 12px;
+}
+
+.tile {
+  display: block;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 6px;
+  border: 0;
+  break-inside: avoid;
+  background: linear-gradient(135deg, #f5d27a, #a87a1e 45%, #e8b84a 60%, #6b4a0e);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.6);
+  transition: transform 0.12s steps(2);
+  position: relative;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    background: #000;
+    box-shadow: inset 0 0 0 2px #000;
+  }
+
+  &__label {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    padding: 18px 8px 4px;
+    font-size: 17px;
+    text-align: left;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.15s;
+
+    b {
+      color: var(--gold);
+      font-weight: 400;
+    }
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: rotate(-1.5deg) scale(1.03);
+    z-index: 1;
+
+    .tile__label {
+      opacity: 1;
+    }
+  }
+
+  &:nth-child(3n):hover {
+    transform: rotate(1.5deg) scale(1.03);
+  }
+}
+
+.empty {
+  color: var(--ink-dim);
+}
+
+// ── Viewer ────────────────────────────────────────────────────
+.viewer {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 230, 170, 0.18), transparent 60%),
+    repeating-linear-gradient(90deg, #2a1c1e 0 2px, #241819 2px 60px);
+  box-shadow: inset 2px 2px 0 #000;
+
+  &__wall {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 18px 8px;
+  }
+}
+
+.frame {
+  margin: 0;
+  max-height: 100%;
+  max-width: calc(100% - 80px);
+  padding: 18px;
+  background:
+    linear-gradient(135deg, #f5d27a, #a87a1e 40%, #ffe7a0 55%, #6b4a0e);
+  box-shadow:
+    inset 0 0 0 3px #4a3208,
+    inset 0 0 0 10px #c9962e,
+    inset 0 0 0 13px #3a2606,
+    0 20px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+
+  img {
+    max-height: calc(100% - 0px);
+    max-width: 100%;
+    object-fit: contain;
+    background: #000;
+    box-shadow: inset 0 0 20px #000;
+  }
+}
+
+.viewer__wall .frame {
+  height: auto;
+  max-height: 100%;
+
+  img {
+    max-height: min(56vh, 520px);
+  }
+}
+
+.arrow {
+  border: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--gold);
+  font-size: 26px;
+  width: 36px;
+  height: 60px;
+  flex: none;
+
+  &:hover {
+    background: var(--red-deep);
+    color: #fff;
+  }
+}
+
+.placard {
+  width: 260px;
+  flex: none;
+  margin: 18px 18px 18px 0;
+  padding: 16px;
+  background: #f4efe6;
+  color: #1c1414;
+  align-self: center;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
+  font-size: 18px;
+  user-select: text;
+
+  &__num {
+    margin: 0;
+    color: #8a7a6a;
+    font-size: 16px;
+  }
+
+  h2 {
+    margin: 4px 0;
+    font: 400 34px/0.95 var(--font-display);
+  }
+
+  &__artist {
+    margin: 0 0 10px;
+
+    span {
+      color: #8a7a6a;
+    }
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 10px;
+    margin: 0 0 12px;
+  }
+
+  dt {
+    color: #8a7a6a;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  &__actions {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__hint {
+    margin: 10px 0 0;
+    font-size: 15px;
+    color: #8a7a6a;
+  }
+}
+
+@media (max-width: 760px) {
+  .viewer {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .placard {
+    width: auto;
+    margin: 0 12px 12px;
+  }
+
+  .search {
+    width: 100%;
+  }
+}
