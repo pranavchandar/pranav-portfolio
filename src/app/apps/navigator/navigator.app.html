@@ -1,0 +1,174 @@
+<div class="chrome">
+  <div class="toolbar">
+    <button type="button" class="tool" (click)="back()" [disabled]="cursor() === 0" aria-label="Back">◀<span>Back</span></button>
+    <button type="button" class="tool" (click)="forward()" [disabled]="cursor() >= history().length - 1" aria-label="Forward">▶<span>Forward</span></button>
+    <button type="button" class="tool" (click)="reload()" aria-label="Reload">⟳<span>Reload</span></button>
+    <button type="button" class="tool" (click)="go('home')" aria-label="Home">⌂<span>Home</span></button>
+    <span class="throbber" [class.is-busy]="dialing() || (frameUrl() && !loaded())" aria-hidden="true">
+      <os-icon name="globe" [size]="34" />
+    </span>
+  </div>
+
+  <form class="location" (submit)="$event.preventDefault(); submitAddress(addr.value)">
+    <label for="nav-address">Location:</label>
+    <input #addr id="nav-address" class="field95" [value]="typed() ?? address()" (input)="typed.set(addr.value)"
+           autocomplete="off" spellcheck="false" />
+    @if (project()?.live; as live) {
+      <a class="btn95" [href]="live.url" target="_blank" rel="noopener noreferrer" title="Open in a real browser tab">↗</a>
+    }
+  </form>
+
+  <nav class="bookmarks" aria-label="Bookmarks">
+    @for (p of live; track p.id) {
+      <button type="button" class="bookmark" [class.is-on]="page() === p.id" (click)="go(p.id)">
+        <os-icon [name]="p.icon" [size]="16" />{{ p.name }}
+      </button>
+    }
+    <button type="button" class="bookmark" [class.is-on]="page() === 'photo-index'" (click)="go('photo-index')">
+      <os-icon name="cloud" [size]="16" />Photo Index
+    </button>
+    <button type="button" class="bookmark" [class.is-on]="page() === 'github'" (click)="go('github')">
+      <os-icon name="code" [size]="16" />GitHub
+    </button>
+  </nav>
+</div>
+
+<div class="viewport sunken">
+  @if (dialing()) {
+    <div class="modem" role="status">
+      <os-icon name="globe" [size]="64" />
+      @for (l of modemLog(); track $index) {
+        <p>{{ l }}</p>
+      }
+      <p class="modem__cursor">_</p>
+    </div>
+  } @else {
+    @switch (page()) {
+      @case ('home') {
+        <div class="portal scroll95">
+          <div class="portal__marquee" aria-hidden="true">
+            <span>★ Welcome to PranavNet ★ Best viewed in Pranav Navigator 3.0 at 800×600 ★ Sign the guestbook (it's CONTACT.EML) ★ Now with 100% more sunsets ★</span>
+          </div>
+          <h1>Welcome to <b>PranavNet</b>!</h1>
+          <p class="portal__counter">You are visitor <span class="led">{{ visitor().toString().padStart(6, '0') }}</span></p>
+
+          <h2>🔥 Pranav's Cool Sites 🔥</h2>
+          <ul class="portal__sites">
+            @for (p of live; track p.id) {
+              <li>
+                <button type="button" class="portal__link" (click)="go(p.id)">
+                  <os-icon [name]="p.icon" [size]="32" /><span>{{ p.name }}</span>
+                </button>
+                <span class="portal__host">{{ p.live!.host }}</span>
+                <p>{{ p.tagline }}</p>
+              </li>
+            }
+          </ul>
+
+          <h2><os-icon name="warning" [size]="20" /> Under construction</h2>
+          <ul class="portal__wip">
+            @for (p of building; track p.id) {
+              <li>
+                <a [href]="p.repo" target="_blank" rel="noopener noreferrer">{{ p.name }}</a> — {{ p.tagline }}
+              </li>
+            }
+          </ul>
+
+          @for (p of private; track p.id) {
+            <p class="portal__private">🔒 <button type="button" class="portal__inline" (click)="go(p.id)">{{ p.name }}</button> is private: {{ p.tagline }}</p>
+          }
+
+          <p class="portal__ring">
+            <button type="button" (click)="ringStep(-1)">‹ prev</button>
+            <span>the PranavRing</span>
+            <button type="button" (click)="ringStep(1)">next ›</button>
+          </p>
+          <p class="portal__foot">
+            All repos: <a [href]="profile" target="_blank" rel="noopener noreferrer">github.com/pranavchandar</a> ·
+            <button type="button" class="portal__inline" (click)="openProjects()">open PROJECTS</button>
+          </p>
+        </div>
+      }
+
+      @case ('github') {
+        <div class="refuse">
+          <os-icon name="code" [size]="64" />
+          <h1>github.com won't load in here</h1>
+          <p>GitHub doesn't allow itself to be shown inside other pages. Fair.</p>
+          <a class="btn95 btn95--primary big" [href]="profile" target="_blank" rel="noopener noreferrer">Open github.com/pranavchandar ↗</a>
+        </div>
+      }
+
+      @case ('notfound') {
+        <div class="refuse">
+          <os-icon name="warning" [size]="64" />
+          <h1>404: not on PranavNet</h1>
+          <p>Navigator only knows Pranav's corner of the internet. Try <b>sky-score.onrender.com</b> or <b>get gym done</b>.</p>
+          <button type="button" class="btn95" (click)="go('home')">⌂ Back to PranavNet</button>
+        </div>
+      }
+
+      @default {
+        @if (isProject(project())) {
+          @let p = project()!;
+          @if (frameUrl(); as url) {
+            @if (p.id === 'portfolio') {
+              <p class="inception">🌀 You are running PRANAV OS inside PRANAV OS. Inception level {{ depth() + 1 }}.</p>
+            }
+            @if (p.live?.phone) {
+              <div class="device-toggle">
+                <button type="button" class="chip95" [class.is-on]="phone()" (click)="phone.set(true)">📱 Phone</button>
+                <button type="button" class="chip95" [class.is-on]="!phone()" (click)="phone.set(false)">🖥 Desktop</button>
+              </div>
+            }
+            <div class="stage" [class.stage--phone]="p.live?.phone && phone()">
+              <iframe
+                [src]="url"
+                [title]="p.name"
+                (load)="loaded.set(true)"
+                allow="screen-wake-lock; fullscreen"
+                referrerpolicy="no-referrer"
+              ></iframe>
+            </div>
+          } @else if (p.id === 'portfolio') {
+            <div class="refuse refuse--deep">
+              <h1>WE NEED TO GO DEEPER</h1>
+              <p>…no. No we don't. You're already {{ depth() }} levels deep in PRANAV OS. Recursion limit reached.</p>
+              <p class="small">Close a few Navigators to resurface. Or don't. The water's fine.</p>
+            </div>
+          } @else if (p.live) {
+            <div class="refuse refuse--sky">
+              <div class="sunset" aria-hidden="true"><i></i></div>
+              <h1>{{ p.name }} refuses to be framed</h1>
+              <p>Its server sends <code>Content-Security-Policy: frame-ancestors 'none'</code>, so it won't run inside another page. Good security hygiene. Respect.</p>
+              <a class="btn95 btn95--primary big" [href]="p.live.url" target="_blank" rel="noopener noreferrer">☀ Launch {{ p.live.host }} ↗</a>
+              @if (p.live.note) {
+                <p class="small">💤 {{ p.live.note }}</p>
+              }
+            </div>
+          } @else if (p.status === 'self-hosted') {
+            <div class="refuse refuse--locked">
+              <p class="code403">403</p>
+              <h1>Forbidden</h1>
+              <p>{{ p.name }} lives on a PC in Pranav's home and only answers to his own devices over Tailscale. That's the whole point.</p>
+              <a class="btn95" [href]="p.repo" target="_blank" rel="noopener noreferrer">Read the source instead ↗</a>
+            </div>
+          } @else {
+            <div class="refuse">
+              <os-icon [name]="p.icon" [size]="64" />
+              <h1>{{ p.name }} isn't on the web yet</h1>
+              <p>{{ p.tagline }}</p>
+              <a class="btn95" [href]="p.repo" target="_blank" rel="noopener noreferrer">Watch it being built on GitHub ↗</a>
+            </div>
+          }
+        }
+      }
+    }
+  }
+</div>
+
+<footer class="status">
+  <span class="status__lock" [title]="address().startsWith('https') ? 'Secure connection' : 'Not secure (it is 1996)'">{{ address().startsWith('https') ? '🔒' : '🔓' }}</span>
+  <span class="status__text">{{ status() }}</span>
+  <span class="status__zone">PranavNet zone</span>
+</footer>

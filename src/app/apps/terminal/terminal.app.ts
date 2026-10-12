@@ -8,6 +8,7 @@ import { WindowManager } from '../../os/window-manager.service';
 import { ABOUT, CAREER_START, EXPERIENCE, LINKS, NAME, SKILLS, TITLE, elapsedSince } from '../../data/profile';
 import { ART } from '../../data/art';
 import { TAPES } from '../../data/videos';
+import { GITHUB_PROFILE, PROJECTS_LIST, STATUS_LABEL } from '../../data/projects';
 
 interface Line {
   text: string;
@@ -37,12 +38,13 @@ const FILES: Record<string, string> = {
   'dont_press.exe': 'dontpress',
 };
 
-const DIRS = ['art/', 'cgi/', 'secrets/', '.sleep/'];
+const DIRS = ['projects/', 'art/', 'cgi/', 'secrets/', '.sleep/'];
 
 const COMMANDS = [
   'help', 'whoami', 'about', 'ls', 'cd', 'cat', 'open', 'skills', 'experience', 'uptime', 'contact', 'hire',
   'sudo', 'neofetch', 'cowsay', 'fortune', 'coffee', 'matrix', 'theme', 'party', 'date', 'echo', 'history',
-  'clear', 'exit', 'vim', 'emacs', 'ping', 'rm', 'bsod', 'shutdown', 'gravity', 'art', 'tapes',
+  'clear', 'exit', 'vim', 'emacs', 'ping', 'rm', 'bsod', 'shutdown', 'gravity', 'art', 'tapes', 'projects', 'browse',
+  'curl', 'git',
 ];
 
 @Component({
@@ -230,6 +232,18 @@ export class TerminalApp {
         return this.print({ text: `${ART.length} pieces. Random pick: "${ART[Math.floor(Math.random() * ART.length)].title}"` }, ...this.openApp('art'));
       case 'tapes':
         return this.print(...TAPES.map((t) => ({ text: `▶ ${t.title.padEnd(30)} ${t.kind}`, cls: 'dim' as const })));
+      case 'projects':
+      case 'repos':
+        return this.projects();
+      case 'browse':
+      case 'lynx':
+      case 'netscape':
+        return this.browse(arg);
+      case 'curl':
+      case 'wget':
+        return this.curl(arg);
+      case 'git':
+        return this.git(args);
       case 'hi':
       case 'hello':
       case 'hey':
@@ -252,6 +266,8 @@ export class TerminalApp {
       ['skills / experience', 'the professional bits'],
       ['ls · cd · cat', 'poke around the filesystem'],
       ['open <app>', 'launch an app (about, resume, art, cgi, code, contact, punch, intro…)'],
+      ['projects', 'every repo on GitHub, with live URLs'],
+      ['browse sky|gym|os', 'open a live project in Navigator'],
       ['contact', 'ways to reach a real human'],
       ['sudo hire pranav', '★ highly recommended ★'],
       ['neofetch · cowsay · fortune', 'essential unix culture'],
@@ -268,6 +284,7 @@ export class TerminalApp {
 
   private ls(arg: string): void {
     const dir = arg.replace(/\/$/, '') || this.cwd().replace('~/', '').replace('~', '');
+    if (dir === 'projects') return this.print({ text: PROJECTS_LIST.map((p) => p.repo.split('/').pop() + '/').join('  '), cls: 'dim' });
     if (dir === 'art') return this.print({ text: ART.map((a) => a.slug + '.webp').join('  '), cls: 'dim' });
     if (dir === 'cgi') return this.print({ text: TAPES.map((t) => t.title.replace(/\s+/g, '_') + '.vhs').join('  '), cls: 'dim' });
     if (dir === 'secrets') return this.print({ text: 'ls: cannot open directory secrets/: Permission denied', cls: 'err' });
@@ -284,7 +301,7 @@ export class TerminalApp {
     }
     if (dir === 'secrets') return this.print({ text: 'cd: secrets: Permission denied. Nice try though.', cls: 'err' });
     if (dir === '.sleep') return this.print({ text: 'cd: .sleep: directory exists but nobody has been there since 2019', cls: 'err' });
-    if (dir === 'art' || dir === 'cgi') {
+    if (dir === 'art' || dir === 'cgi' || dir === 'projects') {
       this.cwd.set(`~/${dir}`);
       return this.print(...this.openApp(dir));
     }
@@ -307,7 +324,8 @@ export class TerminalApp {
       cgi: 'cgi', cgitapes: 'cgi', tapes: 'cgi', vhs: 'cgi', code: 'code', pranav: 'code', programming: 'code',
       contact: 'contact', mail: 'contact', email: 'contact', punch: 'punch', punchme: 'punch', intro: 'intro',
       settings: 'settings', controlpanel: 'settings', dontpress: 'dontpress', trash: 'trash', recyclebin: 'trash',
-      terminal: 'terminal',
+      terminal: 'terminal', projects: 'projects', explorer: 'projects', repos: 'projects', work: 'projects',
+      navigator: 'navigator', browser: 'navigator', netscape: 'navigator', internet: 'navigator',
     };
     const id = aliases[key];
     if (!id) return this.print({ text: `open: unknown app '${arg}'. try: open resume`, cls: 'err' });
@@ -466,6 +484,66 @@ export class TerminalApp {
         this.os.bsod('RM_RF_SLASH_YOU_ABSOLUTE_MONSTER');
       }, 200 * victims.length + 500),
     );
+  }
+
+  private projects(): void {
+    this.print({ text: `${PROJECTS_LIST.length} REPOS · ${GITHUB_PROFILE}`, cls: 'hot', href: GITHUB_PROFILE });
+    for (const p of PROJECTS_LIST) {
+      this.print(
+        { text: `${p.status === 'live' ? '●' : '○'} ${p.name.padEnd(24)}${STATUS_LABEL[p.status].padEnd(16)}${p.platform}`, cls: p.status === 'live' ? 'ok' : undefined },
+        { text: `    ${p.tagline}`, cls: 'dim' },
+      );
+      if (p.live) this.print({ text: `    ${p.live.url}`, href: p.live.url });
+    }
+    this.print({ text: "tip: 'browse sky' opens one in Navigator", cls: 'dim' });
+  }
+
+  private browse(arg: string): void {
+    const q = arg.toLowerCase();
+    const p =
+      PROJECTS_LIST.find((x) => x.live && (x.id === q || x.name.toLowerCase().includes(q) || x.live.host.includes(q))) ??
+      (q === 'os' || q === 'portfolio' || q === 'self' ? PROJECTS_LIST.find((x) => x.id === 'portfolio') : undefined);
+    if (!q) {
+      this.wm.open('navigator');
+      return this.print({ text: '→ launching Pranav Navigator 3.0…', cls: 'ok' });
+    }
+    if (!p) return this.print({ text: `browse: no live site matches '${arg}'. try: sky, gym, os`, cls: 'err' });
+    this.wm.open('navigator', { site: p.id, nonce: Date.now() });
+    this.print({ text: `→ dialing ${p.live!.host}…`, cls: 'ok' });
+  }
+
+  private curl(arg: string): void {
+    if (!arg) return this.print({ text: 'curl: try \'curl sky-score.onrender.com\'', cls: 'err' });
+    if (arg.includes('sky')) {
+      return this.print(
+        { text: 'HTTP/1.1 503 Server Is Napping', cls: 'amber' },
+        { text: "x-render-plan: free (sleeps after 15 idle minutes, wakes in 30–60 s)", cls: 'dim' },
+        { text: 'content-security-policy: frame-ancestors \'none\'', cls: 'dim' },
+        { text: '' },
+        { text: 'Open it for real: https://sky-score.onrender.com', href: 'https://sky-score.onrender.com' },
+      );
+    }
+    const p = PROJECTS_LIST.find((x) => x.live && arg.includes(x.live.host.split('/').pop()!));
+    if (p) return this.print({ text: 'HTTP/1.1 200 OK', cls: 'ok' }, { text: `<title>${p.name}</title>`, cls: 'dim' }, { text: p.live!.url, href: p.live!.url });
+    this.print({ text: `curl: (6) Could not resolve host: ${arg} (PranavNet only)`, cls: 'err' });
+  }
+
+  private git(args: string[]): void {
+    const [sub, target = ''] = args;
+    if (sub === 'clone') {
+      const p = PROJECTS_LIST.find((x) => target && (x.repo.toLowerCase().includes(target.toLowerCase()) || x.id === target));
+      if (!p) return this.print({ text: `fatal: repository '${target || '?'}' not found. try: projects`, cls: 'err' });
+      return this.print(
+        { text: `Cloning into '${p.repo.split('/').pop()}'…`, cls: 'dim' },
+        { text: "…just kidding, this is a browser. Here's the repo:", cls: 'amber' },
+        { text: p.repo, href: p.repo },
+      );
+    }
+    if (sub === 'log') {
+      return this.print(...PROJECTS_LIST.map((p) => ({ text: `* ${p.year.padEnd(10)} ${p.name}: ${p.tagline}`, cls: 'dim' as const })));
+    }
+    if (sub === 'blame') return this.print({ text: 'Pranav Chandar. It was always Pranav Chandar.', cls: 'amber' });
+    this.print({ text: 'usage: git clone <repo> | git log | git blame', cls: 'err' });
   }
 
   private print(...lines: Line[]): void {

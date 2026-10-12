@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { PixelIconComponent } from '../os/pixel-icon.component';
 import { ART } from '../data/art';
 import { TAPES, thumbFor } from '../data/videos';
+import { GITHUB_PROFILE, PROJECTS_LIST, STATUS_LABEL } from '../data/projects';
 import {
   ABOUT, CV_PATH, EDUCATION, EXPERIENCE, LINKS, NAME, PROJECTS, SKILLS, SUMMARY,
 } from '../data/profile';
@@ -34,6 +35,9 @@ export class BoringComponent implements OnDestroy {
   readonly artCount = ART.length;
   readonly tapes = TAPES.filter((t) => t.orientation === 'wide');
   readonly thumb = thumbFor;
+  readonly side = PROJECTS_LIST;
+  readonly statusLabel = STATUS_LABEL;
+  readonly github = GITHUB_PROFILE;
 
   constructor() {
     if (this.browser) document.body.classList.add('boring');

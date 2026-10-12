@@ -13,9 +13,11 @@ every icon is hand-drawn 16×16 pixel art stored as text, and no assets were add
 | --- | --- |
 | `ABOUT_ME.TXT` | The About page as an editable Notepad. Nothing saves. Like real life. |
 | `RESUME.EXE` | The résumé as an InstallShield wizard, with a EULA, live career-uptime counter, skill "components" and an install log. Cancelling triggers a confirm dialog whose *Exit* button runs away from your cursor. |
+| `PROJECTS` | Every GitHub repo in a Win95 Explorer: status LEDs, stack, highlights, source links, and a launch button for anything that's live. |
+| `NAVIGATOR` | *Pranav Navigator 3.0*, a 90s web browser with a dial-up modem. Get Gym Done runs live inside a phone frame, Sky Score shows why it refuses to be framed, and opening this portfolio runs PRANAV OS inside PRANAV OS (with inception levels). |
 | `ART_GALLERY` | All 72 drawings in "The Pranavian Museum of Digital Art": gilded frames, museum placards, fake appraisals, *set as wallpaper*. Don't touch the art. |
 | `CGI_TAPES` | The CGI reel as a VHS deck: pick a tape off the shelf, it loads into the TV, press ▶. |
-| `PRANAV.TS` | Programming work as a TypeScript class in a fake IDE, with a "Run" button that compiles a human. |
+| `PRANAV.TS` | The career as a TypeScript class in a fake IDE, with a "Run" button that compiles a human. |
 | `TERMINAL` | A real-ish shell: `help`, `ls`, `cd art`, `neofetch`, `cowsay`, `matrix`, `vim` (good luck), `rm -rf /`, and the important one: `sudo hire pranav`. |
 | `CONTACT.EML` | A mail composer with an urgency slider that opens your mail client. |
 | `PUNCH_ME.EXE` | The old "-20HP" gag as *Street Pranav II Turbo*: health bars, crits, combos, K.O., loot drop. |
@@ -25,10 +27,22 @@ every icon is hand-drawn 16×16 pixel art stored as text, and no assets were add
 | `BORING_MODE` | `/boring`: everything on one plain, fast, accessible page for recruiters, screen readers and search engines. |
 | `RECYCLE BIN` | Java 4, SVN, Ext JS, and a sleep schedule. Emotionally load-bearing. |
 
+## Live side projects
+
+| Project | URL |
+| --- | --- |
+| Sky Score | https://sky-score.onrender.com |
+| Get Gym Done | https://pranavchandar.github.io/get-gym-done-web/ |
+| PRANAV OS (this site) | https://pranavchandar.github.io/pranav-portfolio/ |
+
+The list lives in `src/app/data/projects.ts`; PROJECTS, NAVIGATOR, the terminal (`projects`,
+`browse sky`), PRANAV.TS and Boring Mode all read from it.
+
 ## Easter eggs
 
 - `↑ ↑ ↓ ↓ ← → ← → B A` anywhere on the desktop
-- `` ` `` opens a terminal
+- `` ` `` opens a terminal; try `projects`, `browse os`, `curl sky-score.onrender.com`, `git blame`
+- Open PRANAV OS in Navigator, then open it again inside that one
 - Leave it idle for a minute and Pranav's head bounces around like a DVD logo. Wait for the corner.
 - Click the CRT computer. Its eyes already follow your cursor.
 - Smiley, the unpaid desktop assistant, has opinions.
@@ -36,7 +50,7 @@ every icon is hand-drawn 16×16 pixel art stored as text, and no assets were add
 ## URLs
 
 Old links still work. Each one boots the OS and opens the matching window:
-`/about`, `/resume`, `/work/programming`, `/work/digital-art`, `/work/cgi`, `/secret`.
+`/about`, `/resume`, `/work/programming` (now PROJECTS), `/work/digital-art`, `/work/cgi`, `/secret`.
 The address bar follows whichever window is in front.
 
 ## Code map

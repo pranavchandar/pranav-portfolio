@@ -1,10 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SKILLS, LINKS } from '../../data/profile';
+import { PROJECTS_LIST } from '../../data/projects';
 import { SoundService } from '../../os/sound.service';
 import { WindowManager } from '../../os/window-manager.service';
 
 const email = LINKS.find((l) => l.label === 'Email')?.handle ?? '';
 const key = (title: string) => title.toLowerCase().replace(/[^a-z]+(.)?/g, (_, c: string) => (c ? c.toUpperCase() : ''));
+const sideProjects = PROJECTS_LIST.map(
+  (p) => `    ${key(p.name)}: '${p.live?.url ?? p.repo}',${p.live ? '' : ` // ${p.status === 'self-hosted' ? 'private server' : 'in development'}`}`,
+).join('\n');
 const stack = SKILLS.map((g) => `    ${key(g.title)}: [${g.items.map((i) => `'${i}'`).join(', ')}],`).join('\n');
 
 const PRANAV_TS = `/**
@@ -38,6 +42,11 @@ ${stack}
     'CI/CD with Jenkins, Docker, Kubernetes and JFrog',
     'SonarQube + Fortify wired into every pipeline',
   ];
+
+  // After hours. Open PROJECTS or NAVIGATOR to try the live ones.
+  readonly sideProjects = {
+${sideProjects}
+  };
 
   constructor(private coffee: Coffee, private blender: Blender) {
     super();

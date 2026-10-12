@@ -334,7 +334,8 @@ export class OsComponent {
   }
 
   private checkIdle(): void {
-    const watching = this.wm.isOpen('cgi') || this.wm.isOpen('intro');
+    // Activity inside a video or an embedded site never reaches this page, so don't nap on top of it.
+    const watching = this.wm.isOpen('cgi') || this.wm.isOpen('intro') || this.wm.isOpen('navigator');
     if (this.os.phase() === 'desktop' && !watching && Date.now() - this.lastActive > IDLE_MS) {
       this.idle.set(true);
     }

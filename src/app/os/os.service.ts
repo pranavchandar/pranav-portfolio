@@ -49,6 +49,8 @@ export class OsService {
   readonly shaking = signal(false);
   readonly toasts = signal<Toast[]>([]);
   readonly assistantPing = signal(0);
+  /** How many PRANAV OS windows deep we are (0 = the real one, 1+ = opened inside Navigator). */
+  readonly depth = signal(0);
   private toastId = 0;
   private loaded = false;
 
@@ -69,6 +71,17 @@ export class OsService {
   /** Called once on the client after first render so SSR and hydration agree. */
   load(): void {
     if (!this.browser || this.loaded) return;
+    let depth = 0;
+    try {
+      // Only count parent frames that are themselves running PRANAV OS.
+      for (let w: Window = window; w !== w.parent && depth < 20; w = w.parent) {
+        if (!w.parent.document.querySelector('app-os')) break;
+        depth++;
+      }
+    } catch {
+      /* cross-origin parent: whatever is up there, it isn't us */
+    }
+    this.depth.set(depth);
     try {
       const raw = localStorage.getItem(KEY);
       if (raw) this.settings.set({ ...DEFAULTS, ...JSON.parse(raw) });

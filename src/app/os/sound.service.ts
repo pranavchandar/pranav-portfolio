@@ -85,6 +85,19 @@ export class SoundService {
 
   crash(): void { this.noise(0.6, 0.25); this.tone(55, 0.8, 'sawtooth', 0.08); }
 
+  /** A 56k handshake, abridged: DTMF digits, a ringback, then the screech. */
+  modem(): void {
+    const dtmf: [number, number][] = [[697, 1209], [770, 1336], [852, 1477], [697, 1336], [941, 1336], [770, 1209]];
+    dtmf.forEach(([lo, hi], i) => {
+      this.tone(lo, 0.07, 'sine', 0.05, i * 0.1);
+      this.tone(hi, 0.07, 'sine', 0.05, i * 0.1);
+    });
+    this.tone(2100, 0.35, 'sine', 0.035, 0.75);
+    this.tone(1200, 0.2, 'square', 0.025, 1.15, 2400);
+    this.tone(980, 0.25, 'sawtooth', 0.02, 1.35, 1650);
+    this.noise(0.45, 0.12, 1.5);
+  }
+
   powerUp(): void {
     [262, 330, 392, 523, 659, 784, 1047].forEach((f, i) => this.tone(f, 0.12, 'square', 0.05, i * 0.07));
   }

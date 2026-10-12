@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: '', title: 'PRANAV OS 95 — Pranav Chandar', loadComponent: os },
   deepLink('about', 'about', 'ABOUT_ME.TXT'),
   deepLink('resume', 'resume', 'RESUME.EXE'),
-  deepLink('work/programming', 'code', 'PRANAV.TS'),
+  deepLink('work/programming', 'projects', 'PROJECTS'),
   deepLink('work/digital-art', 'art', 'ART_GALLERY'),
   deepLink('work/cgi', 'cgi', 'CGI_TAPES'),
   deepLink('secret', 'intro', 'INTRO.MOV'),

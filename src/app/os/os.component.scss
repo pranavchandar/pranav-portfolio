@@ -130,6 +130,15 @@
     padding-left: 10px;
   }
 
+  &__deep {
+    margin: 8px 0 0;
+    padding: 2px 8px;
+    width: fit-content;
+    background: var(--amber);
+    color: #000;
+    font-size: 18px;
+  }
+
   &__hint {
     margin: 8px 0 0 13px;
     font-size: 17px;

@@ -56,6 +56,23 @@
     }
   </section>
 
+  <section aria-labelledby="side">
+    <h2 id="side">Side projects <small>(<a [href]="github" target="_blank" rel="noopener noreferrer">all repos on GitHub</a>)</small></h2>
+    @for (p of side; track p.id) {
+      <article class="project">
+        <h3>{{ p.name }} <span class="tag">{{ statusLabel[p.status] }} · {{ p.platform }}</span></h3>
+        <p>{{ p.tagline }}</p>
+        <p class="links">
+          @if (p.live) {
+            <a [href]="p.live.url" target="_blank" rel="noopener noreferrer">Live site</a> ·
+          }
+          <a [href]="p.repo" target="_blank" rel="noopener noreferrer">Source</a>
+          · <span class="stack">{{ p.stack.join(', ') }}</span>
+        </p>
+      </article>
+    }
+  </section>
+
   <section aria-labelledby="edu">
     <h2 id="edu">Education</h2>
     @for (e of education; track e.degree) {

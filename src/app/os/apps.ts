@@ -4,6 +4,8 @@ import { IconName } from './pixel-icons';
 export type AppId =
   | 'about'
   | 'resume'
+  | 'projects'
+  | 'navigator'
   | 'art'
   | 'cgi'
   | 'code'
@@ -54,6 +56,14 @@ export const APPS: Record<AppId, AppDef> = {
     },
     load: () => import('../apps/resume/resume.app').then((m) => m.ResumeApp),
   },
+  projects: {
+    id: 'projects', title: 'C:\\PRANAV\\PROJECTS — Explorer', label: 'PROJECTS', icon: 'folder', w: 1000, h: 680, route: 'work/programming',
+    load: () => import('../apps/projects/projects.app').then((m) => m.ProjectsApp),
+  },
+  navigator: {
+    id: 'navigator', title: 'Pranav Navigator 3.0', label: 'NAVIGATOR', icon: 'globe', w: 1000, h: 720,
+    load: () => import('../apps/navigator/navigator.app').then((m) => m.NavigatorApp),
+  },
   art: {
     id: 'art', title: 'ART_GALLERY — The Pranavian Museum of Digital Art', label: 'ART_GALLERY', icon: 'frame', w: 1040, h: 700, route: 'work/digital-art',
     load: () => import('../apps/gallery/gallery.app').then((m) => m.GalleryApp),
@@ -63,7 +73,7 @@ export const APPS: Record<AppId, AppDef> = {
     load: () => import('../apps/cgi/cgi.app').then((m) => m.CgiApp),
   },
   code: {
-    id: 'code', title: 'pranav.ts — Visual Studio Pranav', label: 'PRANAV.TS', icon: 'code', w: 900, h: 640, route: 'work/programming',
+    id: 'code', title: 'pranav.ts — Visual Studio Pranav', label: 'PRANAV.TS', icon: 'code', w: 900, h: 640,
     load: () => import('../apps/code/code.app').then((m) => m.CodeApp),
   },
   terminal: {
@@ -98,7 +108,8 @@ export const APPS: Record<AppId, AppDef> = {
 
 /** Desktop icon order. `boring` is a pseudo-app that leaves the OS. */
 export const DESKTOP: (AppId | 'boring')[] = [
-  'about', 'resume', 'art', 'cgi', 'code', 'terminal', 'contact', 'punch', 'intro', 'settings', 'dontpress', 'boring', 'trash',
+  'about', 'resume', 'projects', 'navigator', 'art', 'cgi', 'code', 'terminal', 'contact', 'punch', 'intro', 'settings',
+  'dontpress', 'boring', 'trash',
 ];
 
 export const appForRoute = (path: string): AppId | null =>

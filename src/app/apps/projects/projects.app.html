@@ -1,0 +1,97 @@
+<div class="bar">
+  <span class="bar__label">Address</span>
+  <span class="field95 bar__path">C:\PRANAV\PROJECTS</span>
+  <a class="btn95" [href]="profile" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+</div>
+
+<div class="split">
+  <ul class="grid sunken scroll95" role="listbox" aria-label="Projects">
+    @for (p of projects; track p.id) {
+      <li>
+        <button
+          type="button"
+          class="item"
+          role="option"
+          [attr.aria-selected]="p.id === selectedId()"
+          [class.is-on]="p.id === selectedId()"
+          (click)="select(p)"
+          (dblclick)="activate(p)"
+        >
+          <span class="item__icon">
+            <os-icon [name]="p.icon" [size]="48" />
+            <i class="led led--{{ p.status }}" [attr.title]="statusLabel[p.status]"></i>
+          </span>
+          <span class="item__name">{{ p.name }}</span>
+        </button>
+      </li>
+    }
+  </ul>
+
+  @if (selected(); as p) {
+    <article class="detail scroll95" aria-live="polite">
+      <header class="detail__head">
+        <os-icon [name]="p.icon" [size]="56" />
+        <div>
+          <h1>{{ p.name }}</h1>
+          <p class="detail__meta">
+            <span class="pill pill--{{ p.status }}"><i class="led led--{{ p.status }}"></i>{{ statusLabel[p.status] }}</span>
+            {{ p.platform }} · {{ p.year }}
+          </p>
+        </div>
+      </header>
+
+      <p class="detail__tagline">{{ p.tagline }}</p>
+
+      @if (p.live; as live) {
+        <div class="launch">
+          <div class="launch__url">
+            <span class="launch__proto">http://</span>{{ live.host }}
+          </div>
+          <div class="launch__actions">
+            <button type="button" class="btn95 btn95--primary" (click)="launch(p)">▶ Launch in Navigator</button>
+            <a class="btn95" [href]="live.url" target="_blank" rel="noopener noreferrer">Open in new tab ↗</a>
+          </div>
+          @if (live.note) {
+            <p class="launch__note">💤 {{ live.note }}</p>
+          }
+        </div>
+      } @else if (p.status === 'self-hosted') {
+        <p class="locked">🔒 No public URL, on purpose. It lives on a home PC and only answers to Pranav's own devices over Tailscale.</p>
+      } @else {
+        <p class="locked">🛠 Not deployed yet. The source is public, so you can watch it being built.</p>
+      }
+
+      <h2>Highlights</h2>
+      <ul class="detail__list">
+        @for (h of p.highlights; track $index) {
+          <li>{{ h }}</li>
+        }
+      </ul>
+
+      @if (p.shots) {
+        <div class="shots">
+          @for (s of p.shots; track s.src) {
+            <img [src]="s.src" [alt]="s.alt" loading="lazy" />
+          }
+        </div>
+      }
+
+      <h2>Built with</h2>
+      <ul class="chips">
+        @for (t of p.stack; track t) {
+          <li>{{ t }}</li>
+        }
+      </ul>
+
+      <p class="detail__repo">
+        <a [href]="p.repo" target="_blank" rel="noopener noreferrer">⌥ {{ repoName(p) }} ↗</a>
+      </p>
+    </article>
+  }
+</div>
+
+<footer class="status">
+  <span>{{ projects.length }} object(s)</span>
+  <span><i class="led led--live"></i> {{ online }} online</span>
+  <span class="status__hint">double-click a live project to launch it</span>
+</footer>

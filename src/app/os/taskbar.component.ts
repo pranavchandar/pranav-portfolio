@@ -28,7 +28,7 @@ export class TaskbarComponent implements OnInit {
   readonly clock = signal('--:--');
   readonly uptime = signal('');
 
-  readonly menu: AppId[] = ['about', 'resume', 'art', 'cgi', 'code', 'terminal', 'contact', 'punch', 'intro', 'settings'];
+  readonly menu: AppId[] = ['about', 'resume', 'projects', 'navigator', 'art', 'cgi', 'code', 'terminal', 'contact', 'punch', 'intro', 'settings'];
   readonly apps = APPS;
 
   ngOnInit(): void {

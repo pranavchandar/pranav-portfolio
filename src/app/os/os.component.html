@@ -14,6 +14,9 @@
       <span class="hero__last">CHANDAR</span>
     </h1>
     <p class="hero__title">{{ title() }}</p>
+    @if (os.depth() > 0) {
+      <p class="hero__deep">🌀 INCEPTION LEVEL {{ os.depth() }} · this desktop is running inside another PRANAV OS</p>
+    }
     <p class="hero__hint">double-click an icon · drag things around · press <kbd>`</kbd> for a terminal</p>
   </header>
 

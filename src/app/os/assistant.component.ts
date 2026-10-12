@@ -20,6 +20,7 @@ const TIPS: Tip[] = [
   { text: "Tip: open TERMINAL and type 'sudo hire pranav'. I'm not saying what happens. I'm just saying.", yes: 'Open Terminal', no: 'Ok', app: 'terminal' },
   { text: "You've been here a while. I'm not saying you should send him an email, but... you should send him an email.", yes: 'Write email', no: 'Shh', app: 'contact' },
   { text: 'Fun fact: Pranav also makes CGI. There are 15 VHS tapes in CGI_TAPES. None of them are your wedding.', yes: 'Insert tape', no: 'Nah', app: 'cgi' },
+  { text: 'Pranav also ships side projects: a sunset predictor, a gym app, a private photo cloud. Seven repos, three of them live.', yes: 'Show PROJECTS', no: 'Later', app: 'projects' },
   { text: 'Psst. ↑ ↑ ↓ ↓ ← → ← → B A', yes: '?!', no: 'I know.' },
   { text: "Whatever you do, do NOT open DONT_PRESS.EXE. It's right there on the desktop. Don't.", yes: 'Open it', no: 'I am a rule follower', app: 'dontpress' },
 ];
